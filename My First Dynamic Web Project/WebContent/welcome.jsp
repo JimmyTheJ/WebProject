@@ -6,6 +6,7 @@
 <title>Welcome <%=session.getAttribute("name")%></title>
 </head>
 <body>
+<<<<<<< HEAD
     <h3>Login successful, This has worked successfully!</h3>
     <h4>
         Hello, <%=session.getAttribute("name")%></h4>
