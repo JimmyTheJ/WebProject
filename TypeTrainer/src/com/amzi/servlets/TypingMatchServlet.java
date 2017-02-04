@@ -22,6 +22,8 @@ public class TypingMatchServlet extends HttpServlet{
 		 response.setContentType("text/html");  
 		 PrintWriter out = response.getWriter();  
 		String sentence= "Test Text";
+		//String sentence = TypingMatchDao.getSentence();
+		System.out.println(sentence);
 		String match = request.getParameter("match");
 		HttpSession session = request.getSession(false);
 		 if(session!=null){
