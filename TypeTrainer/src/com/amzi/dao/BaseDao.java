@@ -11,10 +11,11 @@ public class BaseDao {
 		
 		Connection conn = null;
 		String url = "jdbc:mysql://localhost:3306/";
-	    String dbName = "form";
+	    String dbName = "typer_db";
 	    String driver = "com.mysql.jdbc.Driver";
 	    String userName = "root";
-	    String password = "uber-g";
+	    //String password = "uber-g";
+	    String password = "i+g7fvJRXNesQZb^";
 		
 	    try {
 	    	

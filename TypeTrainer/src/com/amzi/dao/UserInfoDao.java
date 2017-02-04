@@ -19,7 +19,7 @@ public static double getID(String uName){
         
         try {
         	conn = BaseDao.getConnection();
-            pst = conn.prepareStatement("select id from UserStats where userName=?");
+            pst = conn.prepareStatement("SELECT id FROM users WHERE username=?");
             pst.setString(1,uName);
             
             rs=pst.executeQuery();
@@ -65,7 +65,7 @@ public static double getID(String uName){
         
         try {
         	conn = BaseDao.getConnection();
-            pst = conn.prepareStatement("select first_name from UserStats where userName=?");
+            pst = conn.prepareStatement("SELECT f_name FROM users WHERE username=?");
             pst.setString(1,uName);
             
             rs=pst.executeQuery();
@@ -113,7 +113,7 @@ public static double getID(String uName){
         try {
         	conn = BaseDao.getConnection();
         	
-            pst = conn.prepareStatement("select last_name from UserStats where userName=?");
+            pst = conn.prepareStatement("SELECT l_name FROM users WHERE username=?");
             pst.setString(1,uName);
             
             rs=pst.executeQuery();
@@ -160,7 +160,7 @@ public static String getEmail(String uName){
         
         try {
         	conn = BaseDao.getConnection();
-            pst = conn.prepareStatement("select email from UserStats where userName=?");
+            pst = conn.prepareStatement("SELECT email FROM users WHERE username=?");
             pst.setString(1,uName);
             
             rs=pst.executeQuery();
@@ -206,7 +206,7 @@ public static String getUserType(String uName){
     
     try {
     	conn = BaseDao.getConnection();
-        pst = conn.prepareStatement("select user_type from UserStats where userName=?");
+        pst = conn.prepareStatement("SELECT user_type FROM users WHERE username=?");
         pst.setString(1,uName);
         
         rs=pst.executeQuery();

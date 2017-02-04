@@ -18,7 +18,7 @@ public class LoginDao {
         	conn= BaseDao.getConnection();
         	
         	pst = conn
-                    .prepareStatement("select * from login where user=? and password=?");
+                    .prepareStatement("SELECT * FROM users WHERE username=? and password=?");
             pst.setString(1, name);
             pst.setString(2, pass);
 

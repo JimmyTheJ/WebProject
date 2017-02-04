@@ -20,7 +20,7 @@ public class TypingMatchDao {
 		
         try {
         	conn = BaseDao.getConnection();
-             pst = conn.prepareStatement("select column from sentence_list order by RAND() LIMIT 1");
+             pst = conn.prepareStatement("SELECT sentence FROM music_sentences ORDER BY RAND() LIMIT 1");
         rs = pst.executeQuery();
         sentence=rs.getString(1);
         

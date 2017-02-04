@@ -18,7 +18,7 @@ public static double getAvgWPM(int ID){
 
         try {
         	conn = BaseDao.getConnection();
-            pst = conn.prepareStatement("select average_words_per_min from UserStats where id=?");
+            pst = conn.prepareStatement("SELECT avg_wpm FROM user_stats WHERE user_id=?");
             pst.setInt(1,ID);
             
             rs=pst.executeQuery();
@@ -64,7 +64,7 @@ public static double getTopWPM(int ID){
     
     try {
     	conn = BaseDao.getConnection();
-        pst = conn.prepareStatement("select best_words_per_min from UserStats where id=?");
+        pst = conn.prepareStatement("SELECT max_wpm FROM user_stats WHERE user_id=?");
         pst.setInt(1,ID);
         
         rs=pst.executeQuery();
@@ -110,7 +110,7 @@ public static double getAvgAccuracy(int ID){
     
     try {
     	conn = BaseDao.getConnection();
-        pst = conn.prepareStatement("select average_accuracy from UserStats where id=?");
+        pst = conn.prepareStatement("SELECT avg_accuracy FROM user_stats WHERE user_id=?");
         pst.setInt(1,ID);
         
         rs=pst.executeQuery();
@@ -155,7 +155,7 @@ public static double getTopAccuracy(int ID){
     
     try {
     	conn = BaseDao.getConnection();
-        pst = conn.prepareStatement("select best_accuracy from UserStats where id=?");
+        pst = conn.prepareStatement("SELECT max_accuracy FROM user_stats WHERE user_id=?");
         pst.setInt(1,ID);
         
         rs=pst.executeQuery();

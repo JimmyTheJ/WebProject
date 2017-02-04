@@ -21,7 +21,7 @@ public class UserInfoServlet extends HttpServlet{
 		
 		 response.setContentType("text/html");  
 		 PrintWriter out = response.getWriter();  
-		 String uname= request.getParameter("user_name");
+		 String uname= request.getParameter("username"); //Changed this line, not sure if it's right.
 		 request.setAttribute("FirstName", UserInfoDao.getFirstName(uname));
 		 request.setAttribute("LastName", UserInfoDao.getLastName(uname));
 	}
