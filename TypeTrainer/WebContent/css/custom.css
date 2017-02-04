@@ -1,0 +1,72 @@
+.navbar-brand 
+{
+  float: none;
+}
+
+.navbar-center
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+  	height:100%;
+}
+
+body{
+	font-family: 'Roboto', sans-serif;
+}
+
+.custom_nav .navbar.navbar-fixed-top .navbar-inner{
+    background: rgba(255, 255, 255, 0.3);
+}
+
+#MainArea{
+	padding: 15px;
+	margin-top: 50px;
+	padding-top: 0px; 
+	background-color: #a6b3c6;
+	width: 60%;
+	min-height: 625px;
+	box-shadow: 5px 5px 2px #888888;
+}
+
+#TextArea{
+	margin: 25px;
+	margin-top: 20px;
+	margin-bottom: 25px; 
+	background-color: #fff;
+	width: 96%;
+	min-height: 450px;
+}
+
+#innerTextArea{
+	
+	margin-top: 5px;
+	margin-bottom: 20px;
+	background-color: #eee;
+	min-height: 400px;
+	
+}
+
+#Mainbar{
+	
+	align: center;
+	margin: 0 auto;
+}
+
+#Userinput{
+	
+	max-width: 200px;
+	
+}
+
+#TextAreaHeader{
+	
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding-bottom: 10px;
+	background-color: #7891ba;	
+	
+}

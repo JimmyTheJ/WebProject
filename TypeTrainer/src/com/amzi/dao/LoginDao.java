@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.amzi.dao.BaseDao;
 
 public class LoginDao {
     public static boolean validate(String name, String pass) {        
@@ -13,17 +14,10 @@ public class LoginDao {
         PreparedStatement pst = null;
         ResultSet rs = null;
 
-        String url = "jdbc:mysql://localhost:3306/";
-        String dbName = "form";
-        String driver = "com.mysql.jdbc.Driver";
-        String userName = "root";
-        String password = "i+g7fvJRXNesQZb^";
-        try {
-            Class.forName(driver).newInstance();
-            conn = DriverManager
-                    .getConnection(url + dbName, userName, password);
-
-            pst = conn
+        try{
+        	conn= BaseDao.getConnection();
+        	
+        	pst = conn
                     .prepareStatement("select * from login where user=? and password=?");
             pst.setString(1, name);
             pst.setString(2, pass);
