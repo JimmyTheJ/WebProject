@@ -21,29 +21,34 @@ public class TypingMatchServlet extends HttpServlet{
 		
 		 response.setContentType("text/html");  
 		 PrintWriter out = response.getWriter();  
-		String sentence= "Test Text";
-		//String sentence = TypingMatchDao.getSentence();
-		System.out.println(sentence);
-		String match = request.getParameter("match");
+		//String sentence= "Test Text";
+		 
+		String sentence =   request.getParameter("sentence1");
+		
+		System.out.println("match  "+request.getParameter("match"));
+		System.out.println(request.getParameter("sentence1"));
 		HttpSession session = request.getSession(false);
 		 if(session!=null){
 			 session.getAttribute("name");
 		 }
 		
-		if(sentence.equalsIgnoreCase(match)){ //will be updated in later version
+		if(sentence.equalsIgnoreCase(request.getParameter("match"))){ //will be updated in later version
 			  out.print("<p style=\"color:blue\">Matched</p>");  
-		    request.setAttribute(sentence, "New Sentence");
-			RequestDispatcher rd=request.getRequestDispatcher("index.html");  
+			  sentence=TypingMatchDao.getSentence();
+			  request.setAttribute("sentence", TypingMatchDao.getSentence());
+			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);
 		}
 		else{
 			 
 			 out.print("<p style=\"color:red\">Sorry incorrect</p>");  
-	            RequestDispatcher rd=request.getRequestDispatcher("index.html");  
+	            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+	            sentence=TypingMatchDao.getSentence();
+	            request.setAttribute("sentence", request.getAttribute("sentence"));
 	            rd.include(request,response); 
 		}
 		
-		//request.setAttribute(sentence, TypingMatchDao.getSentence());
+	
 		
 		out.close();
 	}

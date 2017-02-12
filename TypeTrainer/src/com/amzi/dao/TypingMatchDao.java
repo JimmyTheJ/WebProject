@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.*;
 
 public class TypingMatchDao {
 
@@ -15,19 +16,24 @@ public class TypingMatchDao {
 		Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-
+        
        
 		
         try {
         	conn = BaseDao.getConnection();
-             pst = conn.prepareStatement("SELECT sentence FROM music_sentences ORDER BY RAND() LIMIT 1");
-        rs = pst.executeQuery();
-        sentence=rs.getString(1);
+             pst = conn.prepareStatement("SELECT * FROM music_sentences ORDER BY RAND() LIMIT 1");
+        	
+        	rs = pst.executeQuery();
+        	
+        	rs.next();
+        sentence=rs.getString("sentence");
         
         } catch (Exception e) {
+        	
         	System.out.println(e);
         } finally {
          if (conn != null) {
+        	 
              try {
                  conn.close();
              } catch (SQLException e) {

@@ -1,6 +1,7 @@
 package com.amzi.servlets;
 
 import java.io.IOException;
+import com.amzi.dao.TypingMatchDao;
 import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
@@ -25,17 +26,20 @@ public class LoginServlet extends HttpServlet{
         String n=request.getParameter("username");  
         String p=request.getParameter("userpass"); 
         
-        HttpSession session = request.getSession(false);
-        if(session!=null)
-        session.setAttribute("name", n);
+        
+       
+        
 
         if(LoginDao.validate(n, p)){  
-            RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");  
+        	HttpSession session = request.getSession();
+        	session.setAttribute("name", n);
+            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
+            request.setAttribute("sentence", TypingMatchDao.getSentence());
             rd.forward(request,response);  
         }  
         else{  
             out.print("<p style=\"color:red\">Sorry username or password error</p>");  
-            RequestDispatcher rd=request.getRequestDispatcher("index.html");  
+            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);  
         }  
 

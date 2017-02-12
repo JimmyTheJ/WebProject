@@ -14,8 +14,8 @@ public class BaseDao {
 	    String dbName = "typer_db";
 	    String driver = "com.mysql.jdbc.Driver";
 	    String userName = "root";
-	    //String password = "uber-g";
-	    String password = "i+g7fvJRXNesQZb^";
+	    String password = "uber-g";
+	    //String password = "i+g7fvJRXNesQZb^";
 		
 	    try {
 	    	
