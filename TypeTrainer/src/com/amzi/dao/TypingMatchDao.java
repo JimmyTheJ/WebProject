@@ -55,7 +55,6 @@ public class TypingMatchDao {
              }
          }
      }
-        
 		return sentence;
 		
 	}
