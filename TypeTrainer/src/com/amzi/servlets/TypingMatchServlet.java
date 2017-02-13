@@ -19,23 +19,26 @@ public class TypingMatchServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException , IOException{
 		
-		 response.setContentType("text/html");  
-		 PrintWriter out = response.getWriter();  
+		response.setContentType("text/html");  
+		PrintWriter out = response.getWriter();  
 		//String sentence= "Test Text";
-		 
-		String sentence =   request.getParameter("sentence1");
+
+		HttpSession session = request.getSession(true);
+		
+		String sentence = (String) session.getAttribute("sentence");
 		
 		System.out.println("match  "+request.getParameter("match"));
-		System.out.println(request.getParameter("sentence1"));
-		HttpSession session = request.getSession(false);
+		System.out.println("Sentence: " + sentence);
+
 		 if(session!=null){
 			 session.getAttribute("name");
 		 }
 		
 		if(sentence.equalsIgnoreCase(request.getParameter("match"))){ //will be updated in later version
-			  out.print("<p style=\"color:blue\">Matched</p>");  
-			  sentence=TypingMatchDao.getSentence();
-			  request.setAttribute("sentence", TypingMatchDao.getSentence());
+			out.print("<p style=\"color:blue\">Matched</p>");  
+			sentence=TypingMatchDao.getSentence();
+			request.setAttribute("sentence", sentence);
+			session.setAttribute("sentence", sentence);
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);
 		}
@@ -44,12 +47,11 @@ public class TypingMatchServlet extends HttpServlet{
 			 out.print("<p style=\"color:red\">Sorry incorrect</p>");  
 	            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 	            sentence=TypingMatchDao.getSentence();
-	            request.setAttribute("sentence", request.getAttribute("sentence"));
+				request.setAttribute("sentence", sentence);
+				session.setAttribute("sentence", sentence);
 	            rd.include(request,response); 
 		}
-		
-	
-		
+				
 		out.close();
 	}
 	

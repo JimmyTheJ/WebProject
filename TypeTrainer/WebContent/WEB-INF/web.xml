@@ -22,4 +22,12 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+  <servlet>  
+    <servlet-name>logout</servlet-name>  
+    <servlet-class>com.amzi.servlets.LogoutServlet</servlet-class>  
+  </servlet>  
+  <servlet-mapping>  
+    <servlet-name>logout</servlet-name>  
+    <url-pattern>/logoutServlet</url-pattern>  
+  </servlet-mapping>  
 </web-app>

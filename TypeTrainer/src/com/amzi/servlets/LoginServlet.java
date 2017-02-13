@@ -26,19 +26,21 @@ public class LoginServlet extends HttpServlet{
         String n=request.getParameter("username");  
         String p=request.getParameter("userpass"); 
         
+        String sentence = TypingMatchDao.getSentence();
         
-       
-        
-
         if(LoginDao.validate(n, p)){  
         	HttpSession session = request.getSession();
         	session.setAttribute("name", n);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
-            request.setAttribute("sentence", TypingMatchDao.getSentence());
+            session.setAttribute("sentence", sentence);  	
+            session.setAttribute("loginMessage", "welcome back, " + n);          
+            request.setAttribute("sentence", sentence);
+            request.setAttribute("loginMessage", "welcome back, " + n);
+
+            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
             rd.forward(request,response);  
         }  
         else{  
-            out.print("<p style=\"color:red\">Sorry username or password error</p>");  
+            out.print("<p style=\"color:red\">Sorry username or password error</p>");
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);  
         }  
