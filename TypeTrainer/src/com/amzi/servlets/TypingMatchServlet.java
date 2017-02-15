@@ -26,6 +26,7 @@ public class TypingMatchServlet extends HttpServlet{
 		HttpSession session = request.getSession(true);
 		
 		String sentence = (String) session.getAttribute("sentence");
+		Boolean correct = null;
 		
 		System.out.println("match  "+request.getParameter("match"));
 		System.out.println("Sentence: " + sentence);
@@ -35,7 +36,8 @@ public class TypingMatchServlet extends HttpServlet{
 		 }
 		
 		if(sentence.equalsIgnoreCase(request.getParameter("match"))){ //will be updated in later version
-			out.print("<p style=\"color:blue\">Matched</p>");  
+			correct = true;
+			session.setAttribute("correct", correct);  
 			sentence=TypingMatchDao.getSentence();
 			request.setAttribute("sentence", sentence);
 			session.setAttribute("sentence", sentence);
@@ -44,7 +46,8 @@ public class TypingMatchServlet extends HttpServlet{
 		}
 		else{
 			 
-			 out.print("<p style=\"color:red\">Sorry incorrect</p>");  
+				correct = false;
+				session.setAttribute("correct", correct);
 	            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 	            sentence=TypingMatchDao.getSentence();
 				request.setAttribute("sentence", sentence);
