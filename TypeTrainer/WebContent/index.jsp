@@ -77,7 +77,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<a href="signup.html">Sign up</a>
+					<a href="signup.jsp">Sign up</a>
 				</div>
 			</div>
 

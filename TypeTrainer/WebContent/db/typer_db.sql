@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `typer_db`.`user_stats` (
   `min_accuracy` INT NULL,
   `avg_accuracy` INT NULL,
   `max_accuracy` INT NULL,
+  `num_sentences` INT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 

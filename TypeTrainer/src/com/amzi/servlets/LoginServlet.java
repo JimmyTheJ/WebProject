@@ -20,11 +20,11 @@ public class LoginServlet extends HttpServlet{
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 
-        response.setContentType("text/html");  
-        PrintWriter out = response.getWriter();  
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         
-        String n=request.getParameter("username");  
-        String p=request.getParameter("userpass"); 
+        String n=request.getParameter("username");
+        String p=request.getParameter("userpass");
         
         String sentence = TypingMatchDao.getSentence();
         
