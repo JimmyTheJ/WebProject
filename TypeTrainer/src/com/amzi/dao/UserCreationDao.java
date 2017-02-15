@@ -29,7 +29,7 @@ public class UserCreationDao {
             rs.close();
             
             if(!status){
-            	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email) VALUES (? ,? ,?, ?, ?)");
+            	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email, user_type) VALUES (? ,? ,?, ?, ?, 'user')");
             	pst.setString(1, username);
             	pst.setString(2, password);
             	pst.setString(3, fName);
