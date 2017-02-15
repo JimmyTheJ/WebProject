@@ -20,20 +20,27 @@ public class LoginServlet extends HttpServlet{
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 
-        response.setContentType("text/html");  
-        PrintWriter out = response.getWriter();  
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         
-        String n=request.getParameter("username");  
-        String p=request.getParameter("userpass"); 
+        String n=request.getParameter("username");
+        String p=request.getParameter("userpass");
         
         String sentence = TypingMatchDao.getSentence();
         
         if(LoginDao.validate(n, p)){  
         	HttpSession session = request.getSession();
         	session.setAttribute("name", n);
+
+            session.setAttribute("sentence", sentence);
+            session.setAttribute("LastMatch", 100); 
+            session.setAttribute("loginMessage", "welcome back, " + n);          
+            request.setAttribute("LastMatch", 100);
+
             session.setAttribute("sentence", sentence);  	
             session.setAttribute("loginMessage", "welcome back, " + n);          
             request.setAttribute("sentence", sentence);
+
             request.setAttribute("loginMessage", "welcome back, " + n);
 
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
