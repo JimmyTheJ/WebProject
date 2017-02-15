@@ -61,6 +61,7 @@
 				<table>
 					<tr>
 						<td><h3>WPM: 00</h3></td>
+
 						<td style="padding-left: 50px; padding-right: 50px"><h3>Accuracy: 100%</h3></td>
 						<td><h3>Correctly Typed: 
 						
@@ -81,6 +82,9 @@
 						%>
 						
 						</h3></td>		
+
+						<td id="LastMatch" style="padding-left: 50px"><h3>Accuracy: <%=request.getAttribute("LastMatch")%>%</h3></td>
+
 					</tr>
 				</table>
 			</div>
@@ -128,7 +132,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<a href="signup.html">Sign up</a>
+					<a href="signup.jsp">Sign up</a>
 				</div>
 			</div>
 
