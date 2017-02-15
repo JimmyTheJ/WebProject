@@ -15,8 +15,9 @@ public class BaseDao {
 	    String driver = "com.mysql.jdbc.Driver";
 	    String userName = "root";
 	    //String password = "uber-g";
-	    String password = "i+g7fvJRXNesQZb^";
-		
+	    //String password = "spicymemes";
+		String password = "i+g7fvJRXNesQZb^";
+	    
 	    try {
 	    	
 	    	 Class.forName(driver).newInstance();

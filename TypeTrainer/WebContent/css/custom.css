@@ -33,12 +33,13 @@ body{
 }
 
 #TextArea{
-	margin: 25px;
 	margin-top: 20px;
 	margin-bottom: 25px; 
 	background-color: #fff;
 	width: 96%;
 	min-height: 450px;
+	align: center;
+	margin: 25 auto;
 }
 
 #innerTextArea{
@@ -53,7 +54,7 @@ body{
 #Mainbar{
 	
 	align: center;
-	margin: 0 auto;
+	margin: 25px auto;
 }
 
 #Userinput{

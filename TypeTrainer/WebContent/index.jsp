@@ -16,30 +16,75 @@
     
   </head>
   <body>
-	
-	<div class="container-fluid" id="MainArea">
-		<div class="container-fluid" id="Mainbar">
+ 	
+	<div class="container-fluid" id="Mainbar">
 			<nav class="navbar navbar-fixed-top"  Style="margin: 0 auto; max-width: 70%">
 				<div class="container-fluid">
 					<div class="navbar-header" Style="padding-left: 10px">
 						<a href="index.jsp"><img src="assets/tt.png" Height="48px" Width="48px" Style="margin-top: 10px; margin-botton: 2px"></img></a>
 					</div>
 					<ul class="nav navbar-nav navbar-right" style="margin: 10px">
-						<li><%=session.getAttribute("loginMessage")%></li>
-						<li><button type="button" data-toggle="modal" data-target="#loginModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
-						<li><a href="logoutServlet">logout</a></li>
-					</ul>
+					<li>
+					<%
 					
+						String user = (String)session.getAttribute("name");
+					
+						if(user != null){
+							out.print(
+									
+									"<table>" +
+										"<tr>" +
+											"<td>" +
+												"<p Style='margin-bottom: 0px; margin-top: 5px'>" + session.getAttribute("loginMessage") + "</p>" +
+											"</td>" +
+										"</tr>" +
+										"<tr>" +
+											"<td>" +
+												"<a Style='padding: 2px; margin-left: 100px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+											"</td>" +
+										"</tr>" +
+									"</table>");
+						}
+	
+					%>
+					</li>
+						<li><button type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
+					</ul>
 				</div>
 			</nav>
 		</div>
+
+	<div class="container-fluid" id="MainArea">
 		<form action="TypingMatchServlet" method = "post"> 
 		<div class="container-fluid" id="TextArea">
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
 					<tr>
 						<td><h3>WPM: 00</h3></td>
+
+						<td style="padding-left: 50px; padding-right: 50px"><h3>Accuracy: 100%</h3></td>
+						<td><h3>Correctly Typed: 
+						
+						<% 
+						
+							Boolean correct = (Boolean)session.getAttribute("correct");
+							
+							if(correct == null){
+								out.print("");
+							}
+							else if(correct){
+								out.print("YES!");
+							}
+							else{
+								out.print("NOPE!");
+							}
+						
+						%>
+						
+						</h3></td>		
+
 						<td id="LastMatch" style="padding-left: 50px"><h3>Accuracy: <%=request.getAttribute("LastMatch")%>%</h3></td>
+
 					</tr>
 				</table>
 			</div>
@@ -56,14 +101,24 @@
 		</form>
 	</div>
 
-	<div id="loginModal" class="modal fade" role="dialog">
+	<div id="userModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h2 class="modal-title">Login</h2>
+					<%
+					
+						if((String)session.getAttribute("name") != null){
+							out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
+						}
+						else{
+							out.print("<h2 class='modal-title'>Login</h2>");
+						}
+					
+					%>
+					
 				</div>
 				<div class="modal-body">
 					<form action="loginServlet" method="post">
@@ -73,7 +128,7 @@
 						<div class="form-group">
 							<label for="password">Password: </label> <input type="password" name="userpass" required="required" />
 						</div>
-						<td><input type="submit" value="Login" /></td>
+						<input type="submit" value="Login" />
 					</form>
 				</div>
 				<div class="modal-footer">
