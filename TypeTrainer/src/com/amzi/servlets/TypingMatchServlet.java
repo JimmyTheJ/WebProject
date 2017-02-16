@@ -39,6 +39,7 @@ public class TypingMatchServlet extends HttpServlet{
 			
 			request.setAttribute("LastMatch", accuracy);
 			session.setAttribute("LastMatch", accuracy);
+			
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);
           

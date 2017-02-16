@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="java.lang.String"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -97,18 +98,13 @@
 				</table>
 			</div>
 			<div id="innerTextArea" class="container-fluid">
-				<%
-					String sentence = (String)session.getAttribute("sentence");
-					//int sentenceLength = sentence.length();
-					int sentenceLength = 2;
-					//session.setAttribute("currSentence", (String)request.getAttribute("sentence"));
-					//out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + sentence + "</p>");
+					<%
+					String sentence = (String)request.getAttribute("sentence");
+					int stringLength = getStringLength(sentence);
+					
 					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>");
-					out.print(sentence.charAt(0));
-					for (int i = 0; i < sentenceLength; i++) {
-						//out.print(sentence.charAt(i));
-						//out.print("<span id=letter" + i + ">" + sentence.charAt(i) + "</span>");
-						//out.print(i);
+					for (int i = 0; i < stringLength; i++) {
+						out.print("<span id='letter" + i + "'>" + getCharacterFromString(sentence, i) + "</span>");
 					}
 					out.print("</p>");
 				%>
@@ -131,12 +127,17 @@
 							console.log(currSentence.charAt(pos));
 							if(charStr == currSentence.charAt(pos)){
 								console.log("Correct");
-								document.getElementById("innerTextArea").style.backgroundColor = "#66ef82";
-								pos++;}
-							else{
+								//document.getElementById("innerTextArea").style.backgroundColor = "#66ef82";
+								document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
+								pos++;
+							}
+							else {
 								console.log("false" + pos);
-								document.getElementById("innerTextArea").style.backgroundColor = "#ef6767";
-								pos++;}}
+								//document.getElementById("innerTextArea").style.backgroundColor = "#ef6767";
+								document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
+								pos++;
+							}
+						}
 					};
 					
 					function bkspce(evt) {
@@ -164,7 +165,6 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<%
-					
 						if((String)session.getAttribute("name") != null){
 							out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
 						}
@@ -202,3 +202,21 @@
  
   </body>
 </html>
+
+<%!
+	private int getStringLength (String s) {
+		if (s != null)
+			return s.length();
+		else
+			return 0;
+	}
+
+	private char getCharacterFromString (String s, int position) {
+		if (s != null) {
+			return s.charAt(position);
+		}
+		else {
+			return ' ';
+		}
+	}
+%>
