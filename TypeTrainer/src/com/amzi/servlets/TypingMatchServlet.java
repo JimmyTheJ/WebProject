@@ -32,15 +32,14 @@ public class TypingMatchServlet extends HttpServlet{
 			 session.getAttribute("name");
 		 }
 		
-		 accuracy=matching(sentence,request.getParameter("match"));
-			
-		 out.print("<p style=\"color:blue\">Matched "+accuracy+"</p>");  
+		 accuracy=matching(sentence,request.getParameter("match")); 
 			sentence=TypingMatchDao.getSentence();
 			request.setAttribute("sentence", sentence);
 			session.setAttribute("sentence", sentence);
 			
 			request.setAttribute("LastMatch", accuracy);
 			session.setAttribute("LastMatch", accuracy);
+			
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);
           

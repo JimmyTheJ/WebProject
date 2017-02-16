@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="java.lang.String"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +14,14 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    
+    <script>
+    	var currSentence = "<%= session.getAttribute("sentence")%>"
+    	var sentenceArray = [];
+    	for (i = 0; i < currSentence.length; i++) {
+    		sentenceArray[i] = currSentence.charAt(i);
+    	}
+    </script>
     
   </head>
   <body>
@@ -35,12 +44,12 @@
 									"<table>" +
 										"<tr>" +
 											"<td>" +
-												"<p Style='margin-bottom: 0px; margin-top: 5px'>" + session.getAttribute("loginMessage") + "</p>" +
+												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
 											"</td>" +
 										"</tr>" +
 										"<tr>" +
 											"<td>" +
-												"<a Style='padding: 2px; margin-left: 100px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+												"<a Style='padding: 2px; margin-left: 112px; margin-top: 0px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
 											"</td>" +
 										"</tr>" +
 									"</table>");
@@ -89,15 +98,64 @@
 				</table>
 			</div>
 			<div id="innerTextArea" class="container-fluid">
-				<p align="center" id="sentence1" Style="font-size: 200%; margin-top: 150px"><%=request.getAttribute("sentence")%></p>
+					<%
+					String sentence = (String)request.getAttribute("sentence");
+					int stringLength = getStringLength(sentence);
+					
+					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>");
+					for (int i = 0; i < stringLength; i++) {
+						out.print("<span id='letter" + i + "'>" + getCharacterFromString(sentence, i) + "</span>");
+					}
+					out.print("</p>");
+				%>
+
 				
 			</div>
 		</div>
 		<div Style="width: 100%">
-			
-				<input class="form-control input-lg" id="inputlg" name="match" type="text"  Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here..." >
-			
-		</div>
+				
+				<script>
+				
+					var pos = 0;
+				
+					function keys(evt) {
+						evt = evt || window.event;
+						var charCode = evt.keyCode || evt.which;
+						var charStr = String.fromCharCode(charCode);
+						if(pos < currSentence.length){
+							console.log(charStr);
+							console.log(currSentence.charAt(pos));
+							if(charStr == currSentence.charAt(pos)){
+								console.log("Correct");
+								//document.getElementById("innerTextArea").style.backgroundColor = "#66ef82";
+								document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
+								pos++;
+							}
+							else {
+								console.log("false" + pos);
+								//document.getElementById("innerTextArea").style.backgroundColor = "#ef6767";
+								document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
+								pos++;
+							}
+						}
+					};
+					
+					function bkspce(evt) {
+						evt = evt || window.event;
+						var charCode = evt.keyCode || evt.which;
+						
+						if(charCode == 8 || charCode == 46){
+							pos--;
+							document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
+
+						}
+					}
+					
+				</script>
+				
+				<input class="form-control input-lg" id="text_area" onkeypress="return keys(event)" onkeydown="return bkspce(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
+
+			</div>
 		</form>
 	</div>
 
@@ -109,7 +167,6 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<%
-					
 						if((String)session.getAttribute("name") != null){
 							out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
 						}
@@ -147,3 +204,21 @@
  
   </body>
 </html>
+
+<%!
+	private int getStringLength (String s) {
+		if (s != null)
+			return s.length();
+		else
+			return 0;
+	}
+
+	private char getCharacterFromString (String s, int position) {
+		if (s != null) {
+			return s.charAt(position);
+		}
+		else {
+			return ' ';
+		}
+	}
+%>
