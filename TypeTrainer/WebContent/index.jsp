@@ -60,9 +60,6 @@
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
 					<tr>
-						<td><h3>WPM: 00</h3></td>
-
-						<td style="padding-left: 50px; padding-right: 50px"><h3>Accuracy: 100%</h3></td>
 						<td><h3>Correctly Typed: 
 						
 						<% 
