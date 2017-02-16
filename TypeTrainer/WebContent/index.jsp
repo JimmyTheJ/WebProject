@@ -100,19 +100,50 @@
 		<div Style="width: 100%">
 				
 				<script>
+				
+					var pos = 0;
+					var currSentence = "<%= session.getAttribute("sentence")%>"
+				
 					function keys(evt) {
-						//evt.preventDefault();
 						evt = evt || window.event;
 						var charCode = evt.keyCode || evt.which;
-						var charStr = String.fromCharCode(charCode);
-						var currSentence = '<%= session.getAttribute("sentence")%>'
 						
-						alert(currSentence);
+						if(charCode == 8 || charCode == 46){
+							alert("in");
+						}
+						
+						var charStr = String.fromCharCode(charCode);
+
+						if(pos < currSentence.length){
+							
+							console.log(charStr);
+							console.log(currSentence.charAt(pos));
+							
+							if(charStr == currSentence.charAt(pos)){
+								console.log("Correct");
+								pos++;
+							}
+							else{
+								console.log("false" + pos);
+								pos++;
+							}
+							
+						}
 						
 					};
+					
+					function bkspce(evt) {
+						evt = evt || window.event;
+						var charCode = evt.keyCode || evt.which;
+						
+						if(charCode == 8 || charCode == 46){
+							pos--;
+						}
+					}
+					
 				</script>
 				
-				<input class="form-control input-lg" id="text_area" onkeypress="keys(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
+				<input class="form-control input-lg" id="text_area" onkeypress="return keys(event)" onkeydown="return bkspce(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
 
 			</div>
 		</form>
