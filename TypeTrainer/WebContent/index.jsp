@@ -35,12 +35,12 @@
 									"<table>" +
 										"<tr>" +
 											"<td>" +
-												"<p Style='margin-bottom: 0px; margin-top: 5px'>" + session.getAttribute("loginMessage") + "</p>" +
+												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
 											"</td>" +
 										"</tr>" +
 										"<tr>" +
 											"<td>" +
-												"<a Style='padding: 2px; margin-left: 100px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+												"<a Style='padding: 2px; margin-left: 112px; margin-top: 0px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
 											"</td>" +
 										"</tr>" +
 									"</table>");
@@ -107,29 +107,16 @@
 					function keys(evt) {
 						evt = evt || window.event;
 						var charCode = evt.keyCode || evt.which;
-						
-						if(charCode == 8 || charCode == 46){
-							alert("in");
-						}
-						
 						var charStr = String.fromCharCode(charCode);
-
 						if(pos < currSentence.length){
-							
 							console.log(charStr);
 							console.log(currSentence.charAt(pos));
-							
 							if(charStr == currSentence.charAt(pos)){
 								console.log("Correct");
-								pos++;
-							}
+								pos++;}
 							else{
 								console.log("false" + pos);
-								pos++;
-							}
-							
-						}
-						
+								pos++;}}
 					};
 					
 					function bkspce(evt) {
