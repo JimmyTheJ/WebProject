@@ -99,7 +99,7 @@
 			<div id="innerTextArea" class="container-fluid">
 				<%
 					String sentence = (String)session.getAttribute("sentence");
-//					int sentenceLength = sentence.length();
+					//int sentenceLength = sentence.length();
 					int sentenceLength = 2;
 					//session.setAttribute("currSentence", (String)request.getAttribute("sentence"));
 					//out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + sentence + "</p>");
