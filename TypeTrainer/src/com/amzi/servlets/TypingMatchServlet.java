@@ -35,9 +35,13 @@ public class TypingMatchServlet extends HttpServlet{
 			 session.getAttribute("name");
 		 }
 		
+<<<<<<< HEAD
 		if(sentence.equalsIgnoreCase(request.getParameter("match"))){ //will be updated in later version
 			correct = true;
 			session.setAttribute("correct", correct);  
+=======
+		 accuracy=matching(sentence,request.getParameter("match")); 
+>>>>>>> fd6c64f728525b436589bed526b90996575fb88c
 			sentence=TypingMatchDao.getSentence();
 			request.setAttribute("sentence", sentence);
 			session.setAttribute("sentence", sentence);
