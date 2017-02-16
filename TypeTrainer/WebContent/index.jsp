@@ -146,6 +146,8 @@
 						
 						if(charCode == 8 || charCode == 46){
 							pos--;
+							document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
+
 						}
 					}
 					
