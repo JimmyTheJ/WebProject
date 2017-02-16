@@ -89,15 +89,32 @@
 				</table>
 			</div>
 			<div id="innerTextArea" class="container-fluid">
-				<p align="center" id="sentence1" Style="font-size: 200%; margin-top: 150px"><%=request.getAttribute("sentence")%></p>
+				<%
 				
+					//session.setAttribute("currSentence", (String)request.getAttribute("sentence"));
+					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + session.getAttribute("sentence") + "</p>");
+				
+				%>
 			</div>
 		</div>
 		<div Style="width: 100%">
-			
-				<input class="form-control input-lg" id="inputlg" name="match" type="text"  Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here..." >
-			
-		</div>
+				
+				<script>
+					function keys(evt) {
+						//evt.preventDefault();
+						evt = evt || window.event;
+						var charCode = evt.keyCode || evt.which;
+						var charStr = String.fromCharCode(charCode);
+						var currSentence = '<%= session.getAttribute("sentence")%>'
+						
+						alert(currSentence);
+						
+					};
+				</script>
+				
+				<input class="form-control input-lg" id="text_area" onkeypress="keys(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
+
+			</div>
 		</form>
 	</div>
 
