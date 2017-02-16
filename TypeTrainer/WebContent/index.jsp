@@ -14,6 +14,14 @@
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     
+    <script>
+    	var currSentence = "<%= session.getAttribute("sentence")%>"
+    	var sentenceArray = [];
+    	for (i = 0; i < currSentence.length; i++) {
+    		sentenceArray[i] = currSentence.charAt(i);
+    	}
+    </script>
+    
   </head>
   <body>
  	
@@ -35,12 +43,12 @@
 									"<table>" +
 										"<tr>" +
 											"<td>" +
-												"<p Style='margin-bottom: 0px; margin-top: 5px'>" + session.getAttribute("loginMessage") + "</p>" +
+												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
 											"</td>" +
 										"</tr>" +
 										"<tr>" +
 											"<td>" +
-												"<a Style='padding: 2px; margin-left: 100px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+												"<a Style='padding: 2px; margin-left: 112px; margin-top: 0px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
 											"</td>" +
 										"</tr>" +
 									"</table>");
@@ -60,6 +68,9 @@
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
 					<tr>
+						<td><h3>WPM: 00</h3></td>
+
+						<td style="padding-left: 50px; padding-right: 50px"><h3>Accuracy: 100%</h3></td>
 						<td><h3>Correctly Typed: 
 						
 						<% 
@@ -87,29 +98,59 @@
 			</div>
 			<div id="innerTextArea" class="container-fluid">
 				<%
-				
+					String sentence = (String)session.getAttribute("sentence");
+//					int sentenceLength = sentence.length();
+					int sentenceLength = 2;
 					//session.setAttribute("currSentence", (String)request.getAttribute("sentence"));
-					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + session.getAttribute("sentence") + "</p>");
-				
+					//out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + sentence + "</p>");
+					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>");
+					out.print(sentence.charAt(0));
+					for (int i = 0; i < sentenceLength; i++) {
+						//out.print(sentence.charAt(i));
+						//out.print("<span id=letter" + i + ">" + sentence.charAt(i) + "</span>");
+						//out.print(i);
+					}
+					out.print("</p>");
 				%>
+
+				
 			</div>
 		</div>
 		<div Style="width: 100%">
 				
 				<script>
+				
+					var pos = 0;
+				
 					function keys(evt) {
-						//evt.preventDefault();
 						evt = evt || window.event;
 						var charCode = evt.keyCode || evt.which;
 						var charStr = String.fromCharCode(charCode);
-						var currSentence = '<%= session.getAttribute("sentence")%>'
-						
-						alert(currSentence);
-						
+						if(pos < currSentence.length){
+							console.log(charStr);
+							console.log(currSentence.charAt(pos));
+							if(charStr == currSentence.charAt(pos)){
+								console.log("Correct");
+								document.getElementById("innerTextArea").style.backgroundColor = "#66ef82";
+								pos++;}
+							else{
+								console.log("false" + pos);
+								document.getElementById("innerTextArea").style.backgroundColor = "#ef6767";
+								pos++;}}
 					};
+					
+					function bkspce(evt) {
+						evt = evt || window.event;
+						var charCode = evt.keyCode || evt.which;
+						
+						if(charCode == 8 || charCode == 46){
+							pos--;
+						}
+					}
+					
 				</script>
 				
-				<input class="form-control input-lg" id="text_area" onkeypress="keys(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
+				<input class="form-control input-lg" id="text_area" onkeypress="return keys(event)" onkeydown="return bkspce(event)" name="match" type="text" Style="max-width: 500px; margin: 0 auto;" placeholder="Enter Text Here...">
 
 			</div>
 		</form>

@@ -21,44 +21,46 @@ public class TypingMatchServlet extends HttpServlet{
 		
 		response.setContentType("text/html");  
 		PrintWriter out = response.getWriter();  
-		//String sentence= "Test Text";
-
+		int accuracy=0;
 		HttpSession session = request.getSession(true);
 		
 		String sentence = (String) session.getAttribute("sentence");
-		Boolean correct = null;
 		
-		System.out.println("match  "+request.getParameter("match"));
-		System.out.println("Sentence: " + sentence);
+		
 
 		 if(session!=null){
 			 session.getAttribute("name");
 		 }
 		
-<<<<<<< HEAD
-		if(sentence.equalsIgnoreCase(request.getParameter("match"))){ //will be updated in later version
-			correct = true;
-			session.setAttribute("correct", correct);  
-=======
 		 accuracy=matching(sentence,request.getParameter("match")); 
->>>>>>> fd6c64f728525b436589bed526b90996575fb88c
 			sentence=TypingMatchDao.getSentence();
 			request.setAttribute("sentence", sentence);
 			session.setAttribute("sentence", sentence);
+			
+			request.setAttribute("LastMatch", accuracy);
+			session.setAttribute("LastMatch", accuracy);
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);
-		}
-		else{
-				correct = false;
-				session.setAttribute("correct", correct);
-	            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
-	            sentence=TypingMatchDao.getSentence();
-				request.setAttribute("sentence", sentence);
-				session.setAttribute("sentence", sentence);
-	            rd.include(request,response); 
-		}
-				
+          
 		out.close();
 	}
 	
+	//returns a percent matching char of the 2 sentences
+	int matching(String sen, String mat){
+		
+		int perMatch=0;
+		int count=0;
+		
+		for(int x=0;x< sen.length() && x<mat.length();++x){
+			//if(sen.charAt(x)!=' ')//will fix later version for whitespace
+			if(sen.charAt(x)==mat.charAt(x)){
+				count++;
+			}
+		}
+		perMatch=(int)((100.00*count)/sen.length());
+
+		
+		return perMatch;
+		
+	}
 }
