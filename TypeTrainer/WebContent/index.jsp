@@ -113,9 +113,11 @@
 							console.log(currSentence.charAt(pos));
 							if(charStr == currSentence.charAt(pos)){
 								console.log("Correct");
+								document.getElementById("innerTextArea").style.backgroundColor = "#66ef82";
 								pos++;}
 							else{
 								console.log("false" + pos);
+								document.getElementById("innerTextArea").style.backgroundColor = "#ef6767";
 								pos++;}}
 					};
 					
