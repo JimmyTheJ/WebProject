@@ -20,7 +20,7 @@ public class TypingMatchServlet extends HttpServlet{
 	throws ServletException , IOException{
 		
 		response.setContentType("text/html");  
-		PrintWriter out = response.getWriter();  
+		PrintWriter out = response.getWriter();
 		int accuracy=0;
 		HttpSession session = request.getSession(true);
 		
@@ -39,7 +39,8 @@ public class TypingMatchServlet extends HttpServlet{
 			
 			request.setAttribute("LastMatch", accuracy);
 			session.setAttribute("LastMatch", accuracy);
-			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
+			
+			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
             rd.include(request,response);
           
 		out.close();
@@ -47,6 +48,12 @@ public class TypingMatchServlet extends HttpServlet{
 	
 	//returns a percent matching char of the 2 sentences
 	int matching(String sen, String mat){
+		
+		if (sen == null)
+			return 0;
+		
+		if (sen.length() == 0)
+			return 0;
 		
 		int perMatch=0;
 		int count=0;

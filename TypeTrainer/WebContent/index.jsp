@@ -1,5 +1,9 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="./javascript.js"></script>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="java.lang.String"%>
+<%@page import="com.amzi.dao.TypingMatchDao"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,9 +18,11 @@
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     
+    <% String sentence = TypingMatchDao.getSentence(); %>
+
+    
   </head>
   <body>
- 	
 	<div class="container-fluid" id="Mainbar">
 			<nav class="navbar navbar-fixed-top"  Style="margin: 0 auto; max-width: 70%">
 				<div class="container-fluid">
@@ -66,7 +72,6 @@
 						<td><h3>Correctly Typed: 
 						
 						<% 
-						
 							Boolean correct = (Boolean)session.getAttribute("correct");
 							
 							if(correct == null){
@@ -78,7 +83,6 @@
 							else{
 								out.print("NOPE!");
 							}
-						
 						%>
 						
 						</h3></td>		
@@ -88,16 +92,55 @@
 					</tr>
 				</table>
 			</div>
-			<div id="innerTextArea" class="container-fluid">
+			<div id="innerTextArea" class="container-fluid">​
 				<%
-				
-					//session.setAttribute("currSentence", (String)request.getAttribute("sentence"));
-					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>" + session.getAttribute("sentence") + "</p>");
-				
+					int stringLength = getStringLength(sentence);
+					
+					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>");
+					for (int i = 0; i < stringLength; i++) {
+						out.print("<span id='letter" + i + "'>" + getCharacterFromString(sentence, i) + "</span>");
+					}
+					out.print("</p>");
 				%>
 			</div>
 		</div>
 		<div Style="width: 100%">
+		<script>
+	    	var pos = 0;
+	  		var currSentence = "<%= sentence %>";
+	    	var sentenceArray = [];
+	    	
+	    	for (i = 0; i < currSentence.length; i++) {
+	    		sentenceArray[i] = currSentence.charAt(i);
+	    	}
+	    	
+			$(document).on('keypress', function(evt){
+				evt = evt || window.event;
+		    	var charCode = evt.keyCode || evt.which;
+		    	var charStr = String.fromCharCode(charCode);
+		    	
+				if(pos < currSentence.length){
+					console.log(charStr);
+					console.log(currSentence.charAt(pos));
+					if(charStr == currSentence.charAt(pos)){
+						console.log("Correct");
+						document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
+						pos++;
+					}
+					else {
+						console.log("false" + pos);
+						document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
+						pos++;
+					}
+				}
+				else {
+					location.reload();
+				}
+			});
+			
+			$(document).on('keydown', function(evt){
+				evt = evt || window.event;
+				var charCode = evt.keyCode || evt.which;
 				
 				<script>
 				
@@ -146,7 +189,6 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<%
-					
 						if((String)session.getAttribute("name") != null){
 							out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
 						}
@@ -184,3 +226,21 @@
  
   </body>
 </html>
+
+<%!
+	private int getStringLength (String s) {
+		if (s != null)
+			return s.length();
+		else
+			return 0;
+	}
+
+	private char getCharacterFromString (String s, int position) {
+		if (s != null) {
+			return s.charAt(position);
+		}
+		else {
+			return ' ';
+		}
+	}
+%>

@@ -35,21 +35,19 @@ public class LoginServlet extends HttpServlet{
             session.setAttribute("sentence", sentence);
             session.setAttribute("LastMatch", 100); 
             session.setAttribute("loginMessage", "welcome back, " + n);          
-            request.setAttribute("LastMatch", 100);
-
-            session.setAttribute("sentence", sentence);  	
-            session.setAttribute("loginMessage", "welcome back, " + n);          
             request.setAttribute("sentence", sentence);
-
+            request.setAttribute("LastMatch", 100);
             request.setAttribute("loginMessage", "welcome back, " + n);
+            
+            //session.setAttribute("sentence", sentence);  	
+            //session.setAttribute("loginMessage", "welcome back, " + n);          
+            
 
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
             rd.forward(request,response);  
         }  
-        else{
-        	HttpSession session = request.getSession();
-        	
-        	session.setAttribute("loginError", true);
+        else{  
+            out.print("<p style=\"color:red\">Sorry username or password error</p>");
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);  
         }  
