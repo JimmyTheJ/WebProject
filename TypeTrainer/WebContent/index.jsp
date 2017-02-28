@@ -109,39 +109,29 @@
 					userSentence = userSentence + charStr;
 					compareSentence = compareSentence + sentenceArray[pos];
 					
+					//Change background colour to green for correct letter, red if incorrect
 					if(charStr == currSentence.charAt(pos)){
-						//check accuracy						
-						for(x = 0; x < compareSentence.length; x++){
-							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
-								count++;
-							}
-						}
-						perMatch=((100.00*count)/compareSentence.length);
-
-						//display accuracy
-						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
-						
 						document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
 						pos++;
 					}
 					else {
-						//check accuracy						
-						for(x = 0; x < compareSentence.length; x++){
-							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
-								count++;
-							}
-						}
-						perMatch=((100.00*count)/compareSentence.length);
-						
-						//display accuracy
-						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
-						
 						document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
 						pos++;
 					}
+					
+					//check accuracy						
+					for(x = 0; x < compareSentence.length; x++){
+						if(compareSentence.charAt(x) == userSentence.charAt(x)) {
+							count++;
+						}
+					}
+					perMatch=((100.00*count)/compareSentence.length);
+					
+					//display accuracy
+					Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
 				}
 				else {
-					location.reload();
+					location.reload();	// Reload the page with a new sentence upon completion of the first one.
 				}
 			});
 			
