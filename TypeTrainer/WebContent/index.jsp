@@ -66,33 +66,12 @@
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
 					<tr>
-						<td><h3>WPM: 00</h3></td>
-
-						<td style="padding-left: 50px; padding-right: 50px"><h3>Accuracy: 100%</h3></td>
-						<td><h3>Correctly Typed: 
-						
-						<% 
-							Boolean correct = (Boolean)session.getAttribute("correct");
-							
-							if(correct == null){
-								out.print("");
-							}
-							else if(correct){
-								out.print("YES!");
-							}
-							else{
-								out.print("NOPE!");
-							}
-						%>
-						
-						</h3></td>		
-
-						<td id="LastMatch" style="padding-left: 50px"><h3>Accuracy: <%=request.getAttribute("LastMatch")%>%</h3></td>
-
+						<td id="WPM" style="padding-left: 25px"><h3>WPM: 00</h3></td>
+						<td id="Accuracy" style="padding-left: 500px"><h3>Accuracy: --</h3></td>
 					</tr>
 				</table>
 			</div>
-			<div id="innerTextArea" class="container-fluid">​
+			<div id="innerTextArea" class="container-fluid">
 				<%
 					int stringLength = getStringLength(sentence);
 					
@@ -109,6 +88,8 @@
 	    	var pos = 0;
 	  		var currSentence = "<%= sentence %>";
 	    	var sentenceArray = [];
+	    	var userSentence = "";
+	    	var compareSentence = "";
 	    	
 	    	for (i = 0; i < currSentence.length; i++) {
 	    		sentenceArray[i] = currSentence.charAt(i);
@@ -118,17 +99,43 @@
 				evt = evt || window.event;
 		    	var charCode = evt.keyCode || evt.which;
 		    	var charStr = String.fromCharCode(charCode);
-		    	
-				if(pos < currSentence.length){
+				var perMatch = 0;
+				var count = 0;
+				
+				if(pos < currSentence.length-1) {
 					console.log(charStr);
 					console.log(currSentence.charAt(pos));
+					
+					userSentence = userSentence + charStr;
+					compareSentence = compareSentence + sentenceArray[pos];
+					
 					if(charStr == currSentence.charAt(pos)){
-						console.log("Correct");
+						//check accuracy						
+						for(x = 0; x < compareSentence.length; x++){
+							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
+								count++;
+							}
+						}
+						perMatch=((100.00*count)/compareSentence.length);
+
+						//display accuracy
+						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
+						
 						document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
 						pos++;
 					}
 					else {
-						console.log("false" + pos);
+						//check accuracy						
+						for(x = 0; x < compareSentence.length; x++){
+							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
+								count++;
+							}
+						}
+						perMatch=((100.00*count)/compareSentence.length);
+						
+						//display accuracy
+						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
+						
 						document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
 						pos++;
 					}
@@ -142,9 +149,14 @@
 				evt = evt || window.event;
 				var charCode = evt.keyCode || evt.which;
 				
-				if(charCode == 8 || charCode == 46){
-					pos--;
-					document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
+				if (pos > 0) {
+					if(charCode == 8 || charCode == 46){
+						pos--;
+						document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
+						
+						userSentence = userSentence.substring(0, userSentence.length()-1);
+						compareSentence = compareSentence.substring(0, compareSentence.length()-1);
+					}
 				}
 			});
 			</script>
@@ -206,7 +218,6 @@
 		else
 			return 0;
 	}
-
 	private char getCharacterFromString (String s, int position) {
 		if (s != null) {
 			return s.charAt(position);
