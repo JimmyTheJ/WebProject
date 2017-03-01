@@ -54,7 +54,7 @@ body{
 #Mainbar{
 	
 	align: center;
-	margin: 50px auto;
+	margin: 25px auto;
 }
 
 #Userinput{
@@ -70,4 +70,9 @@ body{
 	padding-bottom: 10px;
 	background-color: #7891ba;	
 	
+}
+
+#signupcell{
+	
+	padding: 10px;
 }

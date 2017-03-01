@@ -33,15 +33,13 @@ public class UserCreationServlet extends HttpServlet{
         
         boolean isCreated = UserCreationDao.addUser(u_name, pw, f_name, l_name, email);
         
+        HttpSession session = request.getSession();
+        
         if (isCreated) {
-		 out.print("<p style=\"color:blue\">Created "+"</p>");  
-		 RequestDispatcher rd=request.getRequestDispatcher("signup.jsp");  
-         rd.include(request,response);
+		 session.setAttribute("isCreated", new Boolean(true));
         }
-        else {
-   		 out.print("<p style=\"color:red\">Failed to create. Username taken. "+"</p>");        
-		 RequestDispatcher rd=request.getRequestDispatcher("signup.jsp");  
-         rd.include(request,response);
+        else {      
+   		 session .setAttribute("isCreated", new Boolean(false));
         }
         out.close();
     }  
