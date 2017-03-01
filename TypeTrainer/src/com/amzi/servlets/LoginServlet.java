@@ -28,7 +28,8 @@ public class LoginServlet extends HttpServlet{
         
         String sentence = TypingMatchDao.getSentence();
         
-        if(LoginDao.validate(n, p)){  
+        if(LoginDao.validate(n, p)){
+        	
         	HttpSession session = request.getSession();
         	session.setAttribute("name", n);
 
@@ -42,12 +43,19 @@ public class LoginServlet extends HttpServlet{
             //session.setAttribute("sentence", sentence);  	
             //session.setAttribute("loginMessage", "welcome back, " + n);          
             
+            session.setAttribute("validLogin", new Boolean(true));
+            
 
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
             rd.forward(request,response);  
         }  
         else{  
-            out.print("<p style=\"color:red\">Sorry username or password error</p>");
+        	
+        	HttpSession session = request.getSession();
+        	
+        	session.setAttribute("validLogin", new Boolean(false));
+        	session.setAttribute("name", n);
+        	
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
             rd.include(request,response);  
         }  

@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class BaseDao {
 
-	
 	public static Connection getConnection(){
 		
 		Connection conn = null;

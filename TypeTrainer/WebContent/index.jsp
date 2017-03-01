@@ -33,9 +33,11 @@
 					<li>
 					<%
 					
-						String user = (String)session.getAttribute("name");
+						//String user = (String)session.getAttribute("name");
+						Boolean validLogin = (Boolean)session.getAttribute("validLogin");
 					
-						if(user != null){
+						if(validLogin != null) {
+							if(validLogin) {
 							out.print(
 									
 									"<table>" +
@@ -50,6 +52,7 @@
 											"</td>" +
 										"</tr>" +
 									"</table>");
+							}
 						}
 	
 					%>
@@ -67,7 +70,7 @@
 				<table>
 					<tr>
 						<td id="WPM" style="padding-left: 25px"><h3>WPM: 00</h3></td>
-						<td id="Accuracy" style="padding-left: 500px"><h3>Accuracy: --</h3></td>
+						<td id="Accuracy" style="padding-left: 450px"><h3>Accuracy: --</h3></td>
 					</tr>
 				</table>
 			</div>
@@ -95,57 +98,64 @@
 	    		sentenceArray[i] = currSentence.charAt(i);
 	    	}
 	    	
-			$(document).on('keypress', function(evt){
-				evt = evt || window.event;
-		    	var charCode = evt.keyCode || evt.which;
-		    	var charStr = String.fromCharCode(charCode);
-				var perMatch = 0;
-				var count = 0;
-				
-				if(pos < currSentence.length-1) {
-					console.log(charStr);
-					console.log(currSentence.charAt(pos));
+			$(document).on('keypress', function(evt) {
+				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in')) {
+					evt = evt || window.event;
+			    	var charCode = evt.keyCode || evt.which;
+			    	var charStr = String.fromCharCode(charCode);
+					var perMatch = 0;
+					var count = 0;
 					
-					userSentence = userSentence + charStr;
-					compareSentence = compareSentence + sentenceArray[pos];
-					
-					//Change background colour to green for correct letter, red if incorrect
-					if(charStr == currSentence.charAt(pos)){
-						document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
-						pos++;
+					if(pos < currSentence.length) {
+						console.log(charStr);
+						console.log(currSentence.charAt(pos));
+						
+						userSentence = userSentence + charStr;
+						compareSentence = compareSentence + sentenceArray[pos];
+						
+						//Change background colour to green for correct letter, red if incorrect
+						if(charStr == currSentence.charAt(pos)){
+							document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
+							pos++;
+						}
+						else {
+							document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
+							pos++;
+						}
+						
+						//check accuracy						
+						for(x = 0; x < compareSentence.length; x++){
+							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
+								count++;
+							}
+						}
+						perMatch=((100.00*count)/compareSentence.length);
+						
+						//display accuracy
+						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
 					}
 					else {
-						document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
-						pos++;
+						////////////////////////
+						 //SEND TO DATABASE here//
+						////////////////////////
+						location.reload();	// Reload the page with a new sentence upon completion of the first one.
 					}
-					
-					//check accuracy						
-					for(x = 0; x < compareSentence.length; x++){
-						if(compareSentence.charAt(x) == userSentence.charAt(x)) {
-							count++;
-						}
-					}
-					perMatch=((100.00*count)/compareSentence.length);
-					
-					//display accuracy
-					Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
-				}
-				else {
-					location.reload();	// Reload the page with a new sentence upon completion of the first one.
 				}
 			});
 			
 			$(document).on('keydown', function(evt){
-				evt = evt || window.event;
-				var charCode = evt.keyCode || evt.which;
-				
-				if (pos > 0) {
-					if(charCode == 8 || charCode == 46){
-						pos--;
-						document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
-						
-						userSentence = userSentence.substring(0, userSentence.length()-1);
-						compareSentence = compareSentence.substring(0, compareSentence.length()-1);
+				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in')){
+					evt = evt || window.event;
+					var charCode = evt.keyCode || evt.which;
+					
+					if (pos > 0) {
+						if(charCode == 8 || charCode == 46){
+							pos--;
+							document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
+							
+							userSentence = userSentence.substring(0, userSentence.length()-1);
+							compareSentence = compareSentence.substring(0, compareSentence.length()-1);
+						}
 					}
 				}
 			});
@@ -163,8 +173,10 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<%
-						if((String)session.getAttribute("name") != null){
-							out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
+						if((Boolean)session.getAttribute("validLogin") != null){
+							if((Boolean)session.getAttribute("validLogin")){
+								out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
+							}
 						}
 						else{
 							out.print("<h2 class='modal-title'>Login</h2>");
@@ -185,7 +197,73 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<a href="signup.jsp">Sign up</a>
+					<button type="button" Style="background-color: Transparent; border: none; overflow: hidden; outline: none" data-toggle="modal" data-target="#signUpModal" data-dismiss="modal">Sign up</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<div id="signUpModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2>Sign Up</h2>
+				</div>
+				<div class="modal-body">
+					<form action="userCreationServlet" method="post">
+						<table>
+							<tr>
+								<td class="form-group" id="signupcell">
+									<label for="username">Username: </label>
+								</td>
+								<td class="form-group" id="signupcell">
+									 <input type="text" id="username" name="username" required="required" />
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="signupcell">
+									<label for="password">Password: </label>
+								</td>
+								<td class="form-group" id="signupcell">
+									 <input type="password" name="userpass" required="required" />
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="signupcell">
+									<label for="f_name">First Name: </label>
+								</td>
+								<td class="form-group" id="signupcell">
+									 <input type="text" name="f_name" />
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="signupcell">
+									<label for="l_name">Last Name: </label>
+								</td>
+								<td class="form-group" id="signupcell">
+									 <input type="text" name="l_name" />
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="signupcell">
+									<label for="email">Email: </label>
+								</td>
+								<td class="form-group" id="signupcell">
+									 <input type="text" name="email" />
+								</td>
+							</tr>
+							<tr>
+								<td> <input type="submit" value="Submit!" /> </td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" Style="background-color: Transparent; border: none; overflow: hidden; outline: none" data-toggle="modal" data-target="#userModal" data-dismiss="modal">Login</button>
 				</div>
 			</div>
 
@@ -197,6 +275,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+ 
+  	<script>
+		var validLogin = "<%= (Boolean)session.getAttribute("validLogin") %>";
+		
+		if(validLogin == "false") {
+			$('#userModal').modal('show')
+		}
+	</script>
  
   </body>
 </html>
