@@ -50,7 +50,7 @@ public class UserUpdateServlet extends HttpServlet{
 			UserStatsDao.setAVGAccuracy(id, acc);
 			UserStatsDao.setTopAccuracy(id, acc);
 			UserStatsDao.setMinAccuracy(id, acc);
-			
+			UserStatsDao.IncSentences(id);
 			 RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
 	            rd.include(request,response);  
 	}
