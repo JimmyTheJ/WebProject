@@ -21,7 +21,7 @@ public class BaseDao {
 	    	
 	    	 Class.forName(driver).newInstance();
              conn = DriverManager
-                     .getConnection(url + dbName, userName, password);
+                     .getConnection(url + dbName + "?useSSL=false", userName, password);
 
 	    }
 	   catch (Exception e) {

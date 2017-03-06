@@ -41,6 +41,13 @@ public class UserCreationServlet extends HttpServlet{
         else {      
    		 session .setAttribute("isCreated", new Boolean(false));
         }
+        
+        //validate(u_name, pw);
+        
+		//RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+        RequestDispatcher rd=request.getRequestDispatcher("loginServlet");
+        rd.include(request,response);
+        
         out.close();
     }  
 } 
