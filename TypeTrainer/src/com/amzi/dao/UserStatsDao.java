@@ -96,10 +96,10 @@ public static void setAvgWPM(int ID, double n){
         updatedWPM/=numSent;
       
         pst.close();
-        	pst=conn.prepareStatement("UPDATE user_stats SET avg_wpm=? ,num_sentences=? WHERE user_id=?");
+        	pst=conn.prepareStatement("UPDATE user_stats SET avg_wpm=?  WHERE user_id=?");
         	pst.setDouble(1, updatedWPM);
-        	pst.setInt(2, numSent);
-        	pst.setInt(3,ID);
+        	
+        	pst.setInt(2,ID);
             
             pst.executeUpdate();
         
@@ -444,10 +444,10 @@ public static void setAVGAccuracy(int ID, double n){
         numSent++;
         updatedAVG/=numSent;
         pst.close();
-        	pst=conn.prepareStatement("UPDATE user_stats SET avg_accuracy=?, num_sentences=? WHERE user_id=?");
+        	pst=conn.prepareStatement("UPDATE user_stats SET avg_accuracy=? WHERE user_id=?");
         	pst.setDouble(1,updatedAVG);
-        	pst.setInt(2, numSent);
-        	pst.setInt(3,ID);
+        	
+        	pst.setInt(2,ID);
             
             pst.executeUpdate();
         
@@ -748,5 +748,70 @@ public static int getUserID(String uname){
 	return id;
 	
 }
+
+public static void IncSentences(int ID){
+	
+    Connection conn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+	int sent;
+	
+	
+    
+    try {
+    	conn = BaseDao.getConnection();
+        pst = conn.prepareStatement("SELECT num_sentences FROM user_stats WHERE user_id=?");
+        pst.setInt(1,ID);
+        
+        rs=pst.executeQuery();
+        rs.next();
+       sent = rs.getInt(1);
+        
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+       sent++;
+        	pst.close();
+        	pst =conn.prepareStatement("UPDATE user_stats SET num_sentences=? WHERE user_id=?");
+        	pst.setInt(1,sent);
+        	pst.setInt(2,ID);
+            
+            pst.executeUpdate();
+        }
+    
+    catch (Exception e) {
+        System.out.println(e);
+    } finally {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (pst != null) {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+	
+	
+}
+
 
 }
