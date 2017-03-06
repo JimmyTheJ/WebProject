@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class UserInfoDao {
 	
-public static double getID(String uName){
+	public static int getID(String uName){
 		
 	    Connection conn = null;
 	    PreparedStatement pst = null;
@@ -23,7 +23,9 @@ public static double getID(String uName){
             pst.setString(1,uName);
             
             rs=pst.executeQuery();
-            ID = rs.getInt(1);
+            while (rs.next()) {
+            	ID = rs.getInt(1);
+            }
         }
         catch (Exception e) {
             System.out.println(e);
@@ -54,6 +56,54 @@ public static double getID(String uName){
 		
 	}
 
+	public static String getUsername(int ID){
+		
+	    Connection conn = null;
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+		String uName="";
+		
+		
+        
+        try {
+        	conn = BaseDao.getConnection();
+            pst = conn.prepareStatement("SELECT username FROM users WHERE id=?");
+            pst.setInt(1,ID);
+            
+            rs=pst.executeQuery();
+            while (rs.next()) {
+            	uName = rs.getString(1);
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+		return uName;
+		
+	}
+	
 	public static String getFirstName(String uName){
 		
 	    Connection conn = null;

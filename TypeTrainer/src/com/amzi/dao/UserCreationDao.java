@@ -11,6 +11,7 @@ public class UserCreationDao {
 
 	public static boolean addUser(String username, String password, String fName, String lName, String email){
 		boolean status = false;
+		int user_id = -1;
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -21,7 +22,6 @@ public class UserCreationDao {
         	pst = conn
                     .prepareStatement("SELECT * FROM users WHERE username=?");
             pst.setString(1, username);
-
             rs = pst.executeQuery();
             status = rs.next();
             
@@ -29,20 +29,29 @@ public class UserCreationDao {
             rs.close();
             
             if(!status){
-            	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email, user_type) VALUES (? ,? ,?, ?, ?, 'user')");
+               	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email, user_type) VALUES (? ,? ,?, ?, ?, 'user')");
             	pst.setString(1, username);
             	pst.setString(2, password);
             	pst.setString(3, fName);
             	pst.setString(4, lName);
             	pst.setString(5, email);
-            	//rs = pst.executeQuery();
-            	int result = pst.executeUpdate();
-            	if (result == 0) {
-            		;
-            	}
+            	pst.executeUpdate();
+            	pst.close();
+            	
+            	pst = conn.prepareStatement("SELECT MAX(id) FROM users");
+                rs = pst.executeQuery();
+            	rs.next();
+                user_id = rs.getInt(1);
+            	pst.close();
+            	
+            	pst = conn.prepareStatement("INSERT INTO user_stats (user_id, min_wpm, avg_wpm, max_wpm, min_accuracy, avg_accuracy, max_accuracy, num_sentences) VALUES (?, 0, 0, 0, 0, 0, 0, 0)");
+            	pst.setInt(1, user_id);
+            	pst.executeUpdate();
+            	pst.close();
             }
             else
             	return false;
+            
 
         } catch (Exception e) {
             System.out.println(e);
