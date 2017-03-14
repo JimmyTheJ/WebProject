@@ -13,6 +13,15 @@
   </welcome-file-list>
   
   <servlet>
+    <servlet-name>addS</servlet-name>
+    <servlet-class>com.amzi.servlets.AddSentence</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>addS</servlet-name>
+    <url-pattern>/addSentence</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>login</servlet-name>
     <servlet-class>com.amzi.servlets.LoginServlet</servlet-class>
   </servlet>
