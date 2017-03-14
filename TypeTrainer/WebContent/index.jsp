@@ -6,6 +6,7 @@
 <%@page import="com.amzi.dao.TypingMatchDao"%>
 <%@page import="com.amzi.dao.UserInfoDao"%>
 <%@page import="com.amzi.dao.UserStatsDao"%>
+<%@page import="com.amzi.dao.AdminDao" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -67,6 +68,12 @@
 	
 					%>
 					</li>
+					<%  if(userName != null) {
+						if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
+							out.print("<li><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'><img src='assets/admin_profile_icon.png' Height='48px' Width='48px'></button></li>");
+						}
+					}
+					%>
 						<li><button type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
 					</ul>
 				</div>
@@ -114,7 +121,7 @@
 	    	}
 	    	
 			$(document).on('keypress', function(evt) {
-				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in')) {
+				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')) {
 					evt = evt || window.event;
 			    	var charCode = evt.keyCode || evt.which;
 			    	var charStr = String.fromCharCode(charCode);
@@ -180,7 +187,7 @@
 			});
 			
 			$(document).on('keydown', function(evt){
-				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in')){
+				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')){
 					evt = evt || window.event;
 					var charCode = evt.keyCode || evt.which;
 					
@@ -307,6 +314,67 @@
 				</div>
 			</div>
 
+		</div>
+	</div>
+
+	<div id="adminModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form action="addSentence" method="post">
+							
+							<table>
+							<tr>
+								<td class="form-group" id="addcell">
+									<label for="album">Album: </label> 
+								</td>
+								<td class="form-group" id="addcell">
+									<input type="text" id="album" name="album" required="required" />
+									 
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="addcell">
+							<label for="artist">Artist: </label> 
+							</td>
+								<td class="form-group" id="addcell">
+									<input type="text" id="artist" name="artist" required="required" />	 
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="addcell">
+									<label for="song">Song: </label> 
+							</td>
+								<td class="form-group" id="addcell">
+									<input type="text" id="song" name="song" required="required" />
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="addcell">
+							<label for="sentence">Sentence: </label> 
+							</td>
+								<td class="form-group" id="addcell">
+									<textarea  id="sentence" name="sentence" required="required"></textarea> 
+								</td>
+							</tr>
+							<tr>
+								<td class="form-group" id="addcell">
+									<label for="year_released">Year Released: </label> 
+								</td>
+								<td class="form-group" id="addcell">		
+									<input type="text" id="year_released" name="year_released" required="required" />
+									</td>
+								</tr>
+							</table>
+						<input type="radio" id="Lang" name="Lang" value="English" checked> English<br>
+						<input type="radio" id="Lang" name="Lang" value="French" > French<br>
+					<input type="submit" value="Add" />
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 	
