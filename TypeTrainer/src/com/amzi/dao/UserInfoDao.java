@@ -30,7 +30,7 @@ public class UserInfoDao {
 	        	if (objectType[i] == OBJ_DOUBLE)
 	        		pst.setDouble(i+1, (double)data[i]);
 	        	if (objectType[i] == OBJ_DATE)
-	        		pst.setDate(i+1, (Date)data[i]);	        	
+	        		pst.setDate(i+1, (Date)data[i]);
             	if (objectType[i] == OBJ_STRING)
             		pst.setObject(i+1, (String)data[i]);
             }

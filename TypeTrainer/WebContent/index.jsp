@@ -7,6 +7,7 @@
 <%@page import="com.amzi.dao.UserInfoDao"%>
 <%@page import="com.amzi.dao.UserStatsDao"%>
 <%@page import="com.amzi.dao.AdminDao" %>
+<%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -317,63 +318,132 @@
 		</div>
 	</div>
 
+	<script>
+	$(document).ready(function() { 
+	    $("#SentenceListLink").click(function(){
+	        AddSentence.style.display = 'none';
+	        SentenceList.style.display = 'inline';
+	    });
+	    
+	    $("#AddSentenceLink").click(function(){
+	        AddSentence.style.display = 'inline';
+	        SentenceList.style.display = 'none';
+	    });
+	    
+	    $(".DeleteSentence").click(function(){
+	    	var sentenceToBeDeletedID = this.id;
+	    	
+	    	//Console.log(sentenceToBeDeletedID);
+	    	
+			deleteAPhraseAccess = document.forms["deleteAPhrase"];
+			deleteAPhraseAccess.elements["phraseId"].value = sentenceToBeDeletedID;
+			
+			document.getElementById("deleteAPhrase").submit();
+	    });
+	    
+	})
+	</script>
+
+
+  	<form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
+  		<input type="hidden" id="phraseId" name="phraseId" value="0" />
+  	</form>
+
+
 	<div id="adminModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<a href="#" id="AddSentenceLink">Sentence List</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>
 				</div>
 				<div class="modal-body">
-					<form action="addSentence" method="post">
-							
-							<table>
-							<tr>
-								<td class="form-group" id="addcell">
-									<label for="album">Album: </label> 
-								</td>
-								<td class="form-group" id="addcell">
-									<input type="text" id="album" name="album" required="required" />
-									 
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="addcell">
-							<label for="artist">Artist: </label> 
-							</td>
-								<td class="form-group" id="addcell">
-									<input type="text" id="artist" name="artist" required="required" />	 
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="addcell">
-									<label for="song">Song: </label> 
-							</td>
-								<td class="form-group" id="addcell">
-									<input type="text" id="song" name="song" required="required" />
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="addcell">
-							<label for="sentence">Sentence: </label> 
-							</td>
-								<td class="form-group" id="addcell">
-									<textarea  id="sentence" name="sentence" required="required"></textarea> 
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="addcell">
-									<label for="year_released">Year Released: </label> 
-								</td>
-								<td class="form-group" id="addcell">		
-									<input type="text" id="year_released" name="year_released" required="required" />
+					<div id="AddSentence">
+						<form action="addSentence" method="post">
+								<table>
+								<tr>
+									<td class="form-group" id="addcell">
+										<label for="album">Album: </label> 
+									</td>
+									<td class="form-group" id="addcell">
+										<input type="text" id="album" name="album" required="required" />
+										 
 									</td>
 								</tr>
-							</table>
-						<input type="radio" id="Lang" name="Lang" value="English" checked> English<br>
-						<input type="radio" id="Lang" name="Lang" value="French" > French<br>
-					<input type="submit" value="Add" />
-					</form>
-				</div>
+								<tr>
+									<td class="form-group" id="addcell">
+								<label for="artist">Artist: </label> 
+								</td>
+									<td class="form-group" id="addcell">
+										<input type="text" id="artist" name="artist" required="required" />	 
+									</td>
+								</tr>
+								<tr>
+									<td class="form-group" id="addcell">
+										<label for="song">Song: </label> 
+								</td>
+									<td class="form-group" id="addcell">
+										<input type="text" id="song" name="song" required="required" />
+									</td>
+								</tr>
+								<tr>
+									<td class="form-group" id="addcell">
+								<label for="sentence">Sentence: </label> 
+								</td>
+									<td class="form-group" id="addcell">
+										<textarea  id="sentence" name="sentence" required="required"></textarea> 
+									</td>
+								</tr>
+								<tr>
+									<td class="form-group" id="addcell">
+										<label for="year_released">Year Released: </label> 
+									</td>
+									<td class="form-group" id="addcell">		
+										<input type="text" id="year_released" name="year_released" required="required" />
+										</td>
+									</tr>
+								</table>
+							<input type="radio" id="Lang" name="Lang" value="English" checked> English<br>
+							<input type="radio" id="Lang" name="Lang" value="French" > French<br>
+						<input type="submit" value="Add" />
+						</form>
+					</div>
+					<div id="SentenceList" Style="display: none">
+						<%
+							ArrayList<String> al = AdminDao.sentenceList("English");
+							if (al.size() > 0) {
+								out.print(
+								"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
+									"<tr>" +
+										"<th>" + 
+											"#:" +
+										"</th>" +
+										"<th>" +
+											"Phrase:" +
+										"</th>" +
+									"</tr>");
+							}
+						
+							for (int i = 0; i < al.size(); i++) {
+								out.print(
+									"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
+										"<tr>" +
+											"<td>" +
+												(i+1) + "<button type='button' class='DeleteSentence' id='" +i +"'>&times;</button>" +
+											"</td>" +
+											"<td>" +
+												al.get(i).toString() +
+											"</td>" +
+										"</tr>"
+								);
+							}
+							if (al.size() > 0) {
+								out.print("</table>");
+							}
+						%>
+					</div>
+				</div>					
+
 			</div>
 		</div>
 	</div>

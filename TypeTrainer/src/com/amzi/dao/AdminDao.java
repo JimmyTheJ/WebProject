@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AdminDao {
 	public static void addSentence(String album, String artist, String song, String sentence, int year, String lang){
@@ -50,7 +51,7 @@ public class AdminDao {
 	        }
 	}
 	
-	public void deleteSentence(int id){
+	public static void deleteSentence(int id){
 		  Connection conn = null;
 		    PreparedStatement pst = null;
 		    ResultSet rs = null;
@@ -94,10 +95,11 @@ public class AdminDao {
 	
 	
 	
-	public ResultSet sentenceList(String language){
+	public static ArrayList<String> sentenceList(String language){
 		  Connection conn = null;
-		    PreparedStatement pst = null;
-		    ResultSet rs = null;
+		  PreparedStatement pst = null;
+		  ResultSet rs = null;
+		  ArrayList<String> ls = new ArrayList<String>();
 		    
 		    try {
 	        	conn = BaseDao.getConnection();
@@ -106,6 +108,9 @@ public class AdminDao {
 	            
 	           rs= pst.executeQuery();
 	           
+	           while (rs.next()) {
+	        	   ls.add(rs.getString("sentence"));
+	           }
 	           
 	        }
 	        catch (Exception e) {
@@ -132,9 +137,9 @@ public class AdminDao {
 	                    e.printStackTrace();
 	                }
 	            }
-	            
+	        
 	        }
-		    return rs;
+		    return ls;
 	}
 	
 	
