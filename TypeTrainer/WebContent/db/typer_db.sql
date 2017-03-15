@@ -116,10 +116,10 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO users (`username`, `password`, `f_name`, `l_name`, `email`, `user_type`) 
-VALUES ('sigl0003', 'jajaBot1123', 'James', 'Sigler', 'jamussigler@algonquinlive.com', 'admin')
-	,('rice0061', 'hotNspicy42', 'Cameron', 'Rice', 'rice0061@algonquinlive.com', 'admin')
-    ,('attf0006', 'gundam-Wings01', 'Gary', 'Attfield', 'attf0006@algonquinlive.com', 'admin')
+INSERT INTO users (`username`, `password`, `f_name`, `l_name`, `email`, `user_type`, `join_date`, `last_login`) 
+VALUES ('sigl0003', 'jajaBot1123', 'James', 'Sigler', 'jamussigler@algonquinlive.com', 'admin', '2017-01-20 9:13:41', '2017-01-20 9:13:41')
+	,('rice0061', 'hotNspicy42', 'Cameron', 'Rice', 'rice0061@algonquinlive.com', 'admin', '2017-01-20 9:13:41', '2017-01-20 9:13:41')
+    ,('attf0006', 'gundam-Wings01', 'Gary', 'Attfield', 'attf0006@algonquinlive.com', 'admin', '2017-01-20 9:13:41', '2017-01-20 9:13:41')
     ;
 
 INSERT INTO user_stats (user_id, min_wpm, avg_wpm, max_wpm, min_accuracy, avg_accuracy, max_accuracy, num_sentences) 
