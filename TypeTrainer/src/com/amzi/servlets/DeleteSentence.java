@@ -19,7 +19,6 @@ public class DeleteSentence extends HttpServlet {
 
 	        int id=Integer.parseInt(request.getParameter("phraseId"));
 
-	        System.out.println(id);
 	        AdminDao.deleteSentence(id);
 	        
 	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");

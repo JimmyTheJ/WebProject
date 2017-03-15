@@ -1,10 +1,12 @@
 package com.amzi.dao;
 
-import java.sql.Connection;
+//import java.time.*;
 import java.sql.Date;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class UserInfoDao {
 	protected static final int OBJ_INT = 1;
@@ -30,7 +32,9 @@ public class UserInfoDao {
 	        	if (objectType[i] == OBJ_DOUBLE)
 	        		pst.setDouble(i+1, (double)data[i]);
 	        	if (objectType[i] == OBJ_DATE)
-	        		pst.setDate(i+1, (Date)data[i]);
+	        		pst.setTimestamp(i+1, (Timestamp)data[i]);
+	        	//if (objectType[i] == OBJ_DATE)
+	        	//	pst.setDate(i+1, (Date)data[i]);
             	if (objectType[i] == OBJ_STRING)
             		pst.setObject(i+1, (String)data[i]);
             }
@@ -96,5 +100,13 @@ public class UserInfoDao {
 	
 	public static String getUserType (String uName) {
 		return (String) performQuery ("SELECT user_type FROM users WHERE username=?", SELECT_QUERY, 1, new int[]{ OBJ_STRING }, new Object[]{ uName });
+	}
+	
+	public static void setJoinDate (int id, Timestamp date) {
+		performQuery ("UPDATE users SET join_date=?  WHERE id=?", UPDATE_QUERY, 2, new int[]{ OBJ_DATE, OBJ_INT }, new Object[]{ date, id });
+	}
+	
+	public static void setLastLoginDate (int id, Timestamp date) {
+		performQuery ("UPDATE users SET last_login=?  WHERE id=?", UPDATE_QUERY, 2, new int[]{ OBJ_DATE, OBJ_INT }, new Object[]{ date, id });
 	}
 }

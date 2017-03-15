@@ -22,25 +22,19 @@ public class UserUpdateServlet extends HttpServlet{
 
 	    public void doPost(HttpServletRequest request, HttpServletResponse response)  
 	            throws ServletException, IOException {  
-		
-
+	    	
 			double wpm;
 			double acc;
 			String name;
 			int id;
 			
-			 response.setContentType("text/html");
-
-			
+			response.setContentType("text/html");
+	
 			wpm=Double.parseDouble(request.getParameter("WPM"));
 			acc=Double.parseDouble(request.getParameter("Accuracy"));
 			name= (String)request.getParameter("Username");
-			
+	
 			id = UserInfoDao.getID(name);
-			
-	    	//System.out.println(name);
-	    	//System.out.println(id);
-			
 			//wpm
 			UserStatsDao.setAvgWPM(id, wpm);
 			UserStatsDao.setTopWPM(id, wpm);
@@ -50,8 +44,9 @@ public class UserUpdateServlet extends HttpServlet{
 			UserStatsDao.setTopAccuracy(id, acc);
 			UserStatsDao.setMinAccuracy(id, acc);
 			UserStatsDao.incrementSentences(id);
-			 RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
-	            rd.include(request,response);  
+			
+			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
+	        rd.include(request,response);  
 	}
 
 }

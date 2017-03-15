@@ -1,10 +1,10 @@
 package com.amzi.servlets;
 
 import java.io.IOException;
-import com.amzi.dao.TypingMatchDao;
 import com.amzi.dao.UserCreationDao;
 
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.amzi.dao.LoginDao;
 
 public class UserCreationServlet extends HttpServlet{
 
@@ -31,7 +29,7 @@ public class UserCreationServlet extends HttpServlet{
         String l_name=request.getParameter("l_name");
         String email=request.getParameter("email");
         
-        boolean isCreated = UserCreationDao.addUser(u_name, pw, f_name, l_name, email);
+        boolean isCreated = UserCreationDao.addUser(u_name, pw, f_name, l_name, email, new Timestamp(System.currentTimeMillis()));
         
         HttpSession session = request.getSession();
         
@@ -42,9 +40,6 @@ public class UserCreationServlet extends HttpServlet{
    		 session .setAttribute("isCreated", new Boolean(false));
         }
         
-        //validate(u_name, pw);
-        
-		//RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
         RequestDispatcher rd=request.getRequestDispatcher("loginServlet");
         rd.include(request,response);
         

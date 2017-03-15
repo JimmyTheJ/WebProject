@@ -30,7 +30,7 @@ public class AddSentence extends HttpServlet{
 	        String sentence=request.getParameter("sentence");
 	        int year=Integer.parseInt(request.getParameter("year_released"));
 	        String language=request.getParameter("Lang");
-	        System.out.println(language);
+
 	        AdminDao.addSentence(album,artist,song,sentence,year,language);
 	        
 	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");

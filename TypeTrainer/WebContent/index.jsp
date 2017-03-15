@@ -107,6 +107,7 @@
 		<div Style="width: 100%">
 		<script>
 	    	var pos = 0;
+	    	var uName = "<%= userName%>"
 	  		var currSentence = "<%= sentence %>";
 	    	var sentenceArray = [];
 	    	var userSentence = "";
@@ -128,6 +129,10 @@
 			    	var charStr = String.fromCharCode(charCode);
 					var count = 0;
 
+					 if (evt.which == 32) {
+			                evt.preventDefault();
+					 }
+					
 					if(t==null)
 						t= new Date();
 					// after first key press start timer
@@ -182,7 +187,13 @@
 						statsFormAccess.elements["WPM"].value = curWPM;
 						statsFormAccess.elements["Accuracy"].value = perMatch.toPrecision(3);
 						
-						document.getElementById("stats").submit();
+						if (uName != "null") {
+							document.getElementById("stats").submit();
+						}
+						else {
+							location.reload();
+						}
+
 					}
 				}
 			});
@@ -355,7 +366,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<a href="#" id="AddSentenceLink">Sentence List</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>
+						<a href="#" id="AddSentenceLink">Add Sentence</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>
 				</div>
 				<div class="modal-body">
 					<div id="AddSentence">
@@ -410,11 +421,14 @@
 					</div>
 					<div id="SentenceList" Style="display: none">
 						<%
-							ArrayList<String> al = AdminDao.sentenceList("English");
+							ArrayList<Object[]> al = AdminDao.sentenceList("English");
 							if (al.size() > 0) {
 								out.print(
 								"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
 									"<tr>" +
+										"<th>" +
+											" &nbsp;" +
+										"</th>" +
 										"<th>" + 
 											"#:" +
 										"</th>" +
@@ -428,11 +442,14 @@
 								out.print(
 									"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
 										"<tr>" +
-											"<td>" +
-												(i+1) + "<button type='button' class='DeleteSentence' id='" +i +"'>&times;</button>" +
+											"<td Style='margin-right: 10px; padding-right: 10px;'>" +
+												"<button type='button' class='DeleteSentence' id='" +al.get(i)[0].toString() +"'> x </button>" +
 											"</td>" +
-											"<td>" +
-												al.get(i).toString() +
+											"<td Style='margin-left: 5px; margin-right: 5px; padding-left: 5px; padding-right: 5px]'>" +
+												(i+1) +
+											"</td>" +
+											"<td Style='margin-left: 10px; padding-left: 10px;'>" +
+												al.get(i)[4].toString() +
 											"</td>" +
 										"</tr>"
 								);

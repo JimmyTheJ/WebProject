@@ -2,7 +2,11 @@ package com.amzi.servlets;
 
 import java.io.IOException;
 import com.amzi.dao.TypingMatchDao;
+import com.amzi.dao.UserInfoDao;
+
 import java.io.PrintWriter;
+import java.time.*;
+import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +20,7 @@ import com.amzi.dao.LoginDao;
 public class LoginServlet extends HttpServlet{
 
     private static final long serialVersionUID = 1L;
-
+    
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 
@@ -29,7 +33,6 @@ public class LoginServlet extends HttpServlet{
         String sentence = TypingMatchDao.getSentence();
         
         if(LoginDao.validate(n, p)){
-        	
         	HttpSession session = request.getSession();
         	session.setAttribute("name", n);
 
@@ -44,7 +47,8 @@ public class LoginServlet extends HttpServlet{
             //session.setAttribute("loginMessage", "welcome back, " + n);          
             
             session.setAttribute("validLogin", new Boolean(true));
-            
+
+            UserInfoDao.setLastLoginDate(UserInfoDao.getID(n), new Timestamp(System.currentTimeMillis()) );
 
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
             rd.forward(request,response);  
