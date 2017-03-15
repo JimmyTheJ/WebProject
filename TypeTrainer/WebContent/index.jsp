@@ -65,6 +65,9 @@
   		<input type="hidden" id="accuracy_id" name="Accuracy" value="0" />
   		<input type="hidden" id="username_id" name="Username" value=<%=userName %> />
   	</form>
+   	<form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
+  		<input type="hidden" id="phraseId" name="phraseId" value="0" />
+  	</form> 	
 	<div class="container-fluid" id="Mainbar">
 			<nav class="navbar navbar-fixed-top"  Style="margin: 0 auto; max-width: 70%">
 				<div class="container-fluid">
@@ -78,26 +81,29 @@
 						Boolean validLogin = (Boolean)session.getAttribute("validLogin");
 					
 						if(validLogin != null) {
-							if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
-								out.print(
-									"<table>" +
-										"<tr>" +
-											"<td>" +
-												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
-											"</td>" +
-										"</tr>" +
-										"<tr>" +
-											"<td>"+
-												"<button style='display: block' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'>Admin Panel</button>"	+
-											"</td>" +
-											"<td>" +
-												"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
-											"</td>" +
-										"</tr>" +
-									"</table>");
+							if(validLogin) {
+								if(userName != null) {
+									if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
+										out.print(
+											"<table>" +
+												"<tr>" +
+													"<td>" +
+														"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
+													"</td>" +
+												"</tr>" +
+												"<tr>" +
+													"<td>"+
+														"<button style='display: block' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'>Admin Panel</button>"	+
+													"</td>" +
+													"<td>" +
+														"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+													"</td>" +
+												"</tr>" +
+											"</table>");
+									}
+								}
 							}
 						}
-	
 					%>
 					</li>					
 						<li><button type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
@@ -240,7 +246,7 @@
 							compareSentence = compareSentence.substring(0, compareSentence.length()-1);
 						}
 					}
-					
+					/*
 					if(charCode == 32){
 						
 						if(pos < userSentence.length - 1){
@@ -251,7 +257,7 @@
 						}
 						
 						return false;
-					}
+					}*/
 				}
 			});
 
@@ -402,29 +408,9 @@
 			deleteAPhraseAccess.elements["phraseId"].value = sentenceToBeDeletedID;
 			
 			document.getElementById("deleteAPhrase").submit();
-	    });
-	    
-	    $(".UpdateSentenceLink").click(function(){
-	    	/*var sentenceToBeUpdatedID = this.id;
-	    	
-			statsFormAccess = document.forms["updateSentence"];
-			statsFormAccess.elements["WPM"].value = ;
-			statsFormAccess.elements["Accuracy"].value = ;
-	    	
-	    	UpdateSentence.style.display = 'inline';
-	        SentenceList.style.display = 'none';
-	        AddSentence.style.display = 'none';*/
-	    	
-	    });
-	    
+	    });	    
 	})
 	</script>
-
-
-  	<form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
-  		<input type="hidden" id="phraseId" name="phraseId" value="0" />
-  	</form>
-
 
 	<div id="adminModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
