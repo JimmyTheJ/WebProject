@@ -1,5 +1,3 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script type="text/javascript" src="./javascript.js"></script>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import="java.lang.String"%>
@@ -15,6 +13,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script type="text/javascript" src="./javascript.js"></script>
+    
     <title>Type Trainer</title>
  
     <!-- Bootstrap -->
@@ -22,13 +23,13 @@
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     
-    <% 	String sentence = TypingMatchDao.getSentence(); 
+    <% 	
+    	String sentence = TypingMatchDao.getSentence(); 
 		String userName = (String)session.getAttribute("name");
 		int userID = UserInfoDao.getID(userName);
     %>
 
-    
-  </head>
+</head>
   <body>
   	<form name="stats" id="stats" action="userUpdateServlet" method="post">
   		<input type="hidden" id="wpm_id" name="WPM" value="0" />
@@ -41,6 +42,9 @@
 					<div class="navbar-header" Style="padding-left: 10px">
 						<a href="index.jsp"><img src="assets/tt.png" Height="48px" Width="48px" Style="margin-top: 10px; margin-botton: 2px"></img></a>
 					</div>
+					
+					
+					
 					<ul class="nav navbar-nav navbar-right" style="margin: 10px">
 					<li>
 					<%
@@ -50,31 +54,32 @@
 					
 						if(validLogin != null) {
 							if(validLogin) {
-							out.print(
+								if(userName != null) {
+									if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
 									
-									"<table>" +
-										"<tr>" +
-											"<td>" +
-												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
-											"</td>" +
-										"</tr>" +
-										"<tr>" +
-											"<td>" +
-												"<a Style='padding: 2px; margin-left: 112px; margin-top: 0px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
-											"</td>" +
-										"</tr>" +
-									"</table>");
+										out.print(
+											"<table>" +
+												"<tr>" +
+													"<td>" +
+														"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
+													"</td>" +
+												"</tr>" +
+												"<tr>" +
+													"<td>"+
+														"<button style='display: block' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'>Admin Panel</button>"	+
+													"</td>" +
+													"<td>" +
+														"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+													"</td>" +
+												"</tr>" +
+											"</table>");
+									}
+								}
 							}
 						}
 	
 					%>
-					</li>
-					<%  if(userName != null) {
-						if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
-							out.print("<li><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'><img src='assets/admin_profile_icon.png' Height='48px' Width='48px'></button></li>");
-						}
-					}
-					%>
+					</li>					
 						<li><button type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
 					</ul>
 				</div>
@@ -105,27 +110,29 @@
 			</div>
 		</div>
 		<div Style="width: 100%">
-		<script>
-	    	var pos = 0;
-	  		var currSentence = "<%= sentence %>";
-	    	var sentenceArray = [];
-	    	var userSentence = "";
-	    	var compareSentence = "";
-	    	var t = null;
-	    	var baseTime = -1;
-	    	var words = 0;
-	    	var curWPM = 0;
-	    	var perMatch = 0;
-	    	
-	    	for (i = 0; i < currSentence.length; i++) {
-	    		sentenceArray[i] = currSentence.charAt(i);
-	    	}
-	    	
+			<script>
+
+			var pos = 0;
+			var currSentence = "<%= sentence %>";
+			var sentenceArray = [];
+			var userSentence = "";
+			var compareSentence = "";
+			var t = null;
+			var baseTime = -1;
+			var words = 0;
+			var curWPM = 0;
+			var perMatch = 0;
+
+			for (i = 0; i < currSentence.length; i++) {
+				sentenceArray[i] = currSentence.charAt(i);
+			}
+
 			$(document).on('keypress', function(evt) {
+				
 				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')) {
 					evt = evt || window.event;
-			    	var charCode = evt.keyCode || evt.which;
-			    	var charStr = String.fromCharCode(charCode);
+					var charCode = evt.keyCode || evt.which;
+					var charStr = String.fromCharCode(charCode);
 					var count = 0;
 
 					if(t==null)
@@ -134,17 +141,17 @@
 					if(baseTime==-1){
 						baseTime=0;
 						baseTime+= t.getMinutes();
-				    	baseTime*=60;
-				    	baseTime+=t.getSeconds();
+						baseTime*=60;
+						baseTime+=t.getSeconds();
 					}
-					
+
 					if(pos < currSentence.length) {
 						console.log(charStr);
 						console.log(currSentence.charAt(pos));
-						
+
 						userSentence = userSentence + charStr;
 						compareSentence = compareSentence + sentenceArray[pos];
-						
+
 						//Change background colour to green for correct letter, red if incorrect
 						if(charStr == currSentence.charAt(pos)){
 							document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
@@ -155,9 +162,11 @@
 							pos++;
 						}
 						
+						
+
 						if(charStr == " ")
 							words++;
-						
+
 						//check accuracy						
 						for(x = 0; x < compareSentence.length; x++){
 							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
@@ -165,7 +174,7 @@
 							}
 						}
 						perMatch=((100.00*count)/compareSentence.length);
-						
+
 						//display accuracy
 						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
 					}
@@ -177,45 +186,58 @@
 							}
 						}
 						perMatch=((100.00*count)/compareSentence.length);
-						
+
 						statsFormAccess = document.forms["stats"];
 						statsFormAccess.elements["WPM"].value = curWPM;
 						statsFormAccess.elements["Accuracy"].value = perMatch.toPrecision(3);
-						
+
 						document.getElementById("stats").submit();
 					}
 				}
 			});
-			
+
 			$(document).on('keydown', function(evt){
+				
 				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')){
 					evt = evt || window.event;
 					var charCode = evt.keyCode || evt.which;
-					
+
 					if (pos > 0) {
 						if(charCode == 8 || charCode == 46){
 							pos--;
 							document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
-							
+
 							userSentence = userSentence.substring(0, userSentence.length()-1);
 							compareSentence = compareSentence.substring(0, compareSentence.length()-1);
 						}
+					}
+					
+					if(charCode == 32){
+						
+						if(pos < userSentence.length - 1){
+							
+							pos++
+							document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
+							
+						}
+						
+						return false;
 					}
 				}
 			});
 
 			// updates every second
 			var wpmInterval = setInterval(WPM, 1000);
-			
+
 			function WPM() {
 				// if no key has been pressed
 				if(baseTime==-1)
 					return;
-				
+
 				var cT= new Date();
 				var curTime= 0;
-				
-				
+
+
 				curTime+= cT.getMinutes();
 				curTime*=60;
 				curTime+=cT.getSeconds();
@@ -225,14 +247,27 @@
 				else if(cT.getHours() != t.getHours())
 					curTime+=(60*60);
 				curTime-=baseTime;
-				
+
 				curWPM= (words*60)/(curTime);
-				
+
 				document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
 			}
-			
 			</script>
-			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid" id="MainArea">
+	
+		<h2 class="page-header">Leaderboards</h2>
+		<table class="table table-striped">
+		
+			<tr class="table-bordered">
+				<th>User</th>
+				<th>Average WPM</th>
+				<th>Average Accuracy</th>
+			</tr>			
+		</table>
+	
 	</div>
 
 	<div id="userModal" class="modal fade" role="dialog">
@@ -241,11 +276,11 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button id="closeButton" type="button" class="close" data-dismiss="modal">&times;</button>
 					<%
 						if((Boolean)session.getAttribute("validLogin") != null){
 							if((Boolean)session.getAttribute("validLogin")){
-								out.print("<h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
+								out.print("<img src='assets/user_profile_icon.png' height='48px' width='48px' /><h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
 							}
 						}
 						else{
@@ -275,26 +310,28 @@
 						double avgAccuracy = UserStatsDao.getAvgAccuracy(userID);
 						
 						out.print(
-							"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'>" +
+							"<table class='table table-striped' Style='margin-bottom: 0px; margin-top: 2px; padding: 10px; width: 100%'>" +
 								"<tr>" +
-									"<th>" +
+									"<td id='statcell'>" +
 										"Best WPM: " +
-									"</th>" +
-									"<th>" +
-										"Average WPM" +
-									"</th>" +
-									"<th>" +
-										"Average Accuracy" +
-									"</th>" +								
+									"</td>" +
+										"<td id='statcell'>" +
+											topWPM +
+										"</td>" +
 								"</tr>" +
 								"<tr>" +
-									"<td>" +
-										topWPM +
+									"<td id='statcell'>" +
+										"Average WPM: " +
 									"</td>" +
-									"<td>" +
+									"<td id='statcell'>" +
 										avgWPM +
 									"</td>" +
-									"<td>" +
+								"</tr>" +
+								"<tr>" +
+									"<td id='statcell'>" +
+										"Average Accuracy: " +
+									"</td>" +
+									"<td id='statcell'>" +
 										avgAccuracy +
 									"</td>" +
 								"</tr>" +									
@@ -303,30 +340,29 @@
 					}
 					 %>
 				</div>
-				<div class="modal-footer">
+				
 				<%
 					if((Boolean)session.getAttribute("validLogin") == null) {
-						out.print("<button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal'>Sign up</button>");
-					}
-					else {
-						out.print("<a Style='padding: 2px; margin-left: 112px; margin-top: 0px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>");
+						out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal'>Sign up</button></div>");
 					}
 				%>
-				</div>
 			</div>
 
 		</div>
 	</div>
 
 	<script>
-	$(document).ready(function() { 
+	$(document).ready(function() {
+		
 	    $("#SentenceListLink").click(function(){
 	        AddSentence.style.display = 'none';
+	        UpdateSentence.style.display = 'none';
 	        SentenceList.style.display = 'inline';
 	    });
 	    
 	    $("#AddSentenceLink").click(function(){
 	        AddSentence.style.display = 'inline';
+	        UpdateSentence.style.display = 'none';
 	        SentenceList.style.display = 'none';
 	    });
 	    
@@ -339,6 +375,16 @@
 			deleteAPhraseAccess.elements["phraseId"].value = sentenceToBeDeletedID;
 			
 			document.getElementById("deleteAPhrase").submit();
+	    });
+	    
+	    $(".UpdateSentenceLink").click(function(){
+	    	
+	    	var sentenceToBeUpdated = this.id;
+	    	
+	    	UpdateSentence.style.display = 'inline';
+	        SentenceList.style.display = 'none';
+	        AddSentence.style.display = 'none';
+	    	
 	    });
 	    
 	})
@@ -355,7 +401,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<a href="#" id="AddSentenceLink">Sentence List</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>
+						<a href="#" id="AddSentenceLink">Add Sentence</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>&nbsp;&nbsp;
 				</div>
 				<div class="modal-body">
 					<div id="AddSentence">
@@ -429,7 +475,7 @@
 									"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
 										"<tr>" +
 											"<td>" +
-												(i+1) + "<button type='button' class='DeleteSentence' id='" +i +"'>&times;</button>" +
+												(i+1) + "<button type='button' class='DeleteSentence' id='" +i +"'>&times;</button>" + "<form action='SetSentence' method='post'><button type='submit' class='UpdateSentenceLink' id='" + i + "'>Update</button></form>" +
 											"</td>" +
 											"<td>" +
 												al.get(i).toString() +
@@ -441,6 +487,15 @@
 								out.print("</table>");
 							}
 						%>
+					</div>
+					<div id="UpdateSentence" Style=" display: none">
+						<form action="updateSentence" method="post">
+							<%
+							
+								String sentenceToUpdate = AdminDao.retreiveSentence(1);
+							
+							%>
+						</form>
 					</div>
 				</div>					
 
@@ -526,7 +581,12 @@
 		if(validLogin == "false") {
 			$('#userModal').modal('show')
 		}
-	</script>
+	
+    	$(document).on('hidden.bs.modal', function() {
+       	 	document.activeElement.blur();
+    	});
+    	
+    </script>
  
   </body>
 </html>
