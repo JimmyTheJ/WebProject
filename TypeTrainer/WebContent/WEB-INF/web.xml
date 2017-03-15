@@ -29,6 +29,24 @@
     <servlet-name>deleteS</servlet-name>
     <url-pattern>/deleteSentence</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>updateS</servlet-name>
+    <servlet-class>com.amzi.servlets.UpdateSentence</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateS</servlet-name>
+    <url-pattern>/updateSentence</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>selectS</servlet-name>
+    <servlet-class>com.amzi.servlets.SelectSentenceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>selectS</servlet-name>
+    <url-pattern>/selectSentenceServlet</url-pattern>
+  </servlet-mapping>    
   
   <servlet>
     <servlet-name>login</servlet-name>

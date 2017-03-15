@@ -29,11 +29,11 @@ public class UserStatsDao {
 		double words = (double) UserInfoDao.performQuery ("SELECT avg_wpm FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 		int numSent = (int) UserInfoDao.performQuery ("SELECT num_sentences FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 		
-        double updatedWPM = (numSent * words) + n;
-        numSent++;
-        updatedWPM /= numSent;
-        
-        UserInfoDao.performQuery ("UPDATE user_stats SET avg_wpm=?  WHERE user_id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{UserInfoDao.OBJ_DOUBLE, UserInfoDao.OBJ_INT}, new Object[]{ updatedWPM, id });
+    double updatedWPM = (numSent * words) + n;
+    numSent++;
+    updatedWPM /= numSent;
+
+    UserInfoDao.performQuery ("UPDATE user_stats SET avg_wpm=?  WHERE user_id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{UserInfoDao.OBJ_DOUBLE, UserInfoDao.OBJ_INT}, new Object[]{ updatedWPM, id });
 	}
 	
 	public static void setTopWPM (int id, double n) {
