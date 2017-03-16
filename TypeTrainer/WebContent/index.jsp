@@ -101,6 +101,21 @@
 												"</tr>" +
 											"</table>");
 									}
+									else{
+										out.print(
+												"<table>" +
+													"<tr>" +
+														"<td>" +
+															"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
+														"</td>" +
+													"</tr>" +
+													"<tr>" +
+														"<td>" +
+															"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+														"</td>" +
+													"</tr>" +
+												"</table>");
+									}
 								}
 							}
 						}
@@ -339,7 +354,7 @@
 							"<input type='submit' value='Login' />" +
 							"</form>");
 					}
-					else {
+					else if((Boolean)session.getAttribute("validLogin") == true) {
 						double topWPM = UserStatsDao.getTopWPM(userID);
 						double avgWPM = UserStatsDao.getAvgWPM(userID);
 						double avgAccuracy = UserStatsDao.getAvgAccuracy(userID);
@@ -372,6 +387,18 @@
 								"</tr>" +									
 							"</table>"
 						);
+					}
+					else{
+						out.print(
+								"<form action='loginServlet' method='post'>" +
+									"<div class='form-group'>" +
+										"<label for='username'>Username: </label> <input type='text' name='username' required='required' />" +
+									"</div>" +
+									"<div class='form-group'>" +
+										"<label for='password'>Password: </label> <input type='password' name='userpass' required='required' />" +
+									"</div>" +
+								"<input type='submit' value='Login' />" +
+								"</form>");
 					}
 					 %>
 				</div>
