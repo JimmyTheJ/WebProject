@@ -12,6 +12,9 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 	<script type="text/javascript" src="./javascript.js"></script>
     
+	<!-- Modal Handerl JS-->
+	<script async type="text/javascript" src="scripts/modalhandler.js"></script>
+
     <title>Type Trainer</title>
  
     <!-- Bootstrap -->
@@ -28,7 +31,7 @@
     <script>
 		$(window).load(function(){
 			var validUpdate = "<%= (Boolean)request.getAttribute("validUpdate") %>";
-		    
+
 			console.log(validUpdate);
 			
 			if(validUpdate == "true") {
@@ -60,6 +63,15 @@
 
 </head>
   <body>
+
+
+	<!-- Script to get user input on document, hidden fields allow for the JSP variables to be passed...-->
+	<input type="hidden" value="<%= userName %>" id="uName_var">
+	<input type="hidden" value="<%= sentence %>" id="sentence_var">
+	<script type="text/javascript" src="scripts/keyhandler.js"></script>
+
+	<!-- THE GREAT SEPERATOR MUAHAHAHA BOW TO MY CODE SEPERATION POWERS!!! -->
+
   	<form name="stats" id="stats" action="userUpdateServlet" method="post">
   		<input type="hidden" id="wpm_id" name="WPM" value="0" />
   		<input type="hidden" id="accuracy_id" name="Accuracy" value="0" />
@@ -67,7 +79,9 @@
   	</form>
    	<form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
   		<input type="hidden" id="phraseId" name="phraseId" value="0" />
-  	</form> 	
+  	</form> 
+
+  		
 	<div class="container-fluid" id="Mainbar">
 			<nav class="navbar navbar-fixed-top"  Style="margin: 0 auto; max-width: 70%">
 				<div class="container-fluid">
@@ -93,7 +107,7 @@
 												"</tr>" +
 												"<tr>" +
 													"<td>"+
-														"<button style='display: block' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'>Admin Panel</button>"	+
+														"<button style='display: block' onclick='load_modal_admin()' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal'>Admin Panel</button>"	+
 													"</td>" +
 													"<td>" +
 														"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
@@ -151,158 +165,6 @@
 			</div>
 		</div>
 		<div Style="width: 100%">
-		<script>
-	    	var pos = 0;
-	    	var uName = "<%= userName %>";
-	  		var currSentence = "<%= sentence %>";
-	    	var sentenceArray = [];
-	    	var userSentence = "";
-	    	var compareSentence = "";
-	    	var t = null;
-	    	var baseTime = -1;
-	    	var words = 0;
-	    	var curWPM = 0;
-	    	var perMatch = 0;
-	    	
-	    	for (i = 0; i < currSentence.length; i++) {
-	    		sentenceArray[i] = currSentence.charAt(i);
-	    	}
-
-			$(document).on('keypress', function(evt) {
-				
-				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')) {
-					evt = evt || window.event;
-					var charCode = evt.keyCode || evt.which;
-					var charStr = String.fromCharCode(charCode);
-					var count = 0;
-
-					 if (evt.which == 32) {
-			                evt.preventDefault();
-					 }
-					
-					if(t==null)
-						t= new Date();
-					// after first key press start timer
-					if(baseTime==-1){
-						baseTime=0;
-						baseTime+= t.getMinutes();
-						baseTime*=60;
-						baseTime+=t.getSeconds();
-					}
-
-					if(pos < currSentence.length) {
-						console.log(charStr);
-						console.log(currSentence.charAt(pos));
-
-						userSentence = userSentence + charStr;
-						compareSentence = compareSentence + sentenceArray[pos];
-
-						//Change background colour to green for correct letter, red if incorrect
-						if(charStr == currSentence.charAt(pos)){
-							document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
-							pos++;
-						}
-						else {
-							document.getElementById("letter"+pos).style.backgroundColor = "#ef6767";
-							pos++;
-						}
-						
-						
-
-						if(charStr == " ")
-							words++;
-
-						//check accuracy						
-						for(x = 0; x < compareSentence.length; x++){
-							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
-								count++;
-							}
-						}
-						perMatch=((100.00*count)/compareSentence.length);
-
-						//display accuracy
-						Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
-					}
-					else {
-						//check accuracy						
-						for(x = 0; x < compareSentence.length; x++){
-							if(compareSentence.charAt(x) == userSentence.charAt(x)) {
-								count++;
-							}
-						}
-						perMatch=((100.00*count)/compareSentence.length);
-
-						statsFormAccess = document.forms["stats"];
-						statsFormAccess.elements["WPM"].value = curWPM;
-						statsFormAccess.elements["Accuracy"].value = perMatch.toPrecision(3);
-						
-						if (uName != "null") {
-							document.getElementById("stats").submit();
-						}
-						else {
-							location.reload();
-						}
-					}
-				}
-			});
-
-			$(document).on('keydown', function(evt){
-				
-				if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')){
-					evt = evt || window.event;
-					var charCode = evt.keyCode || evt.which;
-
-					if (pos > 0) {
-						if(charCode == 8 || charCode == 46){
-							pos--;
-							document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
-
-							userSentence = userSentence.substring(0, userSentence.length()-1);
-							compareSentence = compareSentence.substring(0, compareSentence.length()-1);
-						}
-					}
-					/*
-					if(charCode == 32){
-						
-						if(pos < userSentence.length - 1){
-							
-							pos++
-							document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
-							
-						}
-						
-						return false;
-					}*/
-				}
-			});
-
-			// updates every second
-			var wpmInterval = setInterval(WPM, 1000);
-
-			function WPM() {
-				// if no key has been pressed
-				if(baseTime==-1)
-					return;
-
-				var cT= new Date();
-				var curTime= 0;
-
-
-				curTime+= cT.getMinutes();
-				curTime*=60;
-				curTime+=cT.getSeconds();
-				// some day/ hour overflow
-				if(cT.getDay() != t.getDay())
-					curTime+=(24*60*60);
-				else if(cT.getHours() != t.getHours())
-					curTime+=(60*60);
-				curTime-=baseTime;
-
-				curWPM= (words*60)/(curTime);
-
-				document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
-			}
-			</script>
 		</div>
 	</div>
 	
@@ -404,8 +266,9 @@
 				</div>
 				
 				<%
-					if((Boolean)session.getAttribute("validLogin") == null) {
-						out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal'>Sign up</button></div>");
+					if((Boolean)session.getAttribute("validLogin") == null || (Boolean)session.getAttribute("validLogin") == false) {
+						
+						out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal' onclick='load_modal_signup()'>Sign up</button></div>");
 					}
 				%>
 			</div>
@@ -413,253 +276,24 @@
 		</div>
 	</div>
 
-	<script>
-	$(document).ready(function() {
-		
-	    $("#SentenceListLink").click(function(){
-	        AddSentence.style.display = 'none';
-	        UpdateSentence.style.display = 'none';
-	        SentenceList.style.display = 'inline';
-	    });
-	    
-	    $("#AddSentenceLink").click(function(){
-	        AddSentence.style.display = 'inline';
-	        UpdateSentence.style.display = 'none';
-	        SentenceList.style.display = 'none';
-	    });
-	    
-	    $(".DeleteSentence").click(function(){
-	    	var sentenceToBeDeletedID = this.id;
-	    	
-			deleteAPhraseAccess = document.forms["deleteAPhrase"];
-			deleteAPhraseAccess.elements["phraseId"].value = sentenceToBeDeletedID;
-			
-			document.getElementById("deleteAPhrase").submit();
-	    });	    
-	})
-	</script>
-
 	<div id="adminModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<a href="#" id="AddSentenceLink">Add Sentence</a> &nbsp;&nbsp; <a href="#" id="SentenceListLink">Sentence List</a>&nbsp;&nbsp;
-				</div>
-				<div class="modal-body">
-					<div id="AddSentence">
-						<form action="addSentence" method="post">
-								<table>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="album">Album: </label> 
-									</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="album" name="album" required="required" />
-										 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-								<label for="artist">Artist: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="artist" name="artist" required="required" />	 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="song">Song: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="song" name="song" required="required" />
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-								<label for="sentence">Sentence: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<textarea  id="sentence" name="sentence" required="required"></textarea> 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="year_released">Year Released: </label> 
-									</td>
-									<td class="form-group" id="addcell">		
-										<input type="text" id="year_released" name="year_released" required="required" />
-										</td>
-									</tr>
-								</table>
-							<input type="radio" id="Lang" name="Lang" value="English" checked> English<br>
-							<input type="radio" id="Lang" name="Lang" value="French" > French<br>
-						<input type="submit" value="Add" />
-						</form>
-					</div>
-					<div id="SentenceList" Style="display: none">
-						<%
-							ArrayList<Object[]> al = AdminDao.sentenceList("English");
-							if (al.size() > 0) {
-								out.print(
-								"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
-									"<tr>" +
-										"<th>" +
-											" &nbsp;" +
-										"</th>" +
-										"<th>" + 
-											"#:" +
-										"</th>" +
-										"<th>" +
-											"Phrase:" +
-										"</th>" +
-									"</tr>");
-							}
-						
-							for (int i = 0; i < al.size(); i++) {
-								out.print(
-									"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
-										"<tr>" +
-											"<td Style='margin-right: 10px; padding-right: 10px;'>" +
-												"<button type='button' class='DeleteSentence' id='" +al.get(i)[0].toString() +"'> x </button>" + "<form name='SentenceUpdating' id='SentenceUpdating' action='selectSentenceServlet' method='post'><input type='hidden' id='musicsentence_id' name='musicsentence_id' value='" +al.get(i)[0].toString() + "' /><input type='submit' value='Update' /> &nbsp; </form>" +
-											"</td>" +
-											"<td Style='margin-left: 5px; margin-right: 5px; padding-left: 5px; padding-right: 5px]'>" +
-												(i+1) +
-											"</td>" +
-											"<td Style='margin-left: 10px; padding-left: 10px;'>" +
-												al.get(i)[4].toString() +
-											"</td>" +
-										"</tr>"
-								);
-							}
-							if (al.size() > 0) {
-								out.print("</table>");
-							}
-						%>
-					</div>
-					<div id="UpdateSentence" Style="display: none">
-						<form action="updateSentence" id="updateSentence" name="updateSentence" method="post">
-							<input type="hidden" name="u_sentence_id" id="u_sentence_id" value="" />
-								<table>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="u_album">Album: </label> 
-									</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="u_album" name="u_album" required="required" value="" />
-										 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-								<label for="u_artist">Artist: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="u_artist" name="u_artist" required="required" value="" />	 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="u_song">Song: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<input type="text" id="u_song" name="u_song" required="required" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-								<label for="u_sentence">Sentence: </label> 
-								</td>
-									<td class="form-group" id="addcell">
-										<textarea  id="u_sentence" name="u_sentence" required="required"></textarea> 
-									</td>
-								</tr>
-								<tr>
-									<td class="form-group" id="addcell">
-										<label for="u_year_released">Year Released: </label> 
-									</td>
-									<td class="form-group" id="addcell">		
-										<input type="text" id="u_year_released" name="u_year_released" required="required" value="" />
-										</td>
-									</tr>
-								</table>
-							<input type="radio" id="u_lang" name="u_lang" value="English" checked> English<br>
-							<input type="radio" id="u_lang" name="u_lang" value="French" > French<br>
-						<input type="submit" value="Update" />
-						</form>
-					</div>
-				</div>					
-
+				<div id="admin"></div>
 			</div>
 		</div>
 	</div>
-	
+
+
+
 	<div id="signUpModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 
-			<!-- Modal content-->
+		<!-- Modal content-->
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h2>Sign Up</h2>
-				</div>
-				<div class="modal-body">
-					<form action="userCreationServlet" method="post">
-						<table>
-							<tr>
-								<td class="form-group" id="signupcell">
-									<label for="username">Username: </label>
-								</td>
-								<td class="form-group" id="signupcell">
-									 <input type="text" id="username" name="username" required="required" />
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="signupcell">
-									<label for="password">Password: </label>
-								</td>
-								<td class="form-group" id="signupcell">
-									 <input type="password" name="userpass" required="required" />
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="signupcell">
-									<label for="f_name">First Name: </label>
-								</td>
-								<td class="form-group" id="signupcell">
-									 <input type="text" name="f_name" />
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="signupcell">
-									<label for="l_name">Last Name: </label>
-								</td>
-								<td class="form-group" id="signupcell">
-									 <input type="text" name="l_name" />
-								</td>
-							</tr>
-							<tr>
-								<td class="form-group" id="signupcell">
-									<label for="email">Email: </label>
-								</td>
-								<td class="form-group" id="signupcell">
-									 <input type="text" name="email" />
-								</td>
-							</tr>
-							<tr>
-								<td> <input type="submit" value="Submit!" /> </td>
-							</tr>
-						</table>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" Style="background-color: Transparent; border: none; overflow: hidden; outline: none" data-toggle="modal" data-target="#userModal" data-dismiss="modal">Login</button>
-				</div>
-			</div>
-
+				<div id="signup"></div>
 		</div>
 	</div>
-
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
