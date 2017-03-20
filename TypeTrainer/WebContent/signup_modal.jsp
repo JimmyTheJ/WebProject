@@ -7,7 +7,6 @@
   <head>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script type="text/javascript" src="./javascript.js"></script>
  
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -64,6 +63,5 @@
                         Style="background-color: Transparent; border: none; overflow: hidden; outline: none"
                         data-toggle="modal" data-target="#userModal" data-dismiss="modal">Login</button>
                 </div>
-            </div>
     </body>
 </html>

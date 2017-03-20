@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 
@@ -21,6 +22,8 @@ public class SelectSentenceServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 		
+			HttpSession session = request.getSession(true);
+		
 		    int musicID = Integer.parseInt(request.getParameter("musicsentence_id"));
 		    String musicArist = MusicSentencesDao.getArtist(musicID);
 		    String musicAlbum = MusicSentencesDao.getAlbum(musicID);
@@ -29,14 +32,14 @@ public class SelectSentenceServlet extends HttpServlet{
 		    String musicYear = MusicSentencesDao.getYear(musicID);
 		    String musicLanguage = MusicSentencesDao.getLanguage(musicID);
 	
-			request.setAttribute("sentence_id", musicID );
-			request.setAttribute("artist", musicArist );
-			request.setAttribute("album", musicAlbum );
-			request.setAttribute("song", musicSong );
-			request.setAttribute("music_sentence", musicSentence );
-			request.setAttribute("year", musicYear );
-			request.setAttribute("music_language", musicLanguage );
-			request.setAttribute("validUpdate", true );
+		    session.setAttribute("sentence_id", musicID );
+			session.setAttribute("artist", musicArist );
+			session.setAttribute("album", musicAlbum );
+			session.setAttribute("song", musicSong );
+			session.setAttribute("music_sentence", musicSentence );
+			session.setAttribute("year", musicYear );
+			session.setAttribute("music_language", musicLanguage );
+			session.setAttribute("validUpdate", true );
 			
 	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 	        rd.include(request,response);

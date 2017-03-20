@@ -36,7 +36,7 @@ $(document).on('keypress', function(evt) {
 			baseTime+=t.getSeconds();
 		}
 
-		if(pos < currSentence.length) {
+		if(pos < currSentence.length-1) {
 			console.log(charStr);
 			console.log(currSentence.charAt(pos));
 
@@ -123,7 +123,7 @@ $(document).on('keydown', function(evt){
 });
 
 // updates every second
-var wpmInterval = setInterval(WPM, 1000);
+var wpmInterval = setInterval(WPM, 500);
 
 function WPM() {
 	// if no key has been pressed
@@ -146,5 +146,6 @@ function WPM() {
 
 	curWPM= (words*60)/(curTime);
 
-	document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
+	if (isFinite(curWPM))
+		document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
 }

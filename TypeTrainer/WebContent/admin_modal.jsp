@@ -7,19 +7,19 @@
   <head>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script type="text/javascript" src="./javascript.js"></script>
- 
+
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
 
-    <script type="text/javascript" src="scripts/modalhandler.js">
+    <script type="text/javascript" src="scripts/modalhandler.js"> </script>
+    
+    <%	Object sentence_id, artist, album, song, music_sentence, year, music_language, validUpdate; %>
+    <script>
     	$(document).ready(function() {
-		    
 		    $(".DeleteSentence").click(function(){
-
 		    	var sentenceToBeDeletedID = this.id;
 		    	
 				deleteAPhraseAccess = document.forms["deleteAPhrase"];
@@ -28,13 +28,48 @@
 				document.getElementById("deleteAPhrase").submit();
 		    });	    
 		});
+    </script>
 
+    <script>
+		//$(window).load(function(){
+		$(document).ready(function() {
+			var validUpdate = "<%= (Boolean)session.getAttribute("validUpdate") %>";
+			console.log("ADMIN MODAL: " + validUpdate);
+			
+			if(validUpdate == "true") {
+				admin_modal_controller(2);
+				console.log("ADMIN MODAL: inside validUpdate");
+				
+				<%
+					sentence_id = session.getAttribute("sentence_id");
+					artist = session.getAttribute("artist") ;
+					album = session.getAttribute("album") ;
+					song = session.getAttribute("song") ;
+					music_sentence = session.getAttribute("music_sentence") ;
+					year = session.getAttribute("year") ;
+					music_language = session.getAttribute("music_language") ;
+					validUpdate = session.getAttribute("validUpdate") ;				
+					session.setAttribute("validUpdate", "null");
+				    session.setAttribute("sentence_id", "" );
+					session.setAttribute("artist", "" );
+					session.setAttribute("album", "" );
+					session.setAttribute("song", "" );
+					session.setAttribute("music_sentence", "" );
+					session.setAttribute("year", "" );
+					session.setAttribute("music_language", "" );
+					session.setAttribute("validUpdate", false );
+				%>
+			}
+		});
     </script>
 
     <body>
+    <form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
+  		<input type="hidden" id="phraseId" name="phraseId" value="0" />
+  	</form>
     	<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<button onclick="admin_modal_controller(1)">Add Sentence</button> &nbsp;&nbsp; <button onclick="admin_modal_controller(3)">Sentence List</a>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(1)">Add Sentence</button> &nbsp;&nbsp; <button onclick="admin_modal_controller(3)">Sentence List</button>&nbsp;&nbsp;
 		</div>
 		<div class="modal-body">
 			<div id="AddSentence">
@@ -127,16 +162,17 @@
 					}
 				%>
 			</div>
+			
 			<div id="UpdateSentence" Style="display: none">
 				<form action="updateSentence" id="updateSentence" name="updateSentence" method="post">
-					<input type="hidden" name="u_sentence_id" id="u_sentence_id" value="" />
+					<input type="hidden" name="u_sentence_id" id="u_sentence_id" value="<%= sentence_id %>" />
 						<table>
 						<tr>
 							<td class="form-group" id="addcell">
 								<label for="u_album">Album: </label> 
 							</td>
 							<td class="form-group" id="addcell">
-								<input type="text" id="u_album" name="u_album" required="required" value="" />
+								<input type="text" id="u_album" name="u_album" required="required" value="<%= album %>" />
 								 
 							</td>
 						</tr>
@@ -145,7 +181,7 @@
 						<label for="u_artist">Artist: </label> 
 						</td>
 							<td class="form-group" id="addcell">
-								<input type="text" id="u_artist" name="u_artist" required="required" value="" />	 
+								<input type="text" id="u_artist" name="u_artist" required="required" value="<%= artist %>" />	 
 							</td>
 						</tr>
 						<tr>
@@ -153,7 +189,7 @@
 								<label for="u_song">Song: </label> 
 						</td>
 							<td class="form-group" id="addcell">
-								<input type="text" id="u_song" name="u_song" required="required" value="" />
+								<input type="text" id="u_song" name="u_song" required="required" value="<%= song %>" />
 							</td>
 						</tr>
 						<tr>
@@ -161,7 +197,7 @@
 						<label for="u_sentence">Sentence: </label> 
 						</td>
 							<td class="form-group" id="addcell">
-								<textarea  id="u_sentence" name="u_sentence" required="required"></textarea> 
+								<textarea id="u_sentence" name="u_sentence" required="required"><%= music_sentence %></textarea> 
 							</td>
 						</tr>
 						<tr>
@@ -169,12 +205,33 @@
 								<label for="u_year_released">Year Released: </label> 
 							</td>
 							<td class="form-group" id="addcell">		
-								<input type="text" id="u_year_released" name="u_year_released" required="required" value="" />
+								<input type="text" id="u_year_released" name="u_year_released" required="required" value="<%= year %>" />
 								</td>
 							</tr>
 						</table>
-					<input type="radio" id="u_lang" name="u_lang" value="English" checked> English<br>
-					<input type="radio" id="u_lang" name="u_lang" value="French" > French<br>
+						<% String lang = (String)music_language;
+							if (lang == null) {
+								lang = "English";
+							}
+							if (lang.equalsIgnoreCase("english")) {
+								out.print(
+										"<input type='radio' id='u_lang' name='u_lang' value='English' checked> English<br>" +
+										"<input type='radio' id='u_lang' name='u_lang' value='French' > French<br>"
+								); 
+							}
+							else if (lang.equalsIgnoreCase("french")) {
+								out.print(
+										"<input type='radio' id='u_lang' name='u_lang' value='English' > English<br>" +
+										"<input type='radio' id='u_lang' name='u_lang' value='French' checked> French<br>"
+								); 								
+							}
+							else {
+								out.print(
+										"<input type='radio' id='u_lang' name='u_lang' value='English' checked> English<br>" +
+										"<input type='radio' id='u_lang' name='u_lang' value='French' > French<br>"
+								); 
+							}
+							%>
 				<input type="submit" value="Update" />
 				</form>
 			</div>
