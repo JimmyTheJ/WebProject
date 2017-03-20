@@ -80,7 +80,7 @@ public class UserStatsDao {
 	}
 	
 	public static void incrementSentences (int id) {
-		int numSentences = (int) UserInfoDao.performQuery ("SELECT num_sentences FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
+		int numSentences = 1 + (int) UserInfoDao.performQuery ("SELECT num_sentences FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 		
 		UserInfoDao.performQuery ("UPDATE user_stats SET num_sentences=? WHERE user_id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{ UserInfoDao.OBJ_INT, UserInfoDao.OBJ_INT }, new Object[]{ numSentences, id });
 	}

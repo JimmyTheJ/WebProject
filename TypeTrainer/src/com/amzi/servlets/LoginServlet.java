@@ -5,7 +5,8 @@ import com.amzi.dao.TypingMatchDao;
 import com.amzi.dao.UserInfoDao;
 
 import java.io.PrintWriter;
-import java.time.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
@@ -32,7 +33,25 @@ public class LoginServlet extends HttpServlet{
         
         String sentence = TypingMatchDao.getSentence();
         
-        if(LoginDao.validate(n, p)){
+        //encryption
+        String genPass=null;
+        try{
+        	MessageDigest md = MessageDigest.getInstance("MD5");
+        	md.update(p.getBytes());
+        	byte[] bytes = md.digest();
+        	
+        	StringBuilder build = new StringBuilder();
+        	
+        	for(int i=0; i< bytes.length ;++i){
+        		build.append(Integer.toString((bytes[i]& 0xff) +0x100,16).substring(1));
+        	}
+        	genPass=build.toString();
+        }
+        catch(NoSuchAlgorithmException e){
+        	e.printStackTrace();
+        }
+        
+        if(LoginDao.validate(n, genPass)){
         	HttpSession session = request.getSession();
         	session.setAttribute("name", n);
 

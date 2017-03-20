@@ -4,6 +4,8 @@ import java.io.IOException;
 import com.amzi.dao.UserCreationDao;
 
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
@@ -29,7 +31,25 @@ public class UserCreationServlet extends HttpServlet{
         String l_name=request.getParameter("l_name");
         String email=request.getParameter("email");
         
-        boolean isCreated = UserCreationDao.addUser(u_name, pw, f_name, l_name, email, new Timestamp(System.currentTimeMillis()));
+      //encryption
+        String genPass=null;
+        try{
+        	MessageDigest md = MessageDigest.getInstance("MD5");
+        	md.update(pw.getBytes());
+        	byte[] bytes = md.digest();
+        	
+        	StringBuilder build = new StringBuilder();
+        	
+        	for(int i=0; i< bytes.length ;++i){
+        		build.append(Integer.toString((bytes[i]& 0xff) +0x100,16).substring(1));
+        	}
+        	genPass=build.toString();
+        }
+        catch(NoSuchAlgorithmException e){
+        	e.printStackTrace();
+        }
+        
+        boolean isCreated = UserCreationDao.addUser(u_name, genPass, f_name, l_name, email, new Timestamp(System.currentTimeMillis()));
         
         HttpSession session = request.getSession();
         
