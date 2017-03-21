@@ -61,7 +61,7 @@
   		<input type="hidden" id="accuracy_id" name="Accuracy" value="0" />
   		<input type="hidden" id="username_id" name="Username" value=<%=userName %> />
   	</form>
-  		
+
 	<div class="container-fluid" id="Mainbar">
 			<nav class="navbar navbar-fixed-top"  Style="margin: 0 auto; max-width: 70%">
 				<div class="container-fluid">
@@ -118,11 +118,21 @@
 	<div class="container-fluid" id="MainArea">
 
 	<!--  LANGUAGE  -->
-		<select id="site_lang" Style="margin-top: 10px;">
-		  <option value="English">English</option>
-		  <option value="French"><%= Translate.getTranslation("French") %>></option>
-		</select>
-	
+	<form action="toggleLang" method="POST">
+		<%
+			if((String)session.getAttribute("lang") != null){
+				if((String)session.getAttribute("lang") == "English"){
+					out.print("<button id='lang' value='French' type='submit'>English</button>");
+				}
+				else if((String)session.getAttribute("lang") == "French"){
+					out.print("<button id='lang' value='English' type='submit'>French</button>");
+				}	
+			}
+			else{
+				out.print("<button id='lang' value='French' type='submit'>French</button>");
+			}
+		%>
+	</form>
 		<div class="container-fluid" id="TextArea">
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
