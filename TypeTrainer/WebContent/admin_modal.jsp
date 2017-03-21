@@ -26,7 +26,16 @@
 				deleteAPhraseAccess.elements["phraseId"].value = sentenceToBeDeletedID;
 				
 				document.getElementById("deleteAPhrase").submit();
-		    });	    
+		    });
+		    
+		    $(".RemoveUser").click(function(){
+		    	var userToRemove = this.id;
+		    	
+				removeUser = document.forms["removeUser"];
+				removeUser.elements["userId"].value = userToRemove;
+				
+				document.getElementById("removeUser").submit();
+		    });	
 		});
     </script>
 
@@ -42,22 +51,21 @@
 				
 				<%
 					sentence_id = session.getAttribute("sentence_id");
-					artist = session.getAttribute("artist") ;
-					album = session.getAttribute("album") ;
-					song = session.getAttribute("song") ;
-					music_sentence = session.getAttribute("music_sentence") ;
-					year = session.getAttribute("year") ;
-					music_language = session.getAttribute("music_language") ;
-					validUpdate = session.getAttribute("validUpdate") ;				
-					session.setAttribute("validUpdate", "null");
-				    session.setAttribute("sentence_id", "" );
-					session.setAttribute("artist", "" );
-					session.setAttribute("album", "" );
-					session.setAttribute("song", "" );
-					session.setAttribute("music_sentence", "" );
-					session.setAttribute("year", "" );
-					session.setAttribute("music_language", "" );
-					session.setAttribute("validUpdate", false );
+					artist = session.getAttribute("artist");
+					album = session.getAttribute("album");
+					song = session.getAttribute("song");
+					music_sentence = session.getAttribute("music_sentence");
+					year = session.getAttribute("year");
+					music_language = session.getAttribute("music_language");
+					validUpdate = session.getAttribute("validUpdate");
+				    session.setAttribute("sentence_id", "");
+					session.setAttribute("artist", "");
+					session.setAttribute("album", "");
+					session.setAttribute("song", "");
+					session.setAttribute("music_sentence", "");
+					session.setAttribute("year", "");
+					session.setAttribute("music_language", "");
+					session.setAttribute("validUpdate", false);
 				%>
 			}
 		});
@@ -67,9 +75,14 @@
     <form name="deleteAPhrase" id="deleteAPhrase" action="deleteSentence" method="post">
   		<input type="hidden" id="phraseId" name="phraseId" value="0" />
   	</form>
+  	 <form name="removeUser" id="removeUser" action="removeUser" method="post">
+  		<input type="hidden" id="userId" name="userId" value="0" />
+  	</form>  	
     	<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<button onclick="admin_modal_controller(1)">Add Sentence</button> &nbsp;&nbsp; <button onclick="admin_modal_controller(3)">Sentence List</button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(1)">Add Sentence</button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(3)">Sentence List</button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(4)">Remove User</button>&nbsp;&nbsp;
 		</div>
 		<div class="modal-body">
 			<div id="AddSentence">
@@ -105,7 +118,7 @@
 						<label for="sentence">Sentence: </label> 
 						</td>
 							<td class="form-group" id="addcell">
-								<textarea  id="sentence" name="sentence" required="required"></textarea> 
+								<textarea  id="sentence" name="sentence" required="required" rows="5" cols="60"></textarea> 
 							</td>
 						</tr>
 						<tr>
@@ -122,9 +135,47 @@
 				<input type="submit" value="Add" />
 				</form>
 			</div>
+			
+			<div id="RemoveUser" Style="display: none">
+				<%
+					ArrayList<Object[]> ul = AdminDao.returnATable("SELECT * from users where user_type='user'", 0, new int[] { UserInfoDao.OBJ_STRING }, new Object[] { null } );
+					if (ul.size() > 0) {
+						out.print(
+						"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
+							"<tr>" +
+								"<th>" +
+									"&nbsp; " +
+								"</th>" +
+								
+								"<th >" +
+									"Account Name:" +
+								"</th>" +
+							"</tr>");
+					}
+				
+					for (int i = 0; i < ul.size(); i++) {
+						out.print(
+							
+								"<tr>" +
+									"<td Style='margin-right: 10px; padding-right: 10px;'>" +
+										"<button type='button' class='RemoveUser' id='" +ul.get(i)[0].toString() +"'> x </button>" +
+									"</td>" +
+									"<td  Style='margin-right: 10px; padding-left: 10px;'>" +
+										ul.get(i)[1].toString() +
+									"</td>" +
+								"</tr>"
+								
+						);
+					}
+					if (ul.size() > 0) {
+						out.print("</table>");
+					}
+				%>
+			</div>
+			
 			<div id="SentenceList" Style="display: none">
 				<%
-					ArrayList<Object[]> al = AdminDao.sentenceList("English");
+					ArrayList<Object[]> al = AdminDao.returnATable("SELECT * from music_sentences where song_language = ?", 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ "English" });
 					if (al.size() > 0) {
 						out.print(
 						"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
@@ -197,7 +248,7 @@
 						<label for="u_sentence">Sentence: </label> 
 						</td>
 							<td class="form-group" id="addcell">
-								<textarea id="u_sentence" name="u_sentence" required="required"><%= music_sentence %></textarea> 
+								<textarea id="u_sentence" name="u_sentence" required="required" rows="5" cols="60"><%= music_sentence %></textarea> 
 							</td>
 						</tr>
 						<tr>

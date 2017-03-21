@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.amzi.dao.LoginDao;
-
 public class LoginServlet extends HttpServlet{
 
     private static final long serialVersionUID = 1L;
@@ -50,38 +48,23 @@ public class LoginServlet extends HttpServlet{
         catch(NoSuchAlgorithmException e){
         	e.printStackTrace();
         }
-        
-        if(LoginDao.validate(n, genPass)){
-        	HttpSession session = request.getSession();
+    	HttpSession session = request.getSession();
+    	
+        if( UserInfoDao.validateLogin(n, genPass) ){
         	session.setAttribute("name", n);
-
             session.setAttribute("sentence", sentence);
-            session.setAttribute("LastMatch", 100); 
-            session.setAttribute("loginMessage", "welcome back, " + n);          
-            request.setAttribute("sentence", sentence);
-            request.setAttribute("LastMatch", 100);
-            request.setAttribute("loginMessage", "welcome back, " + n);
-            
-            //session.setAttribute("sentence", sentence);  	
-            //session.setAttribute("loginMessage", "welcome back, " + n);          
-            
-            session.setAttribute("validLogin", new Boolean(true));
+            session.setAttribute("loginMessage", "welcome back, " + n);             
+            //session.setAttribute("validLogin", new Boolean(true));
 
             UserInfoDao.setLastLoginDate(UserInfoDao.getID(n), new Timestamp(System.currentTimeMillis()) );
-
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");           
-            rd.forward(request,response);  
-        }  
-        else{  
-        	
-        	HttpSession session = request.getSession();
-        	
-        	session.setAttribute("validLogin", new Boolean(false));
-        	session.setAttribute("name", n);
-        	
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
-            rd.include(request,response);  
-        }  
+        }
+        else{
+        	//session.setAttribute("validLogin", new Boolean(false));
+        	session.setAttribute("name", null);
+        }
+        
+        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
+        rd.include(request,response); 
 
         out.close();  
     }  

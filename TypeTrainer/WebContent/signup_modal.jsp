@@ -49,11 +49,21 @@
                             <tr>
                                 <td class="form-group" id="signupcell"><label for="email">Email:
                                 </label></td>
-                                <td class="form-group" id="signupcell"><input type="text"
+                                <td class="form-group" id="signupcell"><input type="email"
                                     name="email" /></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="Submit!" /></td>
+                                <td class="form-group" id="signupcell"><label for="lang">Language:
+                                </label></td>
+								<td class="form-group" id="signupcell">
+									<select name="lang" id="lang" Style="margin-top: 10px;">
+										<option value="English">English</option>
+										<option value="French">French</option>
+									</select>
+								</td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="Create Account" /></td>
                             </tr>
                         </table>
                     </form>

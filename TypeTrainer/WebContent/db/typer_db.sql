@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `typer_db`.`users` (
   `l_name` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `user_type` VARCHAR(45) NULL,
+  `user_lang` VARCHAR(45) NULL, 
   `join_date` DATETIME,
   `last_login` DATETIME,
   PRIMARY KEY (`id`))
@@ -116,16 +117,69 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO users (`username`, `password`, `f_name`, `l_name`, `email`, `user_type`) 
-VALUES ('sigl0003', '6368bb2c5c4e974b9b377ceacd184e5e', 'James', 'Sigler', 'jamussigler@algonquinlive.com', 'admin')
-	,('rice0061', '317c22ba7cb17d9a721190a3ad92d90e', 'Cameron', 'Rice', 'rice0061@algonquinlive.com', 'admin')
-    ,('attf0006', '5184ee6c419bba0370ceab5b0aa99afa', 'Gary', 'Attfield', 'attf0006@algonquinlive.com', 'admin')
+INSERT INTO users (`username`, `password`, `f_name`, `l_name`, `email`, `user_type`, `user_lang`) 
+VALUES ('sigl0003', '6368bb2c5c4e974b9b377ceacd184e5e', 'James', 'Sigler', 'jamussigler@algonquinlive.com', 'admin', 'english')
+	,('rice0061', '317c22ba7cb17d9a721190a3ad92d90e', 'Cameron', 'Rice', 'rice0061@algonquinlive.com', 'admin', 'english')
+    ,('attf0006', '5184ee6c419bba0370ceab5b0aa99afa', 'Gary', 'Attfield', 'attf0006@algonquinlive.com', 'admin', 'english')
+    ,('testuser1', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake@email.com', 'user', 'english')
+    ,('testuser2', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake1@email.com', 'user', 'english')
+	,('testuser3', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake2@email.com', 'user', 'english')
+    ,('testuser4', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake3@email.com', 'user', 'english')
+    ,('testuser5', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake4@email.com', 'user', 'english')
+    ,('testuser6', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake5@email.com', 'user', 'english')
+    ,('testuser7', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake6@email.com', 'user', 'english')
+    ,('testuser8', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake7@email.com', 'user', 'english')
+    ,('testuser9', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake8@email.com', 'user', 'english')
+    ,('testuser10', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake9@email.com', 'user', 'english')
+    ,('testuser11', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake10@email.com', 'user', 'english')
+	,('testuser12', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake11@email.com', 'user', 'english')
+    ,('testuser13', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake12@email.com', 'user', 'english')
+    ,('testuser14', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake13@email.com', 'user', 'english')
+    ,('testuser15', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake14@email.com', 'user', 'english')
+    ,('testuser16', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake15@email.com', 'user', 'english')
+    ,('testuser17', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake16@email.com', 'user', 'english')
+    ,('testuser18', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake17@email.com', 'user', 'english')    
+    ,('testuser19', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake18@email.com', 'user', 'english')
+    ,('testuser20', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake19@email.com', 'user', 'english')
+    ,('testuser21', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake20@email.com', 'user', 'english')
+    ,('testuser22', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake21@email.com', 'user', 'english')
+    ,('testuser23', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake22@email.com', 'user', 'english')
+	,('testuser24', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake23@email.com', 'user', 'english')
+    ,('testuser25', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake24@email.com', 'user', 'english')
+	,('testuser26', '5184ee6c419bba0370ceab5b0aa99afa', 'random', 'person', 'fake25@email.com', 'user', 'english')
     ;
 
 INSERT INTO user_stats (user_id, min_wpm, avg_wpm, max_wpm, min_accuracy, avg_accuracy, max_accuracy, num_sentences) 
 VALUES (1, 0, 0, 0, 0, 0, 0, 0)
 	,(2, 0, 0, 0, 0, 0, 0, 0)
-	,(3, 0, 0, 0, 0, 0, 0, 0);
+	,(3, 0, 0, 0, 0, 0, 0, 0)
+	,(4, 0, 0, 0, 0, 0, 0, 0)
+	,(5, 0, 0, 0, 0, 0, 0, 0)
+	,(6, 0, 0, 0, 0, 0, 0, 0)
+	,(7, 0, 0, 0, 0, 0, 0, 0)
+	,(8, 0, 0, 0, 0, 0, 0, 0)
+	,(9, 0, 0, 0, 0, 0, 0, 0)
+	,(10, 0, 0, 0, 0, 0, 0, 0)
+	,(11, 0, 0, 0, 0, 0, 0, 0)
+	,(12, 0, 0, 0, 0, 0, 0, 0)
+	,(13, 0, 0, 0, 0, 0, 0, 0)
+	,(14, 0, 0, 0, 0, 0, 0, 0)
+	,(15, 0, 0, 0, 0, 0, 0, 0)
+	,(16, 0, 0, 0, 0, 0, 0, 0)
+	,(17, 0, 0, 0, 0, 0, 0, 0)
+	,(18, 0, 0, 0, 0, 0, 0, 0)
+	,(19, 0, 0, 0, 0, 0, 0, 0)  
+	,(20, 0, 0, 0, 0, 0, 0, 0)
+	,(21, 0, 0, 0, 0, 0, 0, 0)
+	,(22, 0, 0, 0, 0, 0, 0, 0)
+	,(23, 0, 0, 0, 0, 0, 0, 0)
+	,(24, 0, 0, 0, 0, 0, 0, 0)
+	,(25, 0, 0, 0, 0, 0, 0, 0)
+	,(26, 0, 0, 0, 0, 0, 0, 0) 
+	,(27, 0, 0, 0, 0, 0, 0, 0)
+	,(28, 0, 0, 0, 0, 0, 0, 0)
+	,(29, 0, 0, 0, 0, 0, 0, 0)     
+    ;
 
 INSERT INTO music_sentences (`artist`, `album`, `song`, `year_released`, `sentence`, `song_language`)
 VALUES ("Snoop Dogg", "Doggystyle", "Gin and Juice", "1993", "Rollin' down the street, smokin' indo. Sippin' on gin and juice, laid back. With my mind on my money and my money on my mind.", "English")

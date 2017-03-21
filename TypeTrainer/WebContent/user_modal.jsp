@@ -30,7 +30,7 @@
 		</div>
 		<div class="modal-body">
 		<% 				
-			if((Boolean)session.getAttribute("validLogin") == null) {
+			if( (String)session.getAttribute("name") == null) {
 				out.print(
 					"<form action='loginServlet' method='post'>" +
 						"<div class='form-group'>" +
@@ -42,7 +42,7 @@
 					"<input type='submit' value='Login' />" +
 					"</form>");
 			}
-			else if((Boolean)session.getAttribute("validLogin") == true) {
+			else {
 				int userID = UserInfoDao.getID((String)session.getAttribute("name"));
 				double topWPM = UserStatsDao.getTopWPM(userID);
 				double avgWPM = UserStatsDao.getAvgWPM(userID);
@@ -76,18 +76,6 @@
 						"</tr>" +									
 					"</table>"
 				);
-			}
-			else{
-				out.print(
-						"<form action='loginServlet' method='post'>" +
-							"<div class='form-group'>" +
-								"<label for='username'>Username: </label> <input type='text' name='username' required='required' />" +
-							"</div>" +
-							"<div class='form-group'>" +
-								"<label for='password'>Password: </label> <input type='password' name='userpass' required='required' />" +
-							"</div>" +
-						"<input type='submit' value='Login' />" +
-						"</form>");
 			}
 			 %>
 		</div>

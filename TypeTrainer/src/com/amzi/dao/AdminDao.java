@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class AdminDao {
@@ -19,22 +20,37 @@ public class AdminDao {
 	public static void updateSentence(int id, String album, String artist, String song, String sentence, String year, String lang){
 		UserInfoDao.performQuery ("UPDATE music_sentences SET album=?, artist=?, song=?, sentence=?, year_released=?, song_language=? WHERE id=?", UserInfoDao.UPDATE_QUERY, 7, new int[]{ UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_INT }, new Object[]{ album, artist, song, sentence, year, lang, id });
 	}
+
+	public static void removeUser(int id) {
+		UserInfoDao.performQuery ("DELETE from users where id=?", UserInfoDao.UPDATE_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
+		UserInfoDao.performQuery ("DELETE from user_stats where user_id=?", UserInfoDao.UPDATE_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
+	}
 	
-	public static ArrayList<Object[]> sentenceList(String language){
+	public static ArrayList<Object[]> returnATable (String statement, int numQuestionMarks, int objectType[], Object data[]){
 		  Connection conn = null;
 		  PreparedStatement pst = null;
 		  ResultSet rs = null;
 		  ResultSetMetaData rsmd = null;
 		  int columnCount = 0;
-		  ArrayList<Object[]> phraseList = new ArrayList<Object[]>();
+		  ArrayList<Object[]> theTable = new ArrayList<Object[]>();
 		  
 		  
 		    try {
 	        	conn = BaseDao.getConnection();
-	            pst = conn.prepareStatement("SELECT * from music_sentences where song_language = ?");
-	            pst.setString(1, language);
+	            pst = conn.prepareStatement(statement);
 	            
-	           rs= pst.executeQuery();
+	            for (int i = 0; i < numQuestionMarks; i++) {
+	            	if (objectType[i] == UserInfoDao.OBJ_INT)
+	            		pst.setInt(i+1, (int)data[i]);
+		        	if (objectType[i] == UserInfoDao.OBJ_DOUBLE)
+		        		pst.setDouble(i+1, (double)data[i]);
+		        	if (objectType[i] == UserInfoDao.OBJ_DATE)
+		        		pst.setTimestamp(i+1, (Timestamp)data[i]);
+	            	if (objectType[i] == UserInfoDao.OBJ_STRING)
+	            		pst.setObject(i+1, (String)data[i]);
+	            }
+	            
+	           rs = pst.executeQuery();
 	           rsmd = rs.getMetaData();
 	           columnCount = rsmd.getColumnCount();           
 	           
@@ -43,7 +59,7 @@ public class AdminDao {
 	        	    for (int i = 0; i < rsmd.getColumnCount(); i++) {
 	        	    	columnValues[i] = rs.getObject(i+1);
 	        	    }
-	        	    phraseList.add(columnValues);
+	        	    theTable.add(columnValues);
 	           }
 	           
 	        }
@@ -73,6 +89,6 @@ public class AdminDao {
 	            }
 	        
 	        }
-		    return phraseList;
+		    return theTable;
 		}
 }
