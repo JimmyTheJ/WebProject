@@ -146,16 +146,73 @@
 		<div Style="width: 100%">
 		</div>
 	</div>
+
+	<script>
+		function updateLeaderboard() {
+			console.log("LIMIT LEADERBOARD ROWS");
+			
+			var input, filter, table, tr, td, i;
+			input = document.getElementById("leaderboard_num_entries");
+			filter = $("#leaderboard_num_entries option:selected").val();
+			
+			console.log(filter);
+			table = document.getElementById("leaderboard-table");
+			tr = table.getElementsByTagName("tr");
+			
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				if (i > filter) {
+					tr[i].style.display = "none";
+				}
+				else {
+					tr[i].style.display = "";
+				}
+			}	
+		}
+		
+		$(document).ready(function() {
+			$(window).load(function() {
+				updateLeaderboard();
+		    });
+			
+			$('#leaderboard_num_entries').change(function() {
+				updateLeaderboard();
+		    });
+		});
+	</script>
 	
 	<div class="container-fluid" id="MainArea">
 		<h2 class="page-header">Leaderboards</h2>
+		<select id="leaderboard_num_entries" Style="margin-bottom: 10px;">
+	  		<option value="10" selected>10</option>
+	  		<option value="25">25</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+		</select>
 		<table class="table table-striped" id="leaderboard-table">
-		
 			<tr class="table-bordered">
 				<th>User</th>
 				<th>Average WPM</th>
 				<th>Average Accuracy</th>
-			</tr>	
+			</tr>
+			<%
+				ArrayList<Object[]> leaderboard_data = AdminDao.returnATable("SELECT user_id, avg_wpm, avg_accuracy FROM user_stats ORDER BY avg_wpm DESC LIMIT 100", 0, new int[] { UserInfoDao.OBJ_INT}, new Object[] { 100 });
+				
+				for (int i = 0; i < leaderboard_data.size(); i++) {
+					out.print("<tr>");
+					for (int j = 0; j < leaderboard_data.get(i).length; j++) {
+						int table_user_id = (int)leaderboard_data.get(i)[0];
+						String table_user_name = (String)UserInfoDao.getUsername( (int)table_user_id );
+						//out.print("<td>" + leaderboard_data.get(i)[j] + "</td>");
+						if (j == 0)
+							out.print("<td>" + table_user_name + "</td>");
+						else
+							out.println("<td>" + leaderboard_data.get(i)[j] + "</td>");
+					}
+					out.print("</tr>");
+				}
+			%>
+			
 		</table>
 	</div>
 

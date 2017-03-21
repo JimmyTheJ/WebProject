@@ -124,7 +124,8 @@
 			</div>
 			<div id="SentenceList" Style="display: none">
 				<%
-					ArrayList<Object[]> al = AdminDao.sentenceList("English");
+					//ArrayList<Object[]> al = AdminDao.sentenceList("English");
+					ArrayList<Object[]> al = AdminDao.returnATable("SELECT * from music_sentences where song_language = ?", 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ "English" });
 					if (al.size() > 0) {
 						out.print(
 						"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +

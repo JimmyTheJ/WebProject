@@ -9,13 +9,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class UserInfoDao {
-	protected static final int OBJ_INT = 1;
-	protected static final int OBJ_DOUBLE = 2;
-	protected static final int OBJ_DATE = 3;
-	protected static final int OBJ_STRING = 4;
+	public static final int OBJ_INT = 1;
+	public static final int OBJ_DOUBLE = 2;
+	public static final int OBJ_DATE = 3;
+	public static final int OBJ_STRING = 4;
 	
-	protected static final int SELECT_QUERY = 1;
-	protected static final int UPDATE_QUERY = 2;
+	public static final int SELECT_QUERY = 1;
+	public static final int UPDATE_QUERY = 2;
 	
 	public static Object performQuery (String statement, int typeSQL, int numQuestionMarks, int objectType[], Object data[]) {
 	    Connection conn = null;
@@ -33,8 +33,6 @@ public class UserInfoDao {
 	        		pst.setDouble(i+1, (double)data[i]);
 	        	if (objectType[i] == OBJ_DATE)
 	        		pst.setTimestamp(i+1, (Timestamp)data[i]);
-	        	//if (objectType[i] == OBJ_DATE)
-	        	//	pst.setDate(i+1, (Date)data[i]);
             	if (objectType[i] == OBJ_STRING)
             		pst.setObject(i+1, (String)data[i]);
             }
