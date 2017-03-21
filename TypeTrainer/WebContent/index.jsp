@@ -116,11 +116,12 @@
 		</div>
 
 	<div class="container-fluid" id="MainArea">
+
 	<!--  LANGUAGE  -->
-	<select id="site_lang" Style="margin-top: 10px;">
-	  <option value="English">English</option>
-	  <option value="French">French</option>
-	</select>
+		<select id="site_lang" Style="margin-top: 10px;">
+		  <option value="English">English</option>
+		  <option value="French"><%= Translate.getTranslation("French") %>></option>
+		</select>
 	
 		<div class="container-fluid" id="TextArea">
 			<div id="TextAreaHeader" class="container-fluid">
