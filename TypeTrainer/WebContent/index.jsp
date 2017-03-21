@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-
     
 	<!-- Modal Handerl JS-->
 	<script async type="text/javascript" src="scripts/modalhandler.js"></script>
@@ -23,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     
     <% 	
-    	String sentence = TypingMatchDao.getSentence(); 
+	    String sentence = TypingMatchDao.getSentence(); 
 		String userName = (String)session.getAttribute("name");
 		int userID = UserInfoDao.getID(userName);
     %>
@@ -31,14 +30,18 @@
 </head>
   <body>
     <script>
-		$(window).load(function(){
-			var validUpdate = "<%= (Boolean)session.getAttribute("validUpdate") %>";
-			console.log(validUpdate);
-			
-	    	load_modal_user();
+		var validUpdate = "<%= (Boolean)session.getAttribute("validUpdate") %>";
+		var user_name = "<%= userName %>";
 		
+		$(window).load(function(){
+			console.log(validUpdate);
+			console.log(user_name);
+			
+		    load_modal_user();
+			
 			if(validUpdate == "true") {
-				document.getElementById("admin_panel_button").click();
+				 $('#adminModal').modal('show');
+				load_modal_admin();
 			}
 		});
 	</script>
@@ -46,7 +49,10 @@
 	<!-- Script to get user input on document, hidden fields allow for the JSP variables to be passed...-->
 	<input type="hidden" value="<%= userName %>" id="uName_var">
 	<input type="hidden" value="<%= sentence %>" id="sentence_var">
+
+	<!-- Leaderboard and key handling JS -->
 	<script type="text/javascript" src="scripts/keyhandler.js"></script>
+	<script type="text/javascript" src="scripts/leaderboard.js"></script>
 
 	<!-- THE GREAT SEPERATOR MUAHAHAHA BOW TO MY CODE SEPERATION POWERS!!! -->
 
@@ -66,45 +72,39 @@
 					<ul class="nav navbar-nav navbar-right" style="margin: 10px">
 					<li>
 					<%
-						Boolean validLogin = (Boolean)session.getAttribute("validLogin");
-					
-						if(validLogin != null) {
-							if(validLogin) {
-								if(userName != null) {
-									if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
-										out.print(
-											"<table>" +
-												"<tr>" +
-													"<td>" +
-														"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
-													"</td>" +
-												"</tr>" +
-												"<tr>" +
-													"<td>"+
-														"<button style='display: block' onclick='load_modal_admin()' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal' id='admin_panel_button'>Admin Panel</button>"	+
-													"</td>" +
-													"<td>" +
-														"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
-													"</td>" +
-												"</tr>" +
-											"</table>");
-									}
-									else{
-										out.print(
-												"<table>" +
-													"<tr>" +
-														"<td>" +
-															"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
-														"</td>" +
-													"</tr>" +
-													"<tr>" +
-														"<td>" +
-															"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
-														"</td>" +
-													"</tr>" +
-												"</table>");
-									}
-								}
+						if(userName != null) {
+							if(UserInfoDao.getUserType(userName).equalsIgnoreCase("admin")){
+								out.print(
+									"<table>" +
+										"<tr>" +
+											"<td>" +
+												"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
+											"</td>" +
+										"</tr>" +
+										"<tr>" +
+											"<td>"+
+												"<button style='display: block' onclick='load_modal_admin()' type='button' data-toggle='modal' data-target='#adminModal' data-dismiss='modal' id='admin_panel_button'>Admin Panel</button>"	+
+											"</td>" +
+											"<td>" +
+												"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+											"</td>" +
+										"</tr>" +
+									"</table>");
+							}
+							else{
+								out.print(
+										"<table>" +
+											"<tr>" +
+												"<td>" +
+													"<p Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;'>" + session.getAttribute("loginMessage") + "</p>" +
+												"</td>" +
+											"</tr>" +
+											"<tr>" +
+												"<td>" +
+													"<a Style='padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888;' href='logoutServlet'>logout</a>" +
+												"</td>" +
+											"</tr>" +
+										"</table>");
 							}
 						}
 					%>
@@ -147,42 +147,8 @@
 		</div>
 	</div>
 
-	<script>
-		function updateLeaderboard() {
-			console.log("LIMIT LEADERBOARD ROWS");
-			
-			var input, filter, table, tr, td, i;
-			input = document.getElementById("leaderboard_num_entries");
-			filter = $("#leaderboard_num_entries option:selected").val();
-			
-			console.log(filter);
-			table = document.getElementById("leaderboard-table");
-			tr = table.getElementsByTagName("tr");
-			
-			// Loop through all table rows, and hide those who don't match the search query
-			for (i = 0; i < tr.length; i++) {
-				if (i > filter) {
-					tr[i].style.display = "none";
-				}
-				else {
-					tr[i].style.display = "";
-				}
-			}	
-		}
-		
-		$(document).ready(function() {
-			$(window).load(function() {
-				updateLeaderboard();
-		    });
-			
-			$('#leaderboard_num_entries').change(function() {
-				updateLeaderboard();
-		    });
-		});
-	</script>
-	
 	<div class="container-fluid" id="MainArea">
-		<h2 class="page-header">Leaderboards</h2>
+		<h2 class="page-header">Leaderboard</h2>
 		<select id="leaderboard_num_entries" Style="margin-bottom: 10px;">
 	  		<option value="10" selected>10</option>
 	  		<option value="25">25</option>
@@ -203,7 +169,6 @@
 					for (int j = 0; j < leaderboard_data.get(i).length; j++) {
 						int table_user_id = (int)leaderboard_data.get(i)[0];
 						String table_user_name = (String)UserInfoDao.getUsername( (int)table_user_id );
-						//out.print("<td>" + leaderboard_data.get(i)[j] + "</td>");
 						if (j == 0)
 							out.print("<td>" + table_user_name + "</td>");
 						else

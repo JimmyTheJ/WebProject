@@ -103,26 +103,14 @@ $(document).on('keydown', function(evt){
 				pos--;
 				document.getElementById("letter"+pos).style.backgroundColor = "#ffff00";
 
-				userSentence = userSentence.substring(0, userSentence.length()-1);
-				compareSentence = compareSentence.substring(0, compareSentence.length()-1);
+				userSentence = userSentence.substring(0, userSentence.length-1);
+				compareSentence = compareSentence.substring(0, compareSentence.length-1);
 			}
 		}
-		/*
-		if(charCode == 32){
-			
-			if(pos < userSentence.length - 1){
-				
-				pos++
-				document.getElementById("letter"+pos).style.backgroundColor = "#66ef82";
-				
-			}
-			
-			return false;
-		}*/
 	}
 });
 
-// updates every second
+// updates every 1/2 second
 var wpmInterval = setInterval(WPM, 500);
 
 function WPM() {

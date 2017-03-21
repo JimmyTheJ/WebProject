@@ -16,27 +16,35 @@ function load_modal_user(){
 //This is for admin modal linking
 function admin_modal_controller(x){
 	switch(x){
-		case 1:
-				document.getElementById('AddSentence').style.display = 'inline';
-		    	document.getElementById('UpdateSentence').style.display = 'none';
-		    	document.getElementById('SentenceList').style.display = 'none';
-			break;
-		case 2:
-				document.getElementById('AddSentence').style.display = 'none';
-		    	document.getElementById('UpdateSentence').style.display = 'inline';
-		    	document.getElementById('SentenceList').style.display = 'none';
-			break;
-		case 3:
-				document.getElementById('AddSentence').style.display = 'none';
-		    	document.getElementById('UpdateSentence').style.display = 'none';
-		    	document.getElementById('SentenceList').style.display = 'inline';
-			break;
-		default:
-				document.getElementById('AddSentence').style.display = 'none';
-		    	document.getElementById('UpdateSentence').style.display = 'none';
-		    	document.getElementById('SentenceList').style.display = 'inline';
-			break;
-
-	}
-
+	case 1:
+		document.getElementById('AddSentence').style.display = 'inline';
+    	document.getElementById('UpdateSentence').style.display = 'none';
+    	document.getElementById('SentenceList').style.display = 'none';
+    	document.getElementById('RemoveUser').style.display='none';
+    	break;
+	case 2:
+		document.getElementById('AddSentence').style.display = 'none';
+    	document.getElementById('UpdateSentence').style.display = 'inline';
+    	document.getElementById('SentenceList').style.display = 'none';
+    	document.getElementById('RemoveUser').style.display='none';
+		break;
+	case 3:
+		document.getElementById('AddSentence').style.display = 'none';
+    	document.getElementById('UpdateSentence').style.display = 'none';
+    	document.getElementById('SentenceList').style.display = 'inline';
+    	document.getElementById('RemoveUser').style.display='none';
+		break;
+	case 4:
+		document.getElementById('AddSentence').style.display = 'none';
+		document.getElementById('UpdateSentence').style.display = 'none';
+		document.getElementById('SentenceList').style.display = 'none';
+		document.getElementById('RemoveUser').style.display='inline';
+		break;
+	default:
+		document.getElementById('AddSentence').style.display = 'none';
+    	document.getElementById('UpdateSentence').style.display = 'none';
+    	document.getElementById('SentenceList').style.display = 'inline';
+    	document.getElementById('RemoveUser').style.display='none';
+    	break;
+    }
 }
