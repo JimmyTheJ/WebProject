@@ -33,7 +33,10 @@ public class TypingMatchServlet extends HttpServlet{
 		 }
 		
 		 accuracy=matching(sentence,request.getParameter("match")); 
-			sentence=TypingMatchDao.getSentence();
+	        if (session.getAttribute("lang") != null)
+	        	 sentence = TypingMatchDao.getSentence((String)session.getAttribute("lang"));
+	        else
+	        	sentence = TypingMatchDao.getSentence("english");
 			request.setAttribute("sentence", sentence);
 			session.setAttribute("sentence", sentence);
 			

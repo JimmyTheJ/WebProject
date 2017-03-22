@@ -23,7 +23,7 @@
                     <form action="userCreationServlet" method="post">
                         <table>
                             <tr>
-                                <td class="form-group" id="signupcell"><label for="username">Username:
+                                <td class="form-group" id="signupcell"><label for="username">Username
                                 </label></td>
                                 <td class="form-group" id="signupcell"><input type="text"
                                     id="username" name="username" required="required" /></td>
