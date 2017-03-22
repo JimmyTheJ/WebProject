@@ -119,19 +119,12 @@
 
 	<!--  LANGUAGE  -->
 	<form action="toggleLang" method="POST">
-		<%
-			if((String)session.getAttribute("lang") != null){
-				if((String)session.getAttribute("lang") == "English"){
-					out.print("<button id='lang' value='French' type='submit'>English</button>");
-				}
-				else if((String)session.getAttribute("lang") == "French"){
-					out.print("<button id='lang' value='English' type='submit'>French</button>");
-				}	
-			}
-			else{
-				out.print("<button id='lang' value='French' type='submit'>French</button>");
-			}
-		%>
+		<select name="lang" onchange="this.form.submit();">
+			<option>Select Language</option>
+
+			<option value="French">French</option>
+			<option value="English">English</option>
+		</select>
 	</form>
 		<div class="container-fluid" id="TextArea">
 			<div id="TextAreaHeader" class="container-fluid">
@@ -159,7 +152,8 @@
 	</div>
 
 	<div class="container-fluid" id="MainArea">
-		<h2 class="page-header">Leaderboard</h2>
+		<h2 class='page-header'>Leaderboard</h2>
+	
 		<select id="leaderboard_num_entries" Style="margin-bottom: 10px;">
 	  		<option value="10" selected>10</option>
 	  		<option value="25">25</option>

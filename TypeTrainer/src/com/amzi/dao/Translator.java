@@ -6,16 +6,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Translator {
-  // TODO: If you have your own Premium account credentials, put them down here:
+  
+	//Using some random translation api service, its free and works for our needs. Google was waaaay to convoluted
   private static final String CLIENT_ID = "FREE_TRIAL_ACCOUNT";
   private static final String CLIENT_SECRET = "PUBLIC_SECRET";
   private static final String ENDPOINT = "http://api.whatsmate.net/v1/translation/translate";
 
-  /**
-   * Sends out a WhatsApp message via WhatsMate WA Gateway.
-   */
   public static String translate(String fromLang, String toLang, String text) throws Exception {
-    // TODO: Should have used a 3rd party library to make a JSON string from an object
+	  
     String jsonPayload = new StringBuilder()
       .append("{")
       .append("\"fromLang\":\"")
@@ -32,6 +30,7 @@ public class Translator {
 
     URL url = new URL(ENDPOINT);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    
     conn.setDoOutput(true);
     conn.setRequestMethod("POST");
     conn.setRequestProperty("X-WM-CLIENT-ID", CLIENT_ID);

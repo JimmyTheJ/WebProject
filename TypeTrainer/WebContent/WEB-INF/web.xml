@@ -91,7 +91,16 @@
   <servlet-mapping>
     <servlet-name>update</servlet-name>
     <url-pattern>/userUpdateServlet</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>toggleLang</servlet-name>
+    <servlet-class>com.amzi.servlets.ToggleLang</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>toggleLang</servlet-name>
+    <url-pattern>/toggleLang</url-pattern>
+  </servlet-mapping> 
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

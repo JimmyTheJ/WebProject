@@ -19,11 +19,19 @@ public class ToggleLang extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 		
-			String lang = request.getParameter("language");
+			String lang = request.getParameter("lang");
 			
 			HttpSession session = request.getSession();
 			
-			session.setAttribute("lang", lang);
+			System.out.println(lang);
+			
+			if((String)session.getAttribute("lang") != null){
+				session.removeAttribute("lang");
+				session.setAttribute("lang", lang);
+			}
+			else{
+				session.setAttribute("lang", lang);
+			}
 		
 	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 	        rd.include(request,response);
