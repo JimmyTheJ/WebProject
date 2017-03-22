@@ -8,6 +8,7 @@ import java.net.URL;
 public class Translator {
   
 	//Using some random translation api service, its free and works for our needs. Google was waaaay to convoluted
+	//Too bad it lets you translate like two things ever then shuts down and forces you to pay for it.
   private static final String CLIENT_ID = "FREE_TRIAL_ACCOUNT";
   private static final String CLIENT_SECRET = "PUBLIC_SECRET";
   private static final String ENDPOINT = "http://api.whatsmate.net/v1/translation/translate";
@@ -47,15 +48,16 @@ public class Translator {
         (statusCode == 200) ? conn.getInputStream() : conn.getErrorStream()
       ));
     
-    String output;
+    String buildOutput = "";
+    StringBuilder output = new StringBuilder(); 
     
-    while ((output = br.readLine()) != null) {
-        return output;
+    while ((buildOutput = br.readLine()) != null) {
+    	output.append(buildOutput);
     }
     
     conn.disconnect();
     
-    return null;
+    return output.toString();
   }
 
 }

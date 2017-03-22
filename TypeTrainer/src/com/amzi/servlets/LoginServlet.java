@@ -28,8 +28,7 @@ public class LoginServlet extends HttpServlet{
         
         String n=request.getParameter("username");
         String p=request.getParameter("userpass");
-        
-        String sentence = TypingMatchDao.getSentence();
+        String sentence;
         
         //encryption
         String genPass=null;
@@ -50,11 +49,16 @@ public class LoginServlet extends HttpServlet{
         }
     	HttpSession session = request.getSession();
     	
+    	
+        if (session.getAttribute("lang") != null)
+        	 sentence = TypingMatchDao.getSentence((String)session.getAttribute("lang"));
+        else
+        	sentence = TypingMatchDao.getSentence("english");
+    	
+        
         if( UserInfoDao.validateLogin(n, genPass) ){
         	session.setAttribute("name", n);
             session.setAttribute("sentence", sentence);
-            session.setAttribute("loginMessage", "welcome back, " + n);             
-            //session.setAttribute("validLogin", new Boolean(true));
 
             UserInfoDao.setLastLoginDate(UserInfoDao.getID(n), new Timestamp(System.currentTimeMillis()) );
         }

@@ -9,7 +9,8 @@ import java.sql.*;
 
 public class TypingMatchDao {
 
-	public static String getSentence(){
+	//public static String getSentence(){
+	public static String getSentence(String lang){
 		
 		String sentence ="";
 		
@@ -21,8 +22,10 @@ public class TypingMatchDao {
 		
         try {
         	conn = BaseDao.getConnection();
-             pst = conn.prepareStatement("SELECT * FROM music_sentences ORDER BY RAND() LIMIT 1");
+        	 //pst = conn.prepareStatement("SELECT * FROM music_sentences ORDER BY RAND() LIMIT 1");
+        	 pst = conn.prepareStatement("SELECT * FROM music_sentences WHERE song_language = ? ORDER BY RAND() LIMIT 1");
         	
+        	 pst.setString(1, lang);
         	rs = pst.executeQuery();
         	
         	rs.next();

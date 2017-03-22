@@ -15,7 +15,7 @@ public class UserInfoDao {
 	public static final int SELECT_QUERY = 1;
 	public static final int UPDATE_QUERY = 2;
 	
-	public static Object performQuery (String statement, int typeSQL, int numQuestionMarks, int objectType[], Object data[]) {
+	public static Object performQuery (String statement, int typeSQL, int numQuestionMarks, int objectType[], Object data[]) {		
 	    Connection conn = null;
 	    PreparedStatement pst = null;
 	    ResultSet rs = null;
