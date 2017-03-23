@@ -5,7 +5,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+	 <%
+		String toLanguage = (String)session.getAttribute("lang");
+		if (toLanguage == null)
+			toLanguage = "English";
+		Internationalizer translate = new Internationalizer(toLanguage);
+		String pageName = "admin_modal.";
+	%>
+	
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
     <!-- Bootstrap -->
@@ -80,9 +87,9 @@
   	</form>  	
     	<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<button onclick="admin_modal_controller(1)">Add Sentence</button>&nbsp;&nbsp;
-			<button onclick="admin_modal_controller(3)">Sentence List</button>&nbsp;&nbsp;
-			<button onclick="admin_modal_controller(4)">Remove User</button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(1)"><%= translate.getWords(pageName + "add_phrase") %></button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(3)"><%= translate.getWords(pageName + "phrase_list") %></button>&nbsp;&nbsp;
+			<button onclick="admin_modal_controller(4)"><%= translate.getWords(pageName + "remove_user") %></button>&nbsp;&nbsp;
 		</div>
 		<div class="modal-body">
 			<div id="AddSentence">
@@ -90,7 +97,7 @@
 						<table>
 						<tr>
 							<td class="form-group" id="addcell">
-								<label for="album">Album: </label> 
+								<label for="album"><%= translate.getWords(pageName + "album") %></label> 
 							</td>
 							<td class="form-group" id="addcell">
 								<input type="text" id="album" name="album" required="required" />
@@ -99,7 +106,7 @@
 						</tr>
 						<tr>
 							<td class="form-group" id="addcell">
-						<label for="artist">Artist: </label> 
+						<label for="artist"><%= translate.getWords(pageName + "artist") %></label> 
 						</td>
 							<td class="form-group" id="addcell">
 								<input type="text" id="artist" name="artist" required="required" />	 
@@ -107,7 +114,7 @@
 						</tr>
 						<tr>
 							<td class="form-group" id="addcell">
-								<label for="song">Song: </label> 
+								<label for="song"><%= translate.getWords(pageName + "song") %></label> 
 						</td>
 							<td class="form-group" id="addcell">
 								<input type="text" id="song" name="song" required="required" />
@@ -115,7 +122,7 @@
 						</tr>
 						<tr>
 							<td class="form-group" id="addcell">
-						<label for="sentence">Sentence: </label> 
+						<label for="sentence"><%= translate.getWords(pageName + "phrase") %></label> 
 						</td>
 							<td class="form-group" id="addcell">
 								<textarea  id="sentence" name="sentence" required="required" rows="5" cols="60"></textarea> 
@@ -123,16 +130,16 @@
 						</tr>
 						<tr>
 							<td class="form-group" id="addcell">
-								<label for="year_released">Year Released: </label> 
+								<label for="year_released"><%= translate.getWords(pageName + "year_released") %></label> 
 							</td>
 							<td class="form-group" id="addcell">		
 								<input type="text" id="year_released" name="year_released" required="required" />
 								</td>
 							</tr>
 						</table>
-					<input type="radio" id="Lang" name="Lang" value="English" checked> English<br>
-					<input type="radio" id="Lang" name="Lang" value="French" > French<br>
-				<input type="submit" value="Add" />
+					<input type="radio" id="Lang" name="Lang" value="English" checked><%= translate.getWords(pageName + "english") %><br>
+					<input type="radio" id="Lang" name="Lang" value="French" ><%= translate.getWords(pageName + "french") %><br>
+				<input type="submit" value="<%= translate.getWords(pageName + "add") %>" />
 				</form>
 			</div>
 			
@@ -148,7 +155,7 @@
 								"</th>" +
 								
 								"<th >" +
-									"Account Name:" +
+									translate.getWords(pageName + "account_name") +
 								"</th>" +
 							"</tr>");
 					}
@@ -175,7 +182,7 @@
 			
 			<div id="SentenceList" Style="display: none">
 				<%
-					ArrayList<Object[]> al = AdminDao.returnATable("SELECT * from music_sentences where song_language = ?", 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ "English" });
+					ArrayList<Object[]> al = AdminDao.returnATable("SELECT * from music_sentences where song_language = ?", 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ toLanguage });
 					if (al.size() > 0) {
 						out.print(
 						"<table Style='margin-bottom: 0px; margin-top: 2px; padding: 2px; background-color: #a6b3c6; box-shadow: 5px 5px 2px #888888; width: 100%'" +
@@ -187,7 +194,7 @@
 									"#:" +
 								"</th>" +
 								"<th>" +
-									"Phrase:" +
+									translate.getWords(pageName + "phrase_list_phrase") +
 								"</th>" +
 							"</tr>");
 					}

@@ -3,7 +3,7 @@
 <%@page import="java.util.ArrayList" %>
 <%@page import="com.amzi.dao.*" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -146,7 +146,7 @@
 					
 					out.print("<p align='center' id='sentence1' Style='font-size: 200%; margin-top: 150px'>");
 					for (int i = 0; i < stringLength; i++) {
-						out.print("<span id='letter" + i + "'>" + getCharacterFromString(sentence, i) + "</span>");
+						out.print("<span translate='no' id='letter" + i + "'>" + getCharacterFromString(sentence, i) + "</span>");
 					}
 					out.print("</p>");
 				%>
