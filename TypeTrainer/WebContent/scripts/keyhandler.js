@@ -54,9 +54,9 @@ $(document).on('keypress', function(evt) {
 			}
 			
 			
-
-			if(charStr == " ")
-				words++;
+			wordCount();
+		//	if(charStr == " ")
+			//	words++;
 
 			//check accuracy						
 			for(x = 0; x < compareSentence.length; x++){
@@ -105,6 +105,7 @@ $(document).on('keydown', function(evt){
 
 				userSentence = userSentence.substring(0, userSentence.length-1);
 				compareSentence = compareSentence.substring(0, compareSentence.length-1);
+				wordCount();
 			}
 		}
 	}
@@ -136,4 +137,25 @@ function WPM() {
 
 	if (isFinite(curWPM))
 		document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
+}
+
+function wordCount(){
+	var	correct=0; 
+	var tot=0;
+	words=0;
+	for(var q=0;q<userSentence.length;q++){
+		if(userSentence.charAt(q)==' '){
+			if((correct/tot) >0.8){
+				words++;
+			}
+			tot=0;
+			correct=0;
+		}
+		else{
+			if(userSentence.charAt(q) == currSentence.charAt(q)){
+				correct++;
+			}
+			tot++;
+		}
+	}
 }
