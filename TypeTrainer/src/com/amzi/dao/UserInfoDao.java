@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class UserInfoDao {
+	public static final double MIN_ACCURACY = 75.00;
+	
 	public static final int OBJ_INT = 1;
 	public static final int OBJ_DOUBLE = 2;
 	public static final int OBJ_DATE = 3;

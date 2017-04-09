@@ -23,6 +23,10 @@ public class UserStatsDao {
 	
 	public static double getTopAccuracy (int id) {
 		return (double) UserInfoDao.performQuery ("SELECT max_accuracy FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
+	}	
+
+	public static int getNumSentences (int id) {
+		return (int) UserInfoDao.performQuery ("SELECT num_sentences FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 	}
 	
 	public static void setAvgWPM (int id, double n) {
@@ -46,7 +50,7 @@ public class UserStatsDao {
 	public static void setMinWPM (int id, double n) {
 		double words = (double) UserInfoDao.performQuery ("SELECT min_wpm FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 
-        if(n < words || n == 0)
+        if(n < words || words == 0)
         	UserInfoDao.performQuery ("UPDATE user_stats SET min_wpm=?  WHERE user_id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{ UserInfoDao.OBJ_DOUBLE, UserInfoDao.OBJ_INT }, new Object[]{ n, id });
 	}
 	
@@ -71,7 +75,7 @@ public class UserStatsDao {
 	public static void setMinAccuracy (int id, double n) {
 		double words = (double) UserInfoDao.performQuery ("SELECT min_accuracy FROM user_stats WHERE user_id=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_INT }, new Object[]{ id });
 
-        if(n < words || n == 0)
+        if(n < words || words == 0)
         	UserInfoDao.performQuery ("UPDATE user_stats SET min_accuracy=? WHERE user_id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{ UserInfoDao.OBJ_DOUBLE, UserInfoDao.OBJ_INT }, new Object[]{ n, id });		
 	}
 	

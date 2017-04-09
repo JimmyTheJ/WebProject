@@ -2,10 +2,18 @@
 <%@page import="java.lang.String"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="com.amzi.dao.*" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+    <%
+		String toLanguage = (String)session.getAttribute("lang");
+		//System.out.println(toLanguage);
+		if (toLanguage == null)
+			toLanguage = "English";
+		Internationalizer translate = new Internationalizer(toLanguage);
+		String pageName = "user_modal.";
+	%>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
  
     <!-- Bootstrap -->
@@ -23,66 +31,103 @@
 					}
 				}
 				else{
-					out.print("<h2 class='modal-title'>Login</h2>");
+					out.print("<h2 class='modal-title'>" + translate.getWords(pageName + "login") + "</h2>");
 				}
 			
 			%>
 		</div>
 		<div class="modal-body">
 		<% 				
-			if( (String)session.getAttribute("name") == null) {
-				out.print(
-					"<form action='loginServlet' method='post'>" +
+		if( (String)session.getAttribute("name") == null) {
+			out.print(
+				"<form action='loginServlet' method='post'>" +
 						"<div class='form-group'>" +
-							"<label for='username'>Username: </label> <input type='text' name='username' required='required' />" +
+							"<label for='username'>" + translate.getWords(pageName + "username") + "</label> <input type='text' name='username' required='required' />" +
 						"</div>" +
 						"<div class='form-group'>" +
-							"<label for='password'>Password: </label> <input type='password' name='userpass' required='required' />" +
+							"<label for='password'>" + translate.getWords(pageName + "password") + "</label> <input type='password' name='userpass' required='required' />" +
 						"</div>" +
-					"<input type='submit' value='Login' />" +
-					"</form>");
-			}
-			else {
-				int userID = UserInfoDao.getID((String)session.getAttribute("name"));
-				double topWPM = UserStatsDao.getTopWPM(userID);
-				double avgWPM = UserStatsDao.getAvgWPM(userID);
-				double avgAccuracy = UserStatsDao.getAvgAccuracy(userID);
-				
-				out.print(
-					"<table class='table table-striped' Style='margin-bottom: 0px; margin-top: 2px; padding: 10px; width: 100%'>" +
-						"<tr>" +
+					"<input type='submit' value='" + translate.getWords(pageName + "login") + "'/>" +
+					"</form>"
+			);
+		}
+		else {
+			int userID = UserInfoDao.getID((String)session.getAttribute("name"));
+			double topWPM = UserStatsDao.getTopWPM(userID);
+			double avgWPM = UserStatsDao.getAvgWPM(userID);
+			double minWPM = UserStatsDao.getMinWPM(userID);
+			double topAccuracy = UserStatsDao.getTopAccuracy(userID);
+			double avgAccuracy = UserStatsDao.getAvgAccuracy(userID);
+			double minAccuracy = UserStatsDao.getMinAccuracy(userID);
+			int numSentences = UserStatsDao.getNumSentences(userID);
+			
+			out.print(
+				"<table class='table table-striped' Style='margin-bottom: 0px; margin-top: 2px; padding: 10px; width: 100%'>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "best_wpm") +
+						"</td>" +
 							"<td id='statcell'>" +
-								"Best WPM: " +
+								topWPM +
 							"</td>" +
-								"<td id='statcell'>" +
-									topWPM +
-								"</td>" +
-						"</tr>" +
-						"<tr>" +
-							"<td id='statcell'>" +
-								"Average WPM: " +
-							"</td>" +
-							"<td id='statcell'>" +
-								avgWPM +
-							"</td>" +
-						"</tr>" +
-						"<tr>" +
-							"<td id='statcell'>" +
-								"Average Accuracy: " +
-							"</td>" +
-							"<td id='statcell'>" +
-								avgAccuracy +
-							"</td>" +
-						"</tr>" +									
-					"</table>"
-				);
-			}
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "avg_wpm") +
+						"</td>" +
+						"<td id='statcell'>" +
+							avgWPM +
+						"</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "min_wpm") +
+						"</td>" +
+						"<td id='statcell'>" +
+							minWPM +
+						"</td>" +
+					"</tr>" +				
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "best_acc") +
+						"</td>" +
+						"<td id='statcell'>" +
+							topAccuracy +
+						"</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "avg_acc") +
+						"</td>" +
+						"<td id='statcell'>" +
+							avgAccuracy +
+						"</td>" +
+					"</tr>" +							
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "min_acc") +
+						"</td>" +
+						"<td id='statcell'>" +
+							minAccuracy +
+						"</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "num_sentences") +
+						"</td>" +
+						"<td id='statcell'>" +
+							numSentences +
+						"</td>" +
+					"</tr>" +	
+				"</table>"
+			);
+		}
 			 %>
 		</div>
 		
 		<%
 			if((Boolean)session.getAttribute("validLogin") == null || (Boolean)session.getAttribute("validLogin") == false) {
-				out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal' onclick='load_modal_signup()'>Sign up</button></div>");
+				out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal' onclick='load_modal_signup()'>" + translate.getWords(pageName + "signup") + "</button></div>");
 			}
 		%>
 	</body>

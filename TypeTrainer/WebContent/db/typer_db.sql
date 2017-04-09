@@ -50,69 +50,6 @@ CREATE TABLE IF NOT EXISTS `typer_db`.`music_sentences` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
-/* Commented out for now. Will determine best structure and complexity of database later
-CREATE TABLE IF NOT EXISTS `typer_db`.`music_genres` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `genre` VARCHAR(128) NOT NULL,
-#  `password` VARCHAR(128) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`music_sentences` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `sentence` VARCHAR(2048) NOT NULL,
-  `song` VARCHAR(128) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`music_songs` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(2048) NOT NULL,
-  `album` VARCHAR(128) NULL,
-  `artist` VARCHAR(128) NULL,
-  `tracknumber` INT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`music_albums` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(2048) NOT NULL,
-  `artist` VARCHAR(128) NULL,
-  `genre` VARCHAR(128) NULL,
-  `year` VARCHAR(128) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`music_artists` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(2048) NOT NULL,
-  `genre` VARCHAR(128) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`sentences` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `sentence` VARCHAR(1024) NOT NULL,
-  `type` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `typer_db`.`words` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `word` VARCHAR(128) NOT NULL,
-  `type` VARCHAR(128) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-*/
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -202,5 +139,6 @@ VALUES ("Snoop Dogg", "Doggystyle", "Gin and Juice", "1993", "Rollin' down the s
     ,("The Beatles", "Revolver", "Yellow Submarine", "1966", "And our friends are all on board. Many more of them live next door. And the band begins to play.", "English")
     ,("The Beatles", "Revolver", "Yellow Submarine", "1966", "Full speed ahead, Mr. Boatswain, full speed ahead! Full speed it is, Sgt.! Cut the cable, drop the cable! Aye, sir, aye! Captain, captain!", "English")
     ,("The Beatles", "Revolver", "Yellow Submarine", "1966", "As we live a life of ease (A life of ease). Everyone of us (Everyone of us) has all we need (Has all we need). Sky of blue (Sky of blue) and sea of green (Sea of green). In our yellow (In our yellow) submarine (Submarine, ha, ha)", "English")
+    ,("Délivrée", "We Love Disney", "La Reine Des Neiges Libérée", "", "L'hiver s'installe doucement dans la nuit. La neige est reine à son tour. Un royaume de solitude. Ma place est là pour toujours", "French")
     ;
     
