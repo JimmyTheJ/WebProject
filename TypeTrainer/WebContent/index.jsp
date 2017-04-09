@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="java.lang.String"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="com.amzi.dao.*" %>
@@ -35,8 +35,16 @@
 </head>
   <body>
     <script>
+    	function toggleLanguage () {
+    		var langSelect =  document.getElementById("toggle-lang");
+    		var langValue = langSelect.options[langSelect.selectedIndex].value;
+	    	document.cookie = "language=" + langValue +"; expires=Sun, 31 Dec 2017 23:59:59; path=/";
+	    	//document.getElementById("toggleLang").submit();
+	    	document.getElementById("toggleLang").submit();
+    	}
 		var validUpdate = "<%= (Boolean)session.getAttribute("validUpdate") %>";
 		var user_name = "<%= userName %>";
+		var validSubmission = <%= (Boolean)request.getAttribute("ValidSubmission") %>
 		
 		$(window).load(function(){
 			console.log(validUpdate);
@@ -48,7 +56,13 @@
 				 $('#adminModal').modal('show');
 				load_modal_admin();
 			}
+			
+			if (validSubmission == false) {
+				console.log("Submission invalid!");
+				alert("Your submission failed. Please make sure to maintain an accuracy above " + <%= UserInfoDao.MIN_ACCURACY %> + "%");
+			}
 		});
+
 	</script>
 
 	<!-- Script to get user input on document, hidden fields allow for the JSP variables to be passed...-->
@@ -114,7 +128,7 @@
 						}
 					%>
 					</li>					
-						<li><button type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
+						<li><button id="user_stats_button" type="button" data-toggle="modal" data-target="#userModal" Style="background-color: Transparent; border: none; overflow: hidden; outline: none"><img src="assets/user_profile_icon.png" Height="48px" Width="48px"></button></li>
 					</ul>
 				</div>
 			</nav>
@@ -123,8 +137,8 @@
 	<div class="container-fluid" id="MainArea">
 
 	<!--  LANGUAGE  -->
-	<form action="toggleLang" method="POST">
-		<select name="lang" onchange="this.form.submit();">
+	<form id="toggleLang" action="toggleLang" method="POST">
+		<select id="toggle-lang" name="lang" onchange="toggleLanguage();">
 			<option><%= translate.getWords(pageName + "select_lang") %></option>
 
 			<option value="French"><%= translate.getWords(pageName + "fr") %></option>
@@ -135,8 +149,8 @@
 			<div id="TextAreaHeader" class="container-fluid">
 				<table>
 					<tr>
-						<td id="WPM" style="padding-left: 25px"><h3><%= translate.getWords(pageName + "wpm") %>: --</h3></td>
-						<td id="Accuracy" style="padding-left: 450px"><h3><%= translate.getWords(pageName + "acc") %>: --</h3></td>
+						<td id="WPM"><h3><%= translate.getWords(pageName + "wpm") %>: --</h3></td>
+						<td id="Accuracy"><h3><%= translate.getWords(pageName + "acc") %>: --</h3></td>
 					</tr>
 				</table>
 			</div>
@@ -159,7 +173,7 @@
 	<div class="container-fluid" id="MainArea">
 		<h2 class='page-header'><%= translate.getWords(pageName + "leaderboard") %></h2>
 	
-		<select id="leaderboard_num_entries" Style="margin-bottom: 10px;">
+		<select id="leaderboard_num_entries">
 	  		<option value="10" selected>10</option>
 	  		<option value="25">25</option>
 			<option value="50">50</option>
@@ -169,20 +183,28 @@
 			<tr class="table-bordered">
 				<th><%= translate.getWords(pageName + "user") %></th>
 				<th><%= translate.getWords(pageName + "avgwpm") %></th>
+				<th><%= translate.getWords(pageName + "maxwpm") %></th>
 				<th><%= translate.getWords(pageName + "avgacc") %></th>
+				<th><%= translate.getWords(pageName + "completed") %></th>
 			</tr>
 			<%
-				ArrayList<Object[]> leaderboard_data = AdminDao.returnATable("SELECT user_id, avg_wpm, avg_accuracy FROM user_stats ORDER BY avg_wpm DESC LIMIT 100", 0, new int[] { UserInfoDao.OBJ_INT}, new Object[] { 100 });
+				ArrayList<Object[]> leaderboard_data = AdminDao.returnATable("SELECT user_id, avg_wpm, max_wpm, avg_accuracy, num_sentences FROM user_stats WHERE num_sentences > 0 ORDER BY avg_wpm DESC LIMIT 100", 0, new int[] { UserInfoDao.OBJ_INT}, new Object[] { 100 });
 				
 				for (int i = 0; i < leaderboard_data.size(); i++) {
 					out.print("<tr>");
-					for (int j = 0; j < leaderboard_data.get(i).length; j++) {
+					for (int j = 0; j < leaderboard_data.get(i).length; j++) {						
 						int table_user_id = (int)leaderboard_data.get(i)[0];
 						String table_user_name = (String)UserInfoDao.getUsername( (int)table_user_id );
 						if (j == 0)
 							out.print("<td>" + table_user_name + "</td>");
-						else
-							out.println("<td>" + leaderboard_data.get(i)[j] + "</td>");
+						else if (j > 0 && j < 4) {
+							double roundedValue = (double)leaderboard_data.get(i)[j];
+							roundedValue = Math.round(roundedValue * 100.0) / 100.0;
+							out.println("<td>" + roundedValue + "</td>");
+						}
+						else if (j == 4) {
+							out.println("<td>" + (int)leaderboard_data.get(i)[4] + "</td>");							
+						}
 					}
 					out.print("</tr>");
 				}

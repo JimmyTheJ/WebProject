@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +17,28 @@ public class ToggleLang extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 		
+		HttpSession session = request.getSession();
+	
+
+	
+		Cookie cookies [] = request.getCookies();
+		Cookie cookie = null;
+		
+		response.setContentType("text/html");
+		
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				cookie = cookies[i];
+				
+				if (cookie.getName().equals("language")) {
+					//System.out.println("Cookie value: " + cookie.getName());
+					//System.out.println("Cookie value: " + cookie.getValue());
+					session.setAttribute("lang", cookie.getValue());
+				}
+			}
+		}
+		else {
 			String lang = request.getParameter("lang");
-			
-			HttpSession session = request.getSession();
-			
-			System.out.println(lang);
 			
 			if((String)session.getAttribute("lang") != null){
 				session.removeAttribute("lang");
@@ -28,10 +46,12 @@ public class ToggleLang extends HttpServlet{
 			}
 			else{
 				session.setAttribute("lang", lang);
-			}
+			}			
+		}
 		
-	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
-	        rd.include(request,response);
+	
+        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+        rd.include(request,response);
 	}
 	
 }

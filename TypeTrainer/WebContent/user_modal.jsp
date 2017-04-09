@@ -55,7 +55,11 @@
 			int userID = UserInfoDao.getID((String)session.getAttribute("name"));
 			double topWPM = UserStatsDao.getTopWPM(userID);
 			double avgWPM = UserStatsDao.getAvgWPM(userID);
+			double minWPM = UserStatsDao.getMinWPM(userID);
+			double topAccuracy = UserStatsDao.getTopAccuracy(userID);
 			double avgAccuracy = UserStatsDao.getAvgAccuracy(userID);
+			double minAccuracy = UserStatsDao.getMinAccuracy(userID);
+			int numSentences = UserStatsDao.getNumSentences(userID);
 			
 			out.print(
 				"<table class='table table-striped' Style='margin-bottom: 0px; margin-top: 2px; padding: 10px; width: 100%'>" +
@@ -77,12 +81,44 @@
 					"</tr>" +
 					"<tr>" +
 						"<td id='statcell'>" +
+							translate.getWords(pageName + "min_wpm") +
+						"</td>" +
+						"<td id='statcell'>" +
+							minWPM +
+						"</td>" +
+					"</tr>" +				
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "best_acc") +
+						"</td>" +
+						"<td id='statcell'>" +
+							topAccuracy +
+						"</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
 							translate.getWords(pageName + "avg_acc") +
 						"</td>" +
 						"<td id='statcell'>" +
 							avgAccuracy +
 						"</td>" +
-					"</tr>" +									
+					"</tr>" +							
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "min_acc") +
+						"</td>" +
+						"<td id='statcell'>" +
+							minAccuracy +
+						"</td>" +
+					"</tr>" +
+					"<tr>" +
+						"<td id='statcell'>" +
+							translate.getWords(pageName + "num_sentences") +
+						"</td>" +
+						"<td id='statcell'>" +
+							numSentences +
+						"</td>" +
+					"</tr>" +	
 				"</table>"
 			);
 		}

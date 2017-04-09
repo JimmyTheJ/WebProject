@@ -55,10 +55,11 @@ $(document).on('keypress', function(evt) {
 			
 			
 
-			if(charStr == " ")
-				words++;
-
-			//check accuracy						
+			//if(charStr == " ")
+			//	words++;
+			wordCount();
+			
+			//check accuracy
 			for(x = 0; x < compareSentence.length; x++){
 				if(compareSentence.charAt(x) == userSentence.charAt(x)) {
 					count++;
@@ -70,7 +71,7 @@ $(document).on('keypress', function(evt) {
 			Accuracy.innerHTML ="<h3>Accuracy: "+perMatch.toPrecision(3)+"%</h3>";
 		}
 		else {
-			//check accuracy						
+			//check accuracy
 			for(x = 0; x < compareSentence.length; x++){
 				if(compareSentence.charAt(x) == userSentence.charAt(x)) {
 					count++;
@@ -80,14 +81,9 @@ $(document).on('keypress', function(evt) {
 
 			statsFormAccess = document.forms["stats"];
 			statsFormAccess.elements["WPM"].value = curWPM;
-			statsFormAccess.elements["Accuracy"].value = perMatch.toPrecision(3);
+			statsFormAccess.elements["Accuracy"].value = perMatch;
 			
-			if (uName != "null") {
-				document.getElementById("stats").submit();
-			}
-			else {
-				location.reload();
-			}
+			document.getElementById("stats").submit();
 		}
 	}
 });
@@ -107,6 +103,30 @@ $(document).on('keydown', function(evt){
 				compareSentence = compareSentence.substring(0, compareSentence.length-1);
 			}
 		}
+	}
+});
+
+$(document).on('keydown' ,function(evt) {
+	evt = evt || window.event;
+	var charCode = evt.keyCode || evt.which;
+	
+	console.log("In keydown function");
+	
+	if(!$('#userModal').hasClass('in') && !$('#signUpModal').hasClass('in') && !$('#adminModal').hasClass('in')) {	
+		
+		 if (evt.which == 32 && evt.target == document.getElementById("user_stats_button")) {
+			 console.log("In keydown if statement");
+			 evt.preventDefault();
+			 alert("Please click somewhere on your screen besides the user modal button");
+			 //evt.target = $("#innerTextArea");
+			 //evt.click();
+			 return true;
+		 }
+		
+	    /*if (charCode == 32 && evt.target == document.getElementById("user_stats_button")) {
+	    	console.log("In keydown if statement");
+	        return false;
+	    }*/
 	}
 });
 
@@ -136,4 +156,23 @@ function WPM() {
 
 	if (isFinite(curWPM))
 		document.getElementById("WPM").innerHTML= "<h3>WPM: "+curWPM.toPrecision(4)+"</h3>";
+}
+
+function wordCount() {
+	var	correct=0; 
+	var tot=0;
+	words=0;
+	for(var q=0;q<userSentence.length;q++){
+		if(userSentence.charAt(q)==' '){
+			if((correct/tot) > 0.8)
+				words++;
+			tot=0;
+			correct=0;
+		}
+		else{
+			if(userSentence.charAt(q) == currSentence.charAt(q))
+				correct++;
+		 	tot++;
+		 }
+	}
 }

@@ -35,16 +35,25 @@ public class UserUpdateServlet extends HttpServlet{
 			name= (String)request.getParameter("Username");
 	
 			id = UserInfoDao.getID(name);
-			//wpm
-			UserStatsDao.setAvgWPM(id, wpm);
-			UserStatsDao.setTopWPM(id, wpm);
-			UserStatsDao.setMinWPM(id, wpm);
-			//accuracy
-			UserStatsDao.setAVGAccuracy(id, acc);
-			UserStatsDao.setTopAccuracy(id, acc);
-			UserStatsDao.setMinAccuracy(id, acc);
-			UserStatsDao.incrementSentences(id);
 			
+			if (acc >= UserInfoDao.MIN_ACCURACY) {
+				System.out.println("ID: " + id + "\nWPM: " + wpm + "\nAccuracy: " + acc + "\nName: " + name);
+				
+				if (id != -1) {
+					UserStatsDao.setAvgWPM(id, wpm);
+					UserStatsDao.setTopWPM(id, wpm);
+					UserStatsDao.setMinWPM(id, wpm);
+					
+					UserStatsDao.setAVGAccuracy(id, acc);
+					UserStatsDao.setTopAccuracy(id, acc);
+					UserStatsDao.setMinAccuracy(id, acc);
+					UserStatsDao.incrementSentences(id);
+				}
+			}
+			else {
+				request.setAttribute("ValidSubmission", false);
+			}
+
 			RequestDispatcher rd=request.getRequestDispatcher("index.jsp");  
 	        rd.include(request,response);  
 	}
