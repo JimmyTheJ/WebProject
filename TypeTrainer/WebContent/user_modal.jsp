@@ -25,10 +25,8 @@
 		<div class="modal-header">
 			<button id="closeButton" type="button" class="close" data-dismiss="modal">&times;</button>
 			<%
-				if((Boolean)session.getAttribute("validLogin") != null){
-					if((Boolean)session.getAttribute("validLogin")){
-						out.print("<img src='assets/user_profile_icon.png' height='48px' width='48px' /><h2 class='modal-title'>" + (String)session.getAttribute("name") + "</h2>");
-					}
+				if(session.getAttribute("name") != null){
+					out.print("<img src='assets/user_profile_icon.png' height='48px' width='48px' /><h2 class='modal-title' Style='display: inline; padding-left: 15px;'>" + (String)session.getAttribute("name") + "</h2>");
 				}
 				else{
 					out.print("<h2 class='modal-title'>" + translate.getWords(pageName + "login") + "</h2>");

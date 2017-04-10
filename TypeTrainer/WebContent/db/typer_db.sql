@@ -140,5 +140,8 @@ VALUES ("Snoop Dogg", "Doggystyle", "Gin and Juice", "1993", "Rollin' down the s
     ,("The Beatles", "Revolver", "Yellow Submarine", "1966", "Full speed ahead, Mr. Boatswain, full speed ahead! Full speed it is, Sgt.! Cut the cable, drop the cable! Aye, sir, aye! Captain, captain!", "English")
     ,("The Beatles", "Revolver", "Yellow Submarine", "1966", "As we live a life of ease (A life of ease). Everyone of us (Everyone of us) has all we need (Has all we need). Sky of blue (Sky of blue) and sea of green (Sea of green). In our yellow (In our yellow) submarine (Submarine, ha, ha)", "English")
     ,("Délivrée", "We Love Disney", "La Reine Des Neiges Libérée", "", "L'hiver s'installe doucement dans la nuit. La neige est reine à son tour. Un royaume de solitude. Ma place est là pour toujours", "French")
+    ,("Fréro Delavega", "", "Chansons Le Chant Des Sirènes", "2015", "Quand les souvenirs s'en mêlent, les larmes me viennent, Et le chant des sirènes me replonge en hiver Oh mélancolie cruelle, harmonie fluette, euphorie solitaire", "French")
+    ,("Fréro Delavega", "", "Chansons Le Chant Des Sirènes", "2015", "Combien de farces, combien de frasques. Combien de traces, combien de masques. Avons-nous laissé là-bas. Poser les armes, prendre le large. Trouver le calme dans ce vacarme avant que je ne m'y noie", "French")
+    ,("Fréro Delavega", "", "Chansons Le Chant Des Sirènes", "2015", "Au gré des saisons, des photomatons, Je m'abandonne à ces lueurs d'autrefois. Au gré des saisons, des décisions, je m'abandonne", "French")
     ;
     
