@@ -164,7 +164,7 @@ function wordCount() {
 	words=0;
 	for(var q=0;q<userSentence.length;q++){
 		if(userSentence.charAt(q)==' '){
-			if((correct/tot) > 0.8)
+			if((correct/tot) > 0.55)
 				words++;
 			tot=0;
 			correct=0;

@@ -19,8 +19,6 @@ public class ToggleLang extends HttpServlet{
 		
 		HttpSession session = request.getSession();
 	
-
-	
 		Cookie cookies [] = request.getCookies();
 		Cookie cookie = null;
 		
@@ -31,22 +29,9 @@ public class ToggleLang extends HttpServlet{
 				cookie = cookies[i];
 				
 				if (cookie.getName().equals("language")) {
-					//System.out.println("Cookie value: " + cookie.getName());
-					//System.out.println("Cookie value: " + cookie.getValue());
 					session.setAttribute("lang", cookie.getValue());
 				}
 			}
-		}
-		else {
-			String lang = request.getParameter("lang");
-			
-			if((String)session.getAttribute("lang") != null){
-				session.removeAttribute("lang");
-				session.setAttribute("lang", lang);
-			}
-			else{
-				session.setAttribute("lang", lang);
-			}			
 		}
 		
 	

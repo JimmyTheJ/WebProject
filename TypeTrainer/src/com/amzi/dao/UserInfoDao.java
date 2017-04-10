@@ -100,6 +100,10 @@ public class UserInfoDao {
 		return (String) performQuery ("SELECT user_type FROM users WHERE username=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ uName });
 	}
 	
+	public static String getLanguage (String uName) {
+		return (String) performQuery ("SELECT user_lang FROM users WHERE username=?", UserInfoDao.SELECT_QUERY, 1, new int[]{ UserInfoDao.OBJ_STRING }, new Object[]{ uName });
+	}	
+	
 	public static void setJoinDate (int id, Timestamp date) {
 		performQuery ("UPDATE users SET join_date=?  WHERE id=?", UserInfoDao.UPDATE_QUERY, 2, new int[]{ UserInfoDao.OBJ_DATE, UserInfoDao.OBJ_INT }, new Object[]{ date, id });
 	}
