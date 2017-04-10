@@ -38,10 +38,48 @@
     	function toggleLanguage () {
     		var langSelect =  document.getElementById("toggle-lang");
     		var langValue = langSelect.options[langSelect.selectedIndex].value;
-	    	document.cookie = "language=" + langValue +"; expires=Sun, 31 Dec 2017 23:59:59; path=/";
-	    	//document.getElementById("toggleLang").submit();
+	    	//document.cookie = "language=" + langValue +"; expires=Sun, 31 Dec 2017 23:59:59; path=/";
+	    	
+	    	setCookie("language", langValue, 365);
 	    	document.getElementById("toggleLang").submit();
     	}
+ 
+    	function setCookie(cname, cvalue, exdays) {
+    	    var d = new Date();
+    	    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    	    var expires = "expires="+d.toUTCString();
+    	    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    	}
+    	
+    	function getCookie(cname) {
+    	    var name = cname + "=";
+    	    var ca = document.cookie.split(';');
+    	    for(var i = 0; i < ca.length; i++) {
+    	        var c = ca[i];
+    	        while (c.charAt(0) == ' ') {
+    	            c = c.substring(1);
+    	        }
+    	        if (c.indexOf(name) == 0) {
+    	            return c.substring(name.length, c.length);
+    	        }
+    	    }
+    	    return "";
+    	}
+    	
+    	function checkCookie() {
+    	    var langCookie = getCookie("language");
+    	    var lang = "<%= (String)session.getAttribute("lang") %>";
+    	    
+    	    if (langCookie == "") {
+    	    	if (lang == "null") {
+        	    	setCookie("language", "English", 365);    	    		
+    	    	}
+    	    	else {
+    	    		setCookie("language", lang, 365);
+    	    	}
+    	    }
+    	}
+    	
 		var validUpdate = "<%= (Boolean)session.getAttribute("validUpdate") %>";
 		var user_name = "<%= userName %>";
 		var validSubmission = <%= (Boolean)request.getAttribute("ValidSubmission") %>
@@ -51,6 +89,7 @@
 			console.log(user_name);
 			
 		    load_modal_user();
+			checkCookie();
 			
 			if(validUpdate == "true") {
 				 $('#adminModal').modal('show');

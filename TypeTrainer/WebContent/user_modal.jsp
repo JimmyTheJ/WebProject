@@ -124,7 +124,7 @@
 		</div>
 		
 		<%
-			if((Boolean)session.getAttribute("validLogin") == null || (Boolean)session.getAttribute("validLogin") == false) {
+			if(session.getAttribute("name") == null) {
 				out.print("<div class='modal-footer'><button type='button' Style='background-color: Transparent; border: none; overflow: hidden; outline: none' data-toggle='modal' data-target='#signUpModal' data-dismiss='modal' onclick='load_modal_signup()'>" + translate.getWords(pageName + "signup") + "</button></div>");
 			}
 		%>

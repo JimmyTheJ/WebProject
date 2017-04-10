@@ -30,6 +30,7 @@ public class UserCreationServlet extends HttpServlet{
         String f_name=request.getParameter("f_name");
         String l_name=request.getParameter("l_name");
         String email=request.getParameter("email");
+        String lang=request.getParameter("lang");
         
       //encryption
         String genPass=null;
@@ -49,7 +50,7 @@ public class UserCreationServlet extends HttpServlet{
         	e.printStackTrace();
         }
         
-        boolean isCreated = UserCreationDao.addUser(u_name, genPass, f_name, l_name, email, new Timestamp(System.currentTimeMillis()));
+        boolean isCreated = UserCreationDao.addUser(u_name, genPass, f_name, l_name, email, new Timestamp(System.currentTimeMillis()), lang);
         
         HttpSession session = request.getSession();
         

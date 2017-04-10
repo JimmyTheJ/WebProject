@@ -57,8 +57,10 @@ public class LoginServlet extends HttpServlet{
     	
         
         if( UserInfoDao.validateLogin(n, genPass) ){
+        	String userLanguage = UserInfoDao.getLanguage(n);
         	session.setAttribute("name", n);
             session.setAttribute("sentence", sentence);
+            session.setAttribute("lang", userLanguage);
 
             UserInfoDao.setLastLoginDate(UserInfoDao.getID(n), new Timestamp(System.currentTimeMillis()) );
         }

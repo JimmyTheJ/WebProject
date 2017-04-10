@@ -11,7 +11,7 @@ import com.amzi.dao.BaseDao;
 
 public class UserCreationDao {
 
-	public static boolean addUser(String username, String password, String fName, String lName, String email, Timestamp time){
+	public static boolean addUser(String username, String password, String fName, String lName, String email, Timestamp time, String lang){
 		boolean status = false;
 		int user_id = -1;
         Connection conn = null;
@@ -31,13 +31,14 @@ public class UserCreationDao {
             rs.close();
             
             if(!status){
-               	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email, join_date, user_type) VALUES (? ,? ,?, ?, ?, ?, 'user')");
+               	pst = conn.prepareStatement("INSERT INTO users (username, password, f_name, l_name, email, join_date, user_type, user_lang) VALUES (? ,? ,?, ?, ?, ?, 'user', ?)");
             	pst.setString(1, username);
             	pst.setString(2, password);
             	pst.setString(3, fName);
             	pst.setString(4, lName);
             	pst.setString(5, email);
             	pst.setTimestamp(6, time);
+            	pst.setString(7, lang);
             	pst.executeUpdate();
             	pst.close();
             	
