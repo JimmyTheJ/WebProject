@@ -9,8 +9,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class AdminDao {
-	public static void addSentence(String album, String artist, String song, String sentence, int year, String lang){
-		UserInfoDao.performQuery ("INSERT INTO music_sentences (album, artist, song, sentence, year_released, song_language) VALUES (?,?,?,?,?,?)", UserInfoDao.UPDATE_QUERY, 6, new int[]{ UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_INT, UserInfoDao.OBJ_STRING }, new Object[]{ album, artist, song, sentence, year, lang });
+	public static void addSentence(String album, String artist, String song, String sentence, String year, String lang){
+		UserInfoDao.performQuery ("INSERT INTO music_sentences (album, artist, song, sentence, year_released, song_language) VALUES (?,?,?,?,?,?)", UserInfoDao.UPDATE_QUERY, 6, new int[]{ UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING, UserInfoDao.OBJ_STRING }, new Object[]{ album, artist, song, sentence, year, lang });
 	}
 	
 	public static void deleteSentence(int id) {

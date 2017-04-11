@@ -21,18 +21,14 @@ public class AddSentence extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 		
-		 
-	        
-	
 	        String album=request.getParameter("album");
 	        String artist=request.getParameter("artist");
 	        String song=request.getParameter("song");
 	        String sentence=request.getParameter("sentence");
-	        int year=Integer.parseInt(request.getParameter("year_released"));
 	        String language=request.getParameter("Lang");
-
-	        AdminDao.addSentence(album,artist,song,sentence,year,language);
-	        
+	        String year=request.getParameter("year_released");
+		    AdminDao.addSentence(album,artist,song,sentence,year,language);
+		        
 	        RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
 	        rd.include(request,response);
 	}
