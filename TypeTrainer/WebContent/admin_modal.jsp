@@ -137,8 +137,8 @@
 								</td>
 							</tr>
 						</table>
-					<input type="radio" id="Lang" name="Lang" value="English" <%if(session.getAttribute("lang").equals("English") ) { out.print("selected"); } %>><%= translate.getWords(pageName + "english") %><br>
-					<input type="radio" id="Lang" name="Lang" value="French" <%if(session.getAttribute("lang").equals("French") ) { out.print("selected"); } %>><%= translate.getWords(pageName + "french") %><br>
+					<input type="radio" id="Lang" name="Lang" value="English" <%if(session.getAttribute("lang").toString().toLowerCase().equals("english") ) { out.print("checked"); } %>><%= translate.getWords(pageName + "english") %><br>
+					<input type="radio" id="Lang" name="Lang" value="French" <%if(session.getAttribute("lang").toString().toLowerCase().equals("french") ) { out.print("checked"); } %>><%= translate.getWords(pageName + "french") %><br>
 				<input type="submit" value="<%= translate.getWords(pageName + "add") %>" />
 				</form>
 			</div>

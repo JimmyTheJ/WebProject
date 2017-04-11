@@ -42,7 +42,8 @@ public class UserCreationDao {
             	pst.executeUpdate();
             	pst.close();
             	
-            	pst = conn.prepareStatement("SELECT MAX(id) FROM users");
+            	pst = conn.prepareStatement("SELECT id FROM users WHERE username=?");
+            	pst.setString(1, username);
                 rs = pst.executeQuery();
             	rs.next();
                 user_id = rs.getInt(1);
